@@ -3,6 +3,9 @@ use_frameworks!
 
 target 'xmpp-messenger-ios_Example', :exclusive => true do
   pod "xmpp-messenger-ios", :path => "../"
+	pod "JSQSystemSoundPlayer"
+	pod "JSQMessagesViewController"
+	pod "FMDB"
 end
 
 target 'xmpp-messenger-ios_Tests', :exclusive => true do

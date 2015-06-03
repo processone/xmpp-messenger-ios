@@ -10,7 +10,7 @@
 Pod::Spec.new do |s|
   s.name             = "xmpp-messenger-ios"
   s.version          = "0.1.0"
-  s.summary          = "A short description of xmpp-messenger-ios."
+  s.summary          = "Swift XMPP Wrapper to build chat clients »
   s.description      = <<-DESC
                        An optional longer description of xmpp-messenger-ios
 
@@ -18,11 +18,9 @@ Pod::Spec.new do |s|
                        * Don't worry about the indent, we strip it!
                        DESC
   s.homepage         = "https://github.com/<GITHUB_USERNAME>/xmpp-messenger-ios"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "ProcessOne" => "pmglemaire@gmail.com" }
   s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/xmpp-messenger-ios.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
@@ -31,8 +29,5 @@ Pod::Spec.new do |s|
   s.resource_bundles = {
     'xmpp-messenger-ios' => ['Pod/Assets/*.png']
   }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency ‘FMBD’, ‘JSQMessagesViewController’, ‘JSQSystemSoundPlayer’
 end

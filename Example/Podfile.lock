@@ -1,0 +1,14 @@
+PODS:
+  - xmpp-messenger-ios (0.1.0)
+
+DEPENDENCIES:
+  - xmpp-messenger-ios (from `../`)
+
+EXTERNAL SOURCES:
+  xmpp-messenger-ios:
+    :path: ../
+
+SPEC CHECKSUMS:
+  xmpp-messenger-ios: 6d619d17e754fd06b18026240638951a27a9f271
+
+COCOAPODS: 0.36.0.rc.1
