@@ -1,0 +1,14 @@
+PODS:
+  - XMPPMessenger (0.1.0)
+
+DEPENDENCIES:
+  - XMPPMessenger (from `../`)
+
+EXTERNAL SOURCES:
+  XMPPMessenger:
+    :path: ../
+
+SPEC CHECKSUMS:
+  XMPPMessenger: 226c854be6c9d329b47b1357053169a4256e33f6
+
+COCOAPODS: 0.36.0.rc.1

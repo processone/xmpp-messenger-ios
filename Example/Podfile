@@ -3,6 +3,9 @@ use_frameworks!
 
 target 'XMPPMessenger_Example', :exclusive => true do
   pod "XMPPMessenger", :path => "../"
+	pod "FMDP"
+	pod "JSQMessagesViewController"
+	pod "JSQSystemSoundPlayer"
 end
 
 target 'XMPPMessenger_Tests', :exclusive => true do
