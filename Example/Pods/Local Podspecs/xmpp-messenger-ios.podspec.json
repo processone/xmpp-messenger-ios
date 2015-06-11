@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "summary": "A short description of xmpp-messenger-ios.",
   "description": "                       An optional longer description of xmpp-messenger-ios\n\n                       * Markdown format.\n                       * Don't worry about the indent, we strip it!\n",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/xmpp-messenger-ios",
+  "homepage": "https://github.com/processone/xmpp-messenger-ios",
   "license": "MIT",
   "authors": {
     "ProcessOne": "pmglemaire@gmail.com"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/xmpp-messenger-ios.git",
+    "git": "https://github.com/processone/xmpp-messenger-ios.git",
     "tag": "0.1.0"
   },
   "platforms": {
@@ -17,6 +17,28 @@
   },
   "requires_arc": true,
   "source_files": "Pod/Classes/**/*",
+"dependencies": {
+    "XMPPFramework": [
+      
+    ],
+"FMDB": [
+      
+    ],
+"JSQSystemSoundPlayer": [
+      
+    ],
+"JSQMessagesViewController": [
+      
+    ]
+  },
+"frameworks": [
+          "CFNetwork",
+          "Security",
+          "Foundation",
+	  "CoreData »,
+          "SystemConfiguration"
+        ]
+      },
   "resource_bundles": {
     "xmpp-messenger-ios": [
       "Pod/Assets/*.png"

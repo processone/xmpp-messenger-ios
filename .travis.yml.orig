@@ -1,0 +1,19 @@
+# references:
+# * http://www.objc.io/issue-6/travis-ci.html
+# * https://github.com/supermarin/xcpretty#usage
+
+language: objective-c
+# cache: cocoapods
+# podfile: Example/Podfile
+# before_install:
+# - gem install cocoapods # Since Travis is not always on latest version
+# - pod install --project-directory=Example
+install:
+- gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+script:
+<<<<<<< HEAD
+- set -o pipefail && xcodebuild test -workspace Example/xmpp-messenger-ios.xcworkspace -scheme xmpp-messenger-ios-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty -c
+=======
+- set -o pipefail && xcodebuild test -workspace Example/XMPPMessenger.xcworkspace -scheme XMPPMessenger-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty -c
+>>>>>>> e85c5bded677ff9cfd876f04273cf72ef67774ed
+- pod lib lint --quick

@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import UIKit
+import Security
 
 typealias XMPPStreamCompletionHandler = (shouldTrustPeer: Bool?) -> Void
 typealias OneChatAuthCompletionHandler = (stream: XMPPStream, error: DDXMLElement?) -> Void
@@ -228,8 +230,8 @@ class OneChat: NSObject {
 			return true
 		}
 		
-		let myJID = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
-		let myPassword = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
+		let myJID = NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")
+		let myPassword = NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyPassword")
 		
 		if let jid = myJID {
 			xmppStream?.myJID = XMPPJID.jidWithString(jid)

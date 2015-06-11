@@ -10,24 +10,28 @@
 Pod::Spec.new do |s|
   s.name             = "xmpp-messenger-ios"
   s.version          = "0.1.0"
-  s.summary          = "Swift XMPP Wrapper to build chat clients »
+  s.summary          = "Swift XMPP Wrapper to build chat clients"
   s.description      = <<-DESC
-                       An optional longer description of xmpp-messenger-ios
-
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+                       xmpp-messenger-ios is a Swift XMPP Wrapper to quickly build xmpp chat clients
                        DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/xmpp-messenger-ios"
+  s.homepage         = "https://github.com/processone/xmpp-messenger-ios"
   s.license          = 'MIT'
   s.author           = { "ProcessOne" => "pmglemaire@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/xmpp-messenger-ios.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/processone/xmpp-messenger-ios.git", :tag => "0.1.0" }
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
 
-  s.source_files = 'Pod/Classes/**/*'
-  s.resource_bundles = {
-    'xmpp-messenger-ios' => ['Pod/Assets/*.png']
-  }
-  s.dependency ‘FMBD’, ‘JSQMessagesViewController’, ‘JSQSystemSoundPlayer’
+  s.prefix_header_contents = 'iphone/include/xmpp-messenger-ios.pch'
+  s.ios.frameworks = 'Foundation', 'CoreData', 'UIKit', 'CFNetwork', 'Security'
+  s.dependency 'FMDB', '~> 1.0'
+  s.dependency 'JSQMessagesViewController', '~> 6.1.3'
+  s.dependency 'JSQSystemSoundPlayer', '~> 2.0.0'
+  s.dependency 'XMPPFramework'
+	s.source_files = 'Pod/Classes/**/*'
+	s.libraries = 'xml2'
+	s.xcconfig = {
+	'SWIFT_OBJC_BRIDGING_HEADER' => '/Users/paul/Documents/iOS Development/OneChat/xmpp-messenger-ios/Example/xmpp-messenger-ios/xmpp-messenger-ios_Example-Bridging-Header.h',
+	'HEADER_SEARCH_PATHS' => '${SDK_DIR}/usr/include/libxml2'
+	}
 end

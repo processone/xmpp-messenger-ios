@@ -11,6 +11,14 @@
 		45277DDF0CD2691CA5C9B29C /* Pods_xmpp_messenger_ios_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B05691E4BFA747AB46613F30 /* Pods_xmpp_messenger_ios_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		DA530BB41B29C185008FF01B /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA530BB31B29C185008FF01B /* libxml2.dylib */; };
+		DA530BB61B29C910008FF01B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA530BB51B29C910008FF01B /* Security.framework */; };
+		DA530BB81B29C917008FF01B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA530BB71B29C917008FF01B /* CFNetwork.framework */; };
+		DA9F7A601B2845D2007736A3 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9F7A5F1B2845D2007736A3 /* CoreData.framework */; };
+		DA9F7A621B2845D8007736A3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9F7A611B2845D8007736A3 /* UIKit.framework */; };
+		DA9F7A641B2845DD007736A3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9F7A631B2845DD007736A3 /* Foundation.framework */; };
+		DA9F7A651B284A29007736A3 /* Pods_xmpp_messenger_ios_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA113C963F068DA77E1709B0 /* Pods_xmpp_messenger_ios_Example.framework */; };
+		DA9F7A661B284A29007736A3 /* Pods_xmpp_messenger_ios_Example.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EA113C963F068DA77E1709B0 /* Pods_xmpp_messenger_ios_Example.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DAFE4EFB1B1F4CE20049F76B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAFE4EF91B1F4CE20049F76B /* Main.storyboard */; };
 		DAFE4EFC1B1F4CE20049F76B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAFE4EFA1B1F4CE20049F76B /* Images.xcassets */; };
 		DAFE4F041B1F4CEC0049F76B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFE4EFE1B1F4CEC0049F76B /* AppDelegate.swift */; };
@@ -31,6 +39,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		DA9F7A671B284A29007736A3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DA9F7A661B284A29007736A3 /* Pods_xmpp_messenger_ios_Example.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0B684EE4395C46C0B4916E44 /* Pods-xmpp-messenger-ios_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xmpp-messenger-ios_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-xmpp-messenger-ios_Tests/Pods-xmpp-messenger-ios_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		252A1DD7326C529275CF8B1E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -38,7 +60,7 @@
 		607FACD01AFB9204008FA782 /* xmpp-messenger-ios_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "xmpp-messenger-ios_Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		607FACE51AFB9204008FA782 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = Tests.xctest; path = "xmpp-messenger-ios_Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		607FACE51AFB9204008FA782 /* xmpp-messenger-ios_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "xmpp-messenger-ios_Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		B02F3E41F7396E58B7249F40 /* Pods-xmpp-messenger-ios_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xmpp-messenger-ios_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-xmpp-messenger-ios_Example/Pods-xmpp-messenger-ios_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -46,9 +68,15 @@
 		C9457AFBA0E4F118E2A7F28A /* Pods-xmpp-messenger-ios_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xmpp-messenger-ios_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-xmpp-messenger-ios_Tests/Pods-xmpp-messenger-ios_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		D5AF28168C3CA93479C6BA52 /* xmpp-messenger-ios.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = "xmpp-messenger-ios.podspec"; path = "../xmpp-messenger-ios.podspec"; sourceTree = "<group>"; };
 		D87F2904FFD95305EB6BF3B0 /* Pods-xmpp-messenger-ios_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xmpp-messenger-ios_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-xmpp-messenger-ios_Example/Pods-xmpp-messenger-ios_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		DA530BB31B29C185008FF01B /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		DA530BB51B29C910008FF01B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		DA530BB71B29C917008FF01B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		DA9F7A5F1B2845D2007736A3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DA9F7A611B2845D8007736A3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		DA9F7A631B2845DD007736A3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		DAFE4EF91B1F4CE20049F76B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		DAFE4EFA1B1F4CE20049F76B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		DAFE4EFD1B1F4CEB0049F76B /* xmpp-messenger-ios_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "xmpp-messenger-ios_Example-Bridging-Header.h"; sourceTree = "<group>"; };
+		DAFE4EFD1B1F4CEB0049F76B /* xmpp-messenger-ios_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "xmpp-messenger-ios_Example-Bridging-Header.h"; path = "xmpp-messenger-ios/xmpp-messenger-ios_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		DAFE4EFE1B1F4CEC0049F76B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DAFE4EFF1B1F4CEC0049F76B /* ContactListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListTableViewController.swift; sourceTree = "<group>"; };
 		DAFE4F001B1F4CEC0049F76B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +91,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA530BB81B29C917008FF01B /* CFNetwork.framework in Frameworks */,
+				DA530BB61B29C910008FF01B /* Security.framework in Frameworks */,
+				DA9F7A651B284A29007736A3 /* Pods_xmpp_messenger_ios_Example.framework in Frameworks */,
+				DA9F7A641B2845DD007736A3 /* Foundation.framework in Frameworks */,
+				DA9F7A621B2845D8007736A3 /* UIKit.framework in Frameworks */,
+				DA9F7A601B2845D2007736A3 /* CoreData.framework in Frameworks */,
 				0AEDD523F2F49DC7F7A3A689 /* Pods_xmpp_messenger_ios_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA530BB41B29C185008FF01B /* libxml2.dylib in Frameworks */,
 				45277DDF0CD2691CA5C9B29C /* Pods_xmpp_messenger_ios_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,6 +116,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				DAFE4EFD1B1F4CEB0049F76B /* xmpp-messenger-ios_Example-Bridging-Header.h */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for xmpp-messenger-ios */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -94,7 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACD01AFB9204008FA782 /* xmpp-messenger-ios_Example.app */,
-				607FACE51AFB9204008FA782 /* Tests.xctest */,
+				607FACE51AFB9204008FA782 /* xmpp-messenger-ios_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,7 +148,6 @@
 				DAFE4EFA1B1F4CE20049F76B /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
-				DAFE4EFD1B1F4CEB0049F76B /* xmpp-messenger-ios_Example-Bridging-Header.h */,
 			);
 			name = "Example for xmpp-messenger-ios";
 			path = "xmpp-messenger-ios";
@@ -167,6 +202,12 @@
 		BBC136AC41A51AEE12CF5770 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DA530BB71B29C917008FF01B /* CFNetwork.framework */,
+				DA530BB51B29C910008FF01B /* Security.framework */,
+				DA530BB31B29C185008FF01B /* libxml2.dylib */,
+				DA9F7A631B2845DD007736A3 /* Foundation.framework */,
+				DA9F7A611B2845D8007736A3 /* UIKit.framework */,
+				DA9F7A5F1B2845D2007736A3 /* CoreData.framework */,
 				EA113C963F068DA77E1709B0 /* Pods_xmpp_messenger_ios_Example.framework */,
 				B05691E4BFA747AB46613F30 /* Pods_xmpp_messenger_ios_Tests.framework */,
 			);
@@ -186,6 +227,7 @@
 				607FACCE1AFB9204008FA782 /* Resources */,
 				99F9B57D12A89F9D92E98948 /* Embed Pods Frameworks */,
 				D429C6E81D1C7110EAB01EBB /* Copy Pods Resources */,
+				DA9F7A671B284A29007736A3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -214,7 +256,7 @@
 			);
 			name = "xmpp-messenger-ios_Tests";
 			productName = Tests;
-			productReference = 607FACE51AFB9204008FA782 /* Tests.xctest */;
+			productReference = 607FACE51AFB9204008FA782 /* xmpp-messenger-ios_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -223,6 +265,7 @@
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
@@ -447,11 +490,20 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/include/libxml2,
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LIBRARY_SEARCH_PATHS = /usr/include/libxml2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lxml2";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -485,9 +537,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/include/libxml2,
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LIBRARY_SEARCH_PATHS = /usr/include/libxml2;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-lxml2";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -496,14 +557,26 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D87F2904FFD95305EB6BF3B0 /* Pods-xmpp-messenger-ios_Example.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = "xmpp-messenger-ios/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Vendor/libidn",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				MODULE_NAME = ExampleApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "xmpp-messenger-ios/xmpp-messenger-ios_Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -511,13 +584,25 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B02F3E41F7396E58B7249F40 /* Pods-xmpp-messenger-ios_Example.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = "xmpp-messenger-ios/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Vendor/libidn",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				MODULE_NAME = ExampleApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "xmpp-messenger-ios/xmpp-messenger-ios_Example-Bridging-Header.h";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
@@ -534,10 +619,20 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/include/libxml2,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/xmpp-messenger-ios_Example.app/xmpp-messenger-ios_Example";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -550,10 +645,20 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/include/libxml2,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/xmpp-messenger-ios_Example.app/xmpp-messenger-ios_Example";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};

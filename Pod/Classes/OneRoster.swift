@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import UIKit
+import CoreData
 
 protocol OneRosterDelegate {
   func oneRosterContentChanged(controller: NSFetchedResultsController)
