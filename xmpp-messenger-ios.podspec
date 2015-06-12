@@ -28,6 +28,7 @@ Pod::Spec.new do |s|
   s.dependency 'JSQMessagesViewController', '~> 6.1.3'
   s.dependency 'JSQSystemSoundPlayer', '~> 2.0.0'
   s.dependency 'XMPPFramework'
+	
 	s.source_files = 'Pod/Classes/**/*'
 	s.libraries = 'xml2'
 	s.xcconfig = {

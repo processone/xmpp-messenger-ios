@@ -10,8 +10,9 @@
 
 #import "JSQMessagesViewController/JSQMessages.h"
 #import "JSQSystemSoundPlayer.h"
+//#import "CDAsyncSocket.h"
 
-#import "XMPPFramework.h"
+#import "XMPPFramework/XMPP.h"
 #import "XMPPFramework/XMPPReconnect.h"
 #import "XMPPFramework/XMPPCoreDataStorage.h"
 #import "XMPPFramework/XMPPMessageArchiving.h"
@@ -27,7 +28,6 @@
 #import "XMPPFramework/XMPPvCardAvatarModule.h"
 #import "XMPPFramework/XMPPRoom.h"
 #import "XMPPFramework/XMPPRoomMemoryStorage.h"
-#import "XMPPFramework/Vendor/CocoaAsyncSocket/GCDAsyncSocket.h"
 
 //#import "DDXML.h"
 //#import "DDLog.h"

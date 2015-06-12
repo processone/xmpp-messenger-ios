@@ -279,7 +279,7 @@ extension OneChat: XMPPStreamDelegate {
 			settings![kCFStreamSSLPeerName as! String] = expectedCertName
 		}
 		if customCertEvaluation! {
-			settings![GCDAsyncSocketManuallyEvaluateTrust] = true
+			//settings![GCDAsyncSocketManuallyEvaluateTrust] = true
 		}
 	}
 	
