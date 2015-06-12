@@ -31,17 +31,16 @@
       
     ]
   },
-"frameworks": [
-          "CFNetwork",
-          "Security",
-          "Foundation",
-	  "CoreData »,
-          "SystemConfiguration"
-        ]
-      },
   "resource_bundles": {
     "xmpp-messenger-ios": [
       "Pod/Assets/*.png"
     ]
-  }
+  },
+"frameworks": [
+          "CFNetwork",
+          "Security",
+          "Foundation",
+	  "CoreData",
+          "SystemConfiguration"
+        ]
 }

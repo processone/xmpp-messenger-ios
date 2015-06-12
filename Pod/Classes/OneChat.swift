@@ -21,6 +21,11 @@ protocol OneChatDelegate {
 	func oneStreamDidDisconnect(sender: XMPPStream, withError error: NSError)
 }
 
+struct kXMPP {
+	static let myJID: String = "kXMPPmyJID"
+	static let myPassword: String = "kXMPPmyPassword"
+}
+
 class OneChat: NSObject {
 	
 	var delegate: OneChatDelegate?
@@ -230,8 +235,8 @@ class OneChat: NSObject {
 			return true
 		}
 		
-		let myJID = NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")
-		let myPassword = NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyPassword")
+		let myJID = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
+		let myPassword = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
 		
 		if let jid = myJID {
 			xmppStream?.myJID = XMPPJID.jidWithString(jid)

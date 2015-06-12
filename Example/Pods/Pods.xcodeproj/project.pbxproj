@@ -52,7 +52,6 @@
 		DA6ACBC11B25E30900414C59 /* OneMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFE4EF01B1F4B8A0049F76B /* OneMessage.swift */; };
 		DA6ACBC21B25E30900414C59 /* OneRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFE4EF11B1F4B8A0049F76B /* OneRoom.swift */; };
 		DA6ACBC31B25E30900414C59 /* OneChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFE4EF21B1F4B8A0049F76B /* OneChats.swift */; };
-		DA822FC91B29EB9B00DE3C03 /* kXMPP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA822FC81B29EB9B00DE3C03 /* kXMPP.swift */; };
 		DA9F7A691B288F85007736A3 /* pod-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA9F7A681B288F85007736A3 /* pod-Bridging-Header.h */; };
 		DA9F7A6A1B288F85007736A3 /* pod-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA9F7A681B288F85007736A3 /* pod-Bridging-Header.h */; };
 		DABA0F8A1B220196009A1042 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DABA0F891B220196009A1042 /* UIKit.framework */; };
@@ -148,7 +147,6 @@
 		DA6ACBA41B25DED400414C59 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		DA6ACBA61B25DEDC00414C59 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/usr/lib/libresolv.dylib; sourceTree = DEVELOPER_DIR; };
 		DA6ACBA81B25DEE300414C59 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
-		DA822FC81B29EB9B00DE3C03 /* kXMPP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = kXMPP.swift; sourceTree = "<group>"; };
 		DA8FDAAF1B274CE600932B11 /* xmpp-messenger-ios.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "xmpp-messenger-ios.pch"; sourceTree = "<group>"; };
 		DA9F7A681B288F85007736A3 /* pod-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "pod-Bridging-Header.h"; sourceTree = "<group>"; };
 		DABA0F891B220196009A1042 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -261,7 +259,6 @@
 		1F796E53BF8CC6FEDF39C420 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				DA822FC81B29EB9B00DE3C03 /* kXMPP.swift */,
 				DAFE4EED1B1F4B8A0049F76B /* OneChat.swift */,
 				DAFE4EEE1B1F4B8A0049F76B /* OneRoster.swift */,
 				DAFE4EEF1B1F4B8A0049F76B /* OnePresence.swift */,
@@ -645,13 +642,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DAFE4EF31B1F4B8A0049F76B /* OneChat.swift in Sources */,
 				94D47CB1D78C6D41788A1097 /* Pods-xmpp-messenger-ios_Example-dummy.m in Sources */,
+				DAFE4EF31B1F4B8A0049F76B /* OneChat.swift in Sources */,
 				DAFE4EF81B1F4B8A0049F76B /* OneChats.swift in Sources */,
 				DAFE4EF41B1F4B8A0049F76B /* OneRoster.swift in Sources */,
 				DAFE4EF71B1F4B8A0049F76B /* OneRoom.swift in Sources */,
 				DAFE4EF61B1F4B8A0049F76B /* OneMessage.swift in Sources */,
-				DA822FC91B29EB9B00DE3C03 /* kXMPP.swift in Sources */,
 				DAFE4EF51B1F4B8A0049F76B /* OnePresence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

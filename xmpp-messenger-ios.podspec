@@ -32,6 +32,6 @@ Pod::Spec.new do |s|
 	s.libraries = 'xml2'
 	s.xcconfig = {
 	'SWIFT_OBJC_BRIDGING_HEADER' => '/Users/paul/Documents/iOS Development/OneChat/xmpp-messenger-ios/Example/xmpp-messenger-ios/xmpp-messenger-ios_Example-Bridging-Header.h',
-	'HEADER_SEARCH_PATHS' => '${SDK_DIR}/usr/include/libxml2'
+  'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2'
 	}
 end
