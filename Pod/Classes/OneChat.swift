@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Security
+import XMPPFramework
 
 typealias XMPPStreamCompletionHandler = (shouldTrustPeer: Bool?) -> Void
 typealias OneChatAuthCompletionHandler = (stream: XMPPStream, error: DDXMLElement?) -> Void
