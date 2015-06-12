@@ -27,6 +27,7 @@
 #import "XMPPFramework/XMPPvCardAvatarModule.h"
 #import "XMPPFramework/XMPPRoom.h"
 #import "XMPPFramework/XMPPRoomMemoryStorage.h"
+#import "XMPPFramework/Vendor/CocoaAsyncSocket/GCDAsyncSocket.h"
 
 //#import "DDXML.h"
 //#import "DDLog.h"

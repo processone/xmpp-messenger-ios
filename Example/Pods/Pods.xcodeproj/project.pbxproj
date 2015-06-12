@@ -52,8 +52,6 @@
 		DA6ACBC11B25E30900414C59 /* OneMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFE4EF01B1F4B8A0049F76B /* OneMessage.swift */; };
 		DA6ACBC21B25E30900414C59 /* OneRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFE4EF11B1F4B8A0049F76B /* OneRoom.swift */; };
 		DA6ACBC31B25E30900414C59 /* OneChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFE4EF21B1F4B8A0049F76B /* OneChats.swift */; };
-		DA9F7A691B288F85007736A3 /* pod-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA9F7A681B288F85007736A3 /* pod-Bridging-Header.h */; };
-		DA9F7A6A1B288F85007736A3 /* pod-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA9F7A681B288F85007736A3 /* pod-Bridging-Header.h */; };
 		DABA0F8A1B220196009A1042 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DABA0F891B220196009A1042 /* UIKit.framework */; };
 		DABA0F8C1B22019C009A1042 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DABA0F8B1B22019C009A1042 /* CoreData.framework */; };
 		DABA0F8E1B220297009A1042 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DABA0F8D1B220297009A1042 /* Foundation.framework */; };
@@ -148,7 +146,6 @@
 		DA6ACBA61B25DEDC00414C59 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/usr/lib/libresolv.dylib; sourceTree = DEVELOPER_DIR; };
 		DA6ACBA81B25DEE300414C59 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
 		DA8FDAAF1B274CE600932B11 /* xmpp-messenger-ios.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "xmpp-messenger-ios.pch"; sourceTree = "<group>"; };
-		DA9F7A681B288F85007736A3 /* pod-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "pod-Bridging-Header.h"; sourceTree = "<group>"; };
 		DABA0F891B220196009A1042 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		DABA0F8B1B22019C009A1042 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		DABA0F8D1B220297009A1042 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -361,7 +358,6 @@
 		BA52AEFAA837C0C957C72C9D = {
 			isa = PBXGroup;
 			children = (
-				DA9F7A681B288F85007736A3 /* pod-Bridging-Header.h */,
 				C927AF4150D2EF8AD4537B7D /* Podfile */,
 				AAAA721E1526F144E0E85C03 /* Development Pods */,
 				6A584EB696E1287BA50D2B32 /* Frameworks */,
@@ -413,7 +409,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8F25F6D0CACA09FF7DAAF91 /* Pods-xmpp-messenger-ios_Example-umbrella.h in Headers */,
-				DA9F7A691B288F85007736A3 /* pod-Bridging-Header.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,7 +417,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E18BD89862DD850066C69DB /* Pods-xmpp-messenger-ios_Example-xmpp-messenger-ios-umbrella.h in Headers */,
-				DA9F7A6A1B288F85007736A3 /* pod-Bridging-Header.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
