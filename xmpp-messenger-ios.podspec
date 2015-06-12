@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "xmpp-messenger-ios"
-  s.version          = "0.1.1"
+  s.version          = "0.1.2"
   s.summary          = "Swift XMPP Wrapper to build chat clients"
   s.description      = <<-DESC
                        xmpp-messenger-ios is a Swift XMPP Wrapper to quickly build xmpp chat clients
@@ -17,12 +17,11 @@ Pod::Spec.new do |s|
   s.homepage         = "https://github.com/processone/xmpp-messenger-ios"
   s.license          = 'MIT'
   s.author           = { "ProcessOne" => "pmglemaire@gmail.com" }
-  s.source           = { :git => "https://github.com/processone/xmpp-messenger-ios.git", :tag => "0.1.1" }
+  s.source           = { :git => "https://github.com/processone/xmpp-messenger-ios.git", :tag => "0.1.2" }
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
 
-  s.prefix_header_contents = 'iphone/include/xmpp-messenger-ios.pch'
   s.ios.frameworks = 'Foundation', 'CoreData', 'UIKit', 'CFNetwork', 'Security'
   s.dependency 'FMDB', '~> 1.0'
   s.dependency 'JSQMessagesViewController', '~> 6.1.3'

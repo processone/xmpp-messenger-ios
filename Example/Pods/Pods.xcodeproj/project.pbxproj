@@ -145,7 +145,6 @@
 		DA6ACBA41B25DED400414C59 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		DA6ACBA61B25DEDC00414C59 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/usr/lib/libresolv.dylib; sourceTree = DEVELOPER_DIR; };
 		DA6ACBA81B25DEE300414C59 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
-		DA8FDAAF1B274CE600932B11 /* xmpp-messenger-ios.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "xmpp-messenger-ios.pch"; sourceTree = "<group>"; };
 		DABA0F891B220196009A1042 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		DABA0F8B1B22019C009A1042 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		DABA0F8D1B220297009A1042 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -332,7 +331,6 @@
 			children = (
 				CF9D3AB62DBBF2497D99FDA9 /* Pod */,
 				1CB52C6692B7DD6AB5EEE721 /* Support Files */,
-				DA8FDAAF1B274CE600932B11 /* xmpp-messenger-ios.pch */,
 			);
 			name = "xmpp-messenger-ios";
 			path = ../..;
@@ -785,7 +783,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LIBRARY_SEARCH_PATHS = /usr/include/libxml2;
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = "";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -913,7 +911,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LIBRARY_SEARCH_PATHS = /usr/include/libxml2;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = "";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -953,7 +951,7 @@
 				LIBRARY_SEARCH_PATHS = /usr/include/libxml2;
 				MODULEMAP_FILE = "Target Support Files/Pods-xmpp-messenger-ios_Example/Pods-xmpp-messenger-ios_Example.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_NAME = Pods_xmpp_messenger_ios_Example;
@@ -1074,7 +1072,7 @@
 				LIBRARY_SEARCH_PATHS = /usr/include/libxml2;
 				MODULEMAP_FILE = "Target Support Files/Pods-xmpp-messenger-ios_Example/Pods-xmpp-messenger-ios_Example.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_NAME = Pods_xmpp_messenger_ios_Example;
