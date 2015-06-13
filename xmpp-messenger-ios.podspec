@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "xmpp-messenger-ios"
-  s.version          = "0.1.2"
+  s.version          = "0.1.0"
   s.summary          = "Swift XMPP Wrapper to build chat clients"
   s.description      = <<-DESC
                        xmpp-messenger-ios is a Swift XMPP Wrapper to quickly build xmpp chat clients
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.homepage         = "https://github.com/processone/xmpp-messenger-ios"
   s.license          = 'MIT'
   s.author           = { "ProcessOne" => "pmglemaire@gmail.com" }
-  s.source           = { :git => "https://github.com/processone/xmpp-messenger-ios.git", :tag => "0.1.2" }
+  s.source           = { :git => "https://github.com/processone/xmpp-messenger-ios.git", :tag => "0.1.0" }
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true

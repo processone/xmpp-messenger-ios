@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
-silent_warnings!
+inhibit_all_warnings!
 
 target 'xmpp-messenger-ios_Example', :exclusive => true do
   pod "xmpp-messenger-ios", :path => "../"
