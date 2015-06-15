@@ -18,6 +18,11 @@
 		C1E23AFBEA3E902174905DC2 /* Pods-xmpp-messenger-ios_Tests-xmpp-messenger-ios-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3ADB2DE1A45E7CFC4C178A4B /* Pods-xmpp-messenger-ios_Tests-xmpp-messenger-ios-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C293E44168C39DC0985D4725 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F329C9B563A99089D520F7A /* Foundation.framework */; };
 		C45371D589DCFB1AF0B3884C /* Pods-xmpp-messenger-ios_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 52B22F3E5335BD52EF570FC9 /* Pods-xmpp-messenger-ios_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA6AC21C1B2EE23600CA6C52 /* xmpp-messenger-ios-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21B1B2EE23600CA6C52 /* xmpp-messenger-ios-swift.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA6AC21E1B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; };
+		DA6AC21F1B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; };
+		DA6AC2201B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; };
+		DA6AC2211B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; };
 		DA6ACB971B25DE7D00414C59 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6ACB961B25DE7D00414C59 /* QuartzCore.framework */; };
 		DA6ACB991B25DE8200414C59 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6ACB981B25DE8200414C59 /* AudioToolbox.framework */; };
 		DA6ACB9B1B25DE8D00414C59 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6ACB9A1B25DE8D00414C59 /* libsqlite3.dylib */; };
@@ -135,6 +140,8 @@
 		CF97D84218F7EF725AA49504 /* Pods-xmpp-messenger-ios_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-xmpp-messenger-ios_Example.release.xcconfig"; sourceTree = "<group>"; };
 		D186462EF6C17751B6DE1F5B /* Pods-xmpp-messenger-ios_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-xmpp-messenger-ios_Tests.modulemap"; sourceTree = "<group>"; };
 		D739C45B007CEA8DFB22131A /* Pods-xmpp-messenger-ios_Tests-xmpp-messenger-ios-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xmpp-messenger-ios_Tests-xmpp-messenger-ios-Private.xcconfig"; path = "../Pods-xmpp-messenger-ios_Tests-xmpp-messenger-ios/Pods-xmpp-messenger-ios_Tests-xmpp-messenger-ios-Private.xcconfig"; sourceTree = "<group>"; };
+		DA6AC21B1B2EE23600CA6C52 /* xmpp-messenger-ios-swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "xmpp-messenger-ios-swift.h"; path = "../../xmpp-messenger-ios-swift.h"; sourceTree = "<group>"; };
+		DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Umbrella-Header.h"; sourceTree = "<group>"; };
 		DA6ACB961B25DE7D00414C59 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		DA6ACB981B25DE8200414C59 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		DA6ACB9A1B25DE8D00414C59 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
@@ -233,6 +240,7 @@
 		1CB52C6692B7DD6AB5EEE721 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
+				DA6AC21B1B2EE23600CA6C52 /* xmpp-messenger-ios-swift.h */,
 				6F30896DD2DD8EA20D69949C /* Info.plist */,
 				C98B1F78C2F56BB6B22791FA /* Info.plist */,
 				6A3A572798FE17F5368A0FDC /* Pods-xmpp-messenger-ios_Example-xmpp-messenger-ios.modulemap */,
@@ -368,6 +376,7 @@
 			isa = PBXGroup;
 			children = (
 				1F796E53BF8CC6FEDF39C420 /* Classes */,
+				DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */,
 			);
 			path = Pod;
 			sourceTree = "<group>";
@@ -399,6 +408,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1E23AFBEA3E902174905DC2 /* Pods-xmpp-messenger-ios_Tests-xmpp-messenger-ios-umbrella.h in Headers */,
+				DA6AC2211B2F151A00CA6C52 /* Umbrella-Header.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,7 +416,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA6AC21C1B2EE23600CA6C52 /* xmpp-messenger-ios-swift.h in Headers */,
 				E8F25F6D0CACA09FF7DAAF91 /* Pods-xmpp-messenger-ios_Example-umbrella.h in Headers */,
+				DA6AC21E1B2F151A00CA6C52 /* Umbrella-Header.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +427,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E18BD89862DD850066C69DB /* Pods-xmpp-messenger-ios_Example-xmpp-messenger-ios-umbrella.h in Headers */,
+				DA6AC21F1B2F151A00CA6C52 /* Umbrella-Header.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,6 +436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C45371D589DCFB1AF0B3884C /* Pods-xmpp-messenger-ios_Tests-umbrella.h in Headers */,
+				DA6AC2201B2F151A00CA6C52 /* Umbrella-Header.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

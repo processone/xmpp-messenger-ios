@@ -23,11 +23,11 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.ios.frameworks = 'Foundation', 'CoreData', 'UIKit', 'CFNetwork', 'Security'
-	
-	s.source_files = 'Pod/Classes/**/*'
-	s.libraries = 'xml2'
+
+	s.source_files = 'Pod/Classes/**/*.{swift,h,m}', '~/Pod/Umbrella-Header.h'
+  s.public_header_files = '~/Pod/Umbrella-Header.h'
+  s.libraries = 'xml2'
 	s.xcconfig = {
-	'SWIFT_OBJC_BRIDGING_HEADER' => '/Users/paul/Documents/iOS Development/OneChat/xmpp-messenger-ios/Example/xmpp-messenger-ios/xmpp-messenger-ios_Example-Bridging-Header.h',
   'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2'
 	}
 end
