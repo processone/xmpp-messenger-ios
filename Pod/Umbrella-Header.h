@@ -6,6 +6,9 @@
 //
 //
 
+#import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
+
 #import "JSQMessagesViewController/JSQMessages.h"
 #import "JSQSystemSoundPlayer.h"
 //#import "CDAsyncSocket.h"
@@ -29,4 +32,3 @@
 
 FOUNDATION_EXPORT double xmpp_messenger_iosVersionNumber;
 FOUNDATION_EXPORT const unsigned char xmpp_messenger_iosVersionString[];
-
