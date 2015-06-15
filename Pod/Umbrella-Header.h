@@ -6,6 +6,9 @@
 //
 //
 
+FOUNDATION_EXPORT double xmpp_messenger_iosVersionNumber;
+FOUNDATION_EXPORT const unsigned char xmpp_messenger_iosVersionString[];
+
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
@@ -29,6 +32,3 @@
 #import "XMPPFramework/XMPPvCardAvatarModule.h"
 #import "XMPPFramework/XMPPRoom.h"
 #import "XMPPFramework/XMPPRoomMemoryStorage.h"
-
-FOUNDATION_EXPORT double xmpp_messenger_iosVersionNumber;
-FOUNDATION_EXPORT const unsigned char xmpp_messenger_iosVersionString[];
