@@ -9,15 +9,15 @@
 
 Pod::Spec.new do |s|
   s.name             = "xmpp-messenger-ios"
-  s.version          = "0.1.0"
-  s.summary          = "Swift XMPP Wrapper to build chat clients"
+  s.version          = "0.1.3"
+  s.summary          = "A Swift Wrapper Arround XMPP to build chat clients"
   s.description      = <<-DESC
                        xmpp-messenger-ios is a Swift XMPP Wrapper to quickly build xmpp chat clients
                        DESC
   s.homepage         = "https://github.com/processone/xmpp-messenger-ios"
   s.license          = 'MIT'
   s.author           = { "ProcessOne" => "pmglemaire@gmail.com" }
-  s.source           = { :git => "https://github.com/processone/xmpp-messenger-ios.git", :tag => "0.1.0" }
+  s.source           = { :git => "https://github.com/processone/xmpp-messenger-ios.git", :tag => "0.1.3" }
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   s.ios.frameworks = 'Foundation', 'CoreData', 'UIKit', 'CFNetwork', 'Security'
 
 	s.source_files = 'Pod/Classes/**/*.{swift,h,m}', 'Pod/Umbrella-Header.h'
-  
+  s.public_header_files = 'Pod/Umbrella-Header.h'
   s.libraries = 'xml2'
 	s.xcconfig = {
   'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2'
