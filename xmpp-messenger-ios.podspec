@@ -24,8 +24,14 @@ Pod::Spec.new do |s|
 
   s.ios.frameworks = 'Foundation', 'CoreData', 'UIKit', 'CFNetwork', 'Security'
 
-	s.source_files = 'Pod/Classes/**/*.{swift,h,m}', 'Pod/Umbrella-Header.h'
+  s.dependency 'XMPPFramework', '~> 3.6.4'
+  s.dependency 'FMDB', '~> 1.0'
+  s.dependency 'JSQMessagesViewController', '~> 6.1.3'
+  s.dependency 'JSQSystemSoundPlayer', '~> 2.0.0'
+
+  s.source_files = 'Pod/Classes/**/*.{swift,h,m}', 'Pod/Umbrella-Header.h'
   s.public_header_files = 'Pod/Umbrella-Header.h'
+
   s.libraries = 'xml2'
 	s.xcconfig = {
   'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2'
