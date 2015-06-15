@@ -19,10 +19,10 @@
 		C293E44168C39DC0985D4725 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F329C9B563A99089D520F7A /* Foundation.framework */; };
 		C45371D589DCFB1AF0B3884C /* Pods-xmpp-messenger-ios_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 52B22F3E5335BD52EF570FC9 /* Pods-xmpp-messenger-ios_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA6AC21C1B2EE23600CA6C52 /* xmpp-messenger-ios-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21B1B2EE23600CA6C52 /* xmpp-messenger-ios-swift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DA6AC21E1B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; };
-		DA6AC21F1B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; };
-		DA6AC2201B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; };
-		DA6AC2211B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; };
+		DA6AC21E1B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA6AC21F1B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA6AC2201B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA6AC2211B2F151A00CA6C52 /* Umbrella-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6AC21D1B2F151A00CA6C52 /* Umbrella-Header.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA6ACB971B25DE7D00414C59 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6ACB961B25DE7D00414C59 /* QuartzCore.framework */; };
 		DA6ACB991B25DE8200414C59 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6ACB981B25DE8200414C59 /* AudioToolbox.framework */; };
 		DA6ACB9B1B25DE8D00414C59 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6ACB9A1B25DE8D00414C59 /* libsqlite3.dylib */; };

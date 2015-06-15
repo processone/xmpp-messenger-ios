@@ -6,9 +6,6 @@
 //
 //
 
-#ifndef Pods_Umbrella_Header_h
-#define Pods_Umbrella_Header_h
-
 #import <UIKit/UIKit.h>
 
 #import <CoreData/CoreData.h>
@@ -38,4 +35,3 @@
 FOUNDATION_EXPORT double xmpp_messenger_iosVersionNumber;
 FOUNDATION_EXPORT const unsigned char xmpp_messenger_iosVersionString[];
 
-#endif
