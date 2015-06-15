@@ -6,11 +6,6 @@
 //
 //
 
-#import <UIKit/UIKit.h>
-
-#import <CoreData/CoreData.h>
-#import <sqlite3.h>
-
 #import "JSQMessagesViewController/JSQMessages.h"
 #import "JSQSystemSoundPlayer.h"
 //#import "CDAsyncSocket.h"

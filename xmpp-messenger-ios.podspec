@@ -24,8 +24,8 @@ Pod::Spec.new do |s|
 
   s.ios.frameworks = 'Foundation', 'CoreData', 'UIKit', 'CFNetwork', 'Security'
 
-	s.source_files = 'Pod/Classes/**/*.{swift,h,m}', '/Pod/Umbrella-Header.h'
-  s.public_header_files = '/Users/paul/Documents/iOS Development/OneChat/xmpp-messenger-ios/Pod/Umbrella-Header.h'
+	s.source_files = 'Pod/Classes/**/*.{swift,h,m}', 'Pod/Umbrella-Header.h'
+  
   s.libraries = 'xml2'
 	s.xcconfig = {
   'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2'
