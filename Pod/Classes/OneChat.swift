@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import XMPPFramework
+//import XMPPFramework
 
 typealias XMPPStreamCompletionHandler = (shouldTrustPeer: Bool?) -> Void
 typealias OneChatAuthCompletionHandler = (stream: XMPPStream, error: DDXMLElement?) -> Void

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import XMPPFramework
+//import XMPPFramework
 
 typealias OneChatMessageCompletionHandler = (stream: XMPPStream, message: XMPPMessage) -> Void
 

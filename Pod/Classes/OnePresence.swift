@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import XMPPFramework
+//import XMPPFramework
 
 // MARK: Protocol
 protocol OnePresenceDelegate {

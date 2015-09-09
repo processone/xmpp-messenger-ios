@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import XMPPFramework
+//import XMPPFramework
 
 typealias OneRoomCreationCompletionHandler = (sender: XMPPRoom) -> Void
 
