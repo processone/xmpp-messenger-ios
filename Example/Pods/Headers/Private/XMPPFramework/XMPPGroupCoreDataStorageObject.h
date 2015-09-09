@@ -1,0 +1,1 @@
+../../../XMPPFramework/Extensions/Roster/CoreDataStorage/XMPPGroupCoreDataStorageObject.h

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import XMPPFramework
 
 protocol ContactPickerDelegate{
 	func didSelectContact(recipient: XMPPUserCoreDataStorageObject)
@@ -84,7 +85,7 @@ class ContactListTableViewController: UITableViewController, OneRosterDelegate {
 		
 		if section < sections!.count {
 			let sectionInfo: AnyObject = sections![section]
-			let tmpSection: Int = sectionInfo.name.toInt()!
+			let tmpSection: Int = Int(sectionInfo.name)!
 			
 			switch (tmpSection) {
 			case 0 :
@@ -110,7 +111,7 @@ class ContactListTableViewController: UITableViewController, OneRosterDelegate {
 	}
 	
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? UITableViewCell
+		let cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 		let user = OneRoster.userFromRosterAtIndexPath(indexPath: indexPath)
 		
 		cell!.textLabel!.text = user.displayName;

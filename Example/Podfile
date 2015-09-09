@@ -1,19 +1,8 @@
-source 'https://github.com/CocoaPods/Specs.git'
+# Uncomment this line to define a global platform for your project
+ platform :ios, '8.0'
 use_frameworks!
-inhibit_all_warnings!
 
-target 'xmpp-messenger-ios_Example', :exclusive => true do
-  pod "xmpp-messenger-ios", :path => "../"
-	pod "JSQSystemSoundPlayer"
-	pod "JSQMessagesViewController"
-	pod "XMPPFramework", git: 'https://github.com/Bramvangemert/XMPPFramework.git'
-	pod "FMDB"
+target 'XMPP-Messenger-iOS' do
+pod 'xmpp-messenger-ios', :path => '/Users/paul/Desktop/xmpp-messenger-ios__POD/xmpp-messenger-ios.podspec'
 end
 
-target 'xmpp-messenger-ios_Tests', :exclusive => true do
-  pod "xmpp-messenger-ios", :path => "../"
-	pod "JSQSystemSoundPlayer"
-	pod "JSQMessagesViewController"
-	pod "XMPPFramework", git: 'https://github.com/Bramvangemert/XMPPFramework.git'
-	pod "FMDB"
-end

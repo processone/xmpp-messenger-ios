@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import JSQMessagesViewController
+import XMPPFramework
 
 class ChatViewController: JSQMessagesViewController, OneMessageDelegate, ContactPickerDelegate {
 	
@@ -27,8 +29,8 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 			self.senderDisplayName = OneChat.sharedInstance.xmppStream?.myJID.bare()
 		}
 		
-		self.collectionView.collectionViewLayout.springinessEnabled = true
-		self.inputToolbar.contentView.leftBarButtonItem.hidden = true
+		self.collectionView!.collectionViewLayout.springinessEnabled = true
+		self.inputToolbar!.contentView!.leftBarButtonItem!.hidden = true
 	}
 	
 	override func viewWillAppear(animated: Bool) {
@@ -43,7 +45,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		} else {
 			navigationItem.title = "New message"
 			
-			self.inputToolbar.contentView.rightBarButtonItem.enabled = false
+			self.inputToolbar!.contentView!.rightBarButtonItem!.enabled = false
 			self.navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addRecipient"), animated: true)
 			if firstTime {
 				firstTime = false
@@ -90,12 +92,18 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		request.predicate = predicate
 		request.entity = entityDescription
 		
-		if let results = moc?.executeFetchRequest(request, error: nil) {
+		do {
+			let results = try moc?.executeFetchRequest(request)
 			var message: XMPPMessageArchiving_Message_CoreDataObject
 			var archivedMessage = NSMutableArray()
 			
-			for message in results {
-				var element = DDXMLElement(XMLString: message.messageStr, error: nil)
+			for message in results! {
+				var element: DDXMLElement!
+				do {
+					element = try DDXMLElement(XMLString: message.messageStr)
+				} catch _ {
+					element = nil
+				}
 				
 				let body: String
 				let sender: String
@@ -113,14 +121,16 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 				} else {
 					sender = recipient!.jidStr
 				}
-				if message.timestamp != nil {
-					date = message.timestamp
-				} else {
+				// Warning: Check here ambigious
+				//if message.timestamp != nil {
+				//	date = timestamp//message.timestamp
+				//} else {
 					date = NSDate()
-				}
+				//}
 				let fullMessage = JSQMessage(senderId: sender, senderDisplayName: sender, date: date, text: body)
 				self.messages.addObject(fullMessage)
 			}
+		} catch _ {
 		}
 	}
 	
@@ -225,11 +235,12 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		
 		if !msg.isMediaMessage {
 			if msg.senderId == self.senderId {
-				cell.textView.textColor = UIColor.blackColor()
+				cell.textView!.textColor = UIColor.blackColor()
+				cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.blackColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
 			} else {
-				cell.textView.textColor = UIColor.whiteColor()
+				cell.textView!.textColor = UIColor.whiteColor()
+				cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
 			}
-			cell.textView.linkTextAttributes = [NSForegroundColorAttributeName:cell.textView.textColor, NSUnderlineStyleAttributeName: 1]
 		}
 		
 		return cell

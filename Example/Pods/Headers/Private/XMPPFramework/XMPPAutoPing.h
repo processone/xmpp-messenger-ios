@@ -1,0 +1,1 @@
+../../../XMPPFramework/Extensions/XEP-0199/XMPPAutoPing.h

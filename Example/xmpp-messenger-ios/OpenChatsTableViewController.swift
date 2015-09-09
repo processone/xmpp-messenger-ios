@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import XMPPFramework
 
 class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	
@@ -68,7 +69,7 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	}
 	
 	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-		let sections: NSArray? = OneRoster.sharedInstance.fetchedResultsController()!.sections
+		//let sections: NSArray? = OneRoster.sharedInstance.fetchedResultsController()!.sections
 		return 1//sections
 	}
 	
@@ -81,7 +82,7 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	}
 	
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as? UITableViewCell
+		let cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 		let user = OneChats.getChatsList().objectAtIndex(indexPath.row) as! XMPPUserCoreDataStorageObject
 		
 		cell!.textLabel!.text = user.displayName
@@ -96,7 +97,7 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	
 	// Mark: Segue support
 	
-	override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+	override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
 		if identifier == "chat.to.add" {
 			if !OneChat.sharedInstance.connect() {
 				let alert = UIAlertController(title: "Attention", message: "You have to be connected to start a chat", preferredStyle: UIAlertControllerStyle.Alert)
@@ -112,10 +113,10 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	
 	override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {
 		if segue?.identifier == "chats.to.chat" {
-			if let controller: ChatViewController? = segue?.destinationViewController as? ChatViewController {
+			if let controller = segue?.destinationViewController as? ChatViewController {
 				if let cell: UITableViewCell? = sender as? UITableViewCell {
 					let user = OneChats.getChatsList().objectAtIndex(tableView.indexPathForCell(cell!)!.row) as! XMPPUserCoreDataStorageObject
-					controller!.recipient = user
+					controller.recipient = user
 				}
 			}
 		}

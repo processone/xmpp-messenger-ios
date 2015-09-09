@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import XMPPFramework
 
 typealias XMPPStreamCompletionHandler = (shouldTrustPeer: Bool?) -> Void
 typealias OneChatAuthCompletionHandler = (stream: XMPPStream, error: DDXMLElement?) -> Void
@@ -19,11 +20,6 @@ protocol OneChatDelegate {
 	func oneStreamDidDisconnect(sender: XMPPStream, withError error: NSError)
 }
 
-struct kXMPP {
-	static let myJID: String = "kXMPPmyJID"
-	static let myPassword: String = "kXMPPmyPassword"
-}
-
 class OneChat: NSObject {
 	
 	var delegate: OneChatDelegate?
@@ -31,7 +27,7 @@ class OneChat: NSObject {
 	
 	var xmppStream: XMPPStream?
 	var xmppReconnect: XMPPReconnect?
-	var xmppRosterStorage: XMPPRosterCoreDataStorage?
+	var xmppRosterStorage = XMPPRosterCoreDataStorage()
 	var xmppRoster: XMPPRoster?
 	var xmppvCardStorage: XMPPvCardCoreDataStorage?
 	var xmppvCardTempModule: XMPPvCardTempModule?
@@ -74,12 +70,11 @@ class OneChat: NSObject {
 		}
 		if let delegate: OneChatDelegate = delegate {
 			sharedInstance.delegate = delegate
-			
 		}
 		sharedInstance.streamDidConnectCompletionBlock = completion
 	}
 	
-	private func setupStream() {
+	 func setupStream() {
 		// Setup xmpp stream
 		//
 		// The XMPPStream is the base class for all activity.
@@ -118,7 +113,7 @@ class OneChat: NSObject {
 		// You can do it however you like! It's your application.
 		// But you do need to provide the roster with some storage facility.
 		
-		xmppRosterStorage = XMPPRosterCoreDataStorage()
+		//xmppRosterStorage = XMPPRosterCoreDataStorage()
 		xmppRoster = XMPPRoster(rosterStorage: xmppRosterStorage)
 		
 		xmppRoster!.autoFetchRoster = true;
@@ -218,7 +213,7 @@ class OneChat: NSObject {
 		xmppStream = nil;
 		xmppReconnect = nil;
 		xmppRoster = nil;
-		xmppRosterStorage = nil;
+		//xmppRosterStorage = nil;
 		xmppvCardStorage = nil;
 		xmppvCardTempModule = nil;
 		xmppvCardAvatarModule = nil;
@@ -248,7 +243,9 @@ class OneChat: NSObject {
 			return false
 		}
 		
-		if !xmppStream!.connectWithTimeout(XMPPStreamTimeoutNone, error: nil) {
+		do {
+			try xmppStream!.connectWithTimeout(XMPPStreamTimeoutNone)
+		} catch _ {
 			let alert = UIAlertController(title: "Error connecting", message: "See console for error details.", preferredStyle: UIAlertControllerStyle.Alert)
 			alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel, handler: nil))
 			UIApplication.sharedApplication().keyWindow!.rootViewController!.presentViewController(alert, animated: true, completion: nil)
@@ -276,10 +273,10 @@ extension OneChat: XMPPStreamDelegate {
 		let expectedCertName: String? = xmppStream?.myJID.domain
 		
 		if expectedCertName != nil {
-			settings![kCFStreamSSLPeerName as! String] = expectedCertName
+			settings![kCFStreamSSLPeerName as String] = expectedCertName
 		}
 		if customCertEvaluation! {
-			//settings![GCDAsyncSocketManuallyEvaluateTrust] = true
+			settings![GCDAsyncSocketManuallyEvaluateTrust] = true
 		}
 	}
 	
@@ -343,7 +340,9 @@ extension OneChat: XMPPStreamDelegate {
 	func xmppStreamDidConnect(sender: XMPPStream) {
 		isXmppConnected = true
 		
-		if !xmppStream!.authenticateWithPassword(password, error: nil) {
+		do {
+			try xmppStream!.authenticateWithPassword(password)
+		} catch _ {
 			//Handle error
 		}
 	}
