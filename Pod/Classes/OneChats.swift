@@ -7,7 +7,7 @@
 //
 
 import Foundation
-//import XMPPFramework
+import XMPPFramework
 
 class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 	

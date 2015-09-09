@@ -27,9 +27,12 @@ Pod::Spec.new do |s|
 
   s.ios.frameworks = 'Foundation', 'CoreData', 'UIKit', 'CFNetwork', 'Security'
 
-  s.ios.dependency 'XMPPFramework'
-  s.dependency 'FMDB', '~> 1.0'
-  s.dependency 'JSQMessagesViewController'
-  s.dependency 'JSQSystemSoundPlayer', '~> 2.0'
-  s.source_files = 'Pod/Classes/**/*.{swift}'
+s.subspec 'Core' do |core|
+core.source_files = 'Pod/Classes/**/*.{swift}'
+core.dependency 'FMDB', '~> 1.0'
+core.dependency 'JSQMessagesViewController'
+core.dependency 'JSQSystemSoundPlayer', '~> 2.0'
+core.ios.dependency 'XMPPFramework'
+end
+
 end

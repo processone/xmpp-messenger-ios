@@ -7,7 +7,7 @@
 //
 
 import Foundation
-//import XMPPFramework
+import XMPPFramework
 
 protocol OneRosterDelegate {
   func oneRosterContentChanged(controller: NSFetchedResultsController)
