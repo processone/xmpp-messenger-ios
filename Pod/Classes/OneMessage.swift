@@ -9,25 +9,25 @@
 import Foundation
 import XMPPFramework
 
-typealias OneChatMessageCompletionHandler = (stream: XMPPStream, message: XMPPMessage) -> Void
+public typealias OneChatMessageCompletionHandler = (stream: XMPPStream, message: XMPPMessage) -> Void
 
 // MARK: Protocols
 
-protocol OneMessageDelegate {
+public protocol OneMessageDelegate {
 	func oneStream(sender: XMPPStream, didReceiveMessage message: XMPPMessage, from user: XMPPUserCoreDataStorageObject)
 	func oneStream(sender: XMPPStream, userIsComposing user: XMPPUserCoreDataStorageObject)
 }
 
-class OneMessage: NSObject {
-	var delegate: OneMessageDelegate?
+public class OneMessage: NSObject {
+	public var delegate: OneMessageDelegate?
 	
-	var xmppMessageStorage: XMPPMessageArchivingCoreDataStorage?
+	public var xmppMessageStorage: XMPPMessageArchivingCoreDataStorage?
 	var xmppMessageArchiving: XMPPMessageArchiving?
 	var didSendMessageCompletionBlock: OneChatMessageCompletionHandler?
 	
 	// MARK: Singleton
 	
-	class var sharedInstance : OneMessage {
+	public class var sharedInstance : OneMessage {
 		struct OneMessageSingleton {
 			static let instance = OneMessage()
 		}
@@ -46,7 +46,7 @@ class OneMessage: NSObject {
 		xmppMessageArchiving?.addDelegate(self, delegateQueue: dispatch_get_main_queue())
 	}
 	
-	class func sendMessage(message: String, to receiver: String, completionHandler completion:OneChatMessageCompletionHandler) {
+	public class func sendMessage(message: String, to receiver: String, completionHandler completion:OneChatMessageCompletionHandler) {
 		let body = DDXMLElement.elementWithName("body") as! DDXMLElement
 		let messageID = OneChat.sharedInstance.xmppStream?.generateUUID()
 		
@@ -66,11 +66,11 @@ class OneMessage: NSObject {
 
 extension OneMessage: XMPPStreamDelegate {
 	
-	func xmppStream(sender: XMPPStream, didSendMessage message: XMPPMessage) {
+	public func xmppStream(sender: XMPPStream, didSendMessage message: XMPPMessage) {
 		OneMessage.sharedInstance.didSendMessageCompletionBlock!(stream: sender, message: message)
 	}
 	
-	func xmppStream(sender: XMPPStream, didReceiveMessage message: XMPPMessage) {
+	public func xmppStream(sender: XMPPStream, didReceiveMessage message: XMPPMessage) {
 		let user = OneChat.sharedInstance.xmppRosterStorage.userForJID(message.from(), xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
 		
 		if !OneChats.knownUserForJid(jidStr: user.jidStr) {

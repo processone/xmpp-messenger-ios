@@ -9,7 +9,7 @@
 import Foundation
 import XMPPFramework
 
-class OneChats: NSObject, NSFetchedResultsControllerDelegate {
+public class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 	
 	var chatList = NSMutableArray()
 	var chatListBare = NSMutableArray()
@@ -22,7 +22,7 @@ class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 		return OneChatsSingleton.instance
 	}
 	
-	class func getChatsList() -> NSArray {
+	public class func getChatsList() -> NSArray {
 		if 0 == sharedInstance.chatList.count {
 			if let chatList: NSMutableArray = sharedInstance.getActiveUsersFromCoreDataStorage() as? NSMutableArray {//NSUserDefaults.standardUserDefaults().objectForKey("openChatList")
 				chatList.enumerateObjectsUsingBlock({ (jidStr, index, finished) -> Void in
@@ -50,7 +50,7 @@ class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 			
 			do {
 				let results = try moc?.executeFetchRequest(request)
-				var message: XMPPMessageArchiving_Message_CoreDataObject
+				var _: XMPPMessageArchiving_Message_CoreDataObject
 				let archivedMessage = NSMutableArray()
 				
 				for message in results! {
@@ -94,31 +94,31 @@ class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 		fetchRequest.predicate = predicate
 		fetchRequest.fetchLimit = 1
 		
-//		if let results = moc?.executeFetchRequest(fetchRequest, error: nil) {
-//			println("get user from xmpp - results")
-//			var user: XMPPUserCoreDataStorageObject
-//			var archivedUser = NSMutableArray()
-//			
-//			for user in results {
-//				println(user)
-//				// var element = DDXMLElement(XMLString: user.messageStr, error: nil)
-//				//        let sender: String
-//				//
-//				//        if element.attributeStringValueForName("to") != NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")! && !(element.attributeStringValueForName("to") as NSString).containsString(NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")!) {
-//				//          sender = element.attributeStringValueForName("to")
-//				//          if !archivedMessage.containsObject(sender) {
-//				//            archivedMessage.addObject(sender)
-//				//          }
-//				//        }
-//			}
-//			//println("so response \(archivedMessage.count) from \(archivedMessage)")
-//			//return archivedMessage
-//		}
+		//		if let results = moc?.executeFetchRequest(fetchRequest, error: nil) {
+		//			println("get user from xmpp - results")
+		//			var user: XMPPUserCoreDataStorageObject
+		//			var archivedUser = NSMutableArray()
+		//
+		//			for user in results {
+		//				println(user)
+		//				// var element = DDXMLElement(XMLString: user.messageStr, error: nil)
+		//				//        let sender: String
+		//				//
+		//				//        if element.attributeStringValueForName("to") != NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")! && !(element.attributeStringValueForName("to") as NSString).containsString(NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")!) {
+		//				//          sender = element.attributeStringValueForName("to")
+		//				//          if !archivedMessage.containsObject(sender) {
+		//				//            archivedMessage.addObject(sender)
+		//				//          }
+		//				//        }
+		//			}
+		//			//println("so response \(archivedMessage.count) from \(archivedMessage)")
+		//			//return archivedMessage
+		//		}
 		//return nil
 	}
 	
 	
-	class func knownUserForJid(jidStr jidStr: String) -> Bool {
+	public class func knownUserForJid(jidStr jidStr: String) -> Bool {
 		if sharedInstance.chatList.containsObject(OneRoster.userFromRosterForJID(jid: jidStr)!) {
 			return true
 		} else {
@@ -126,14 +126,14 @@ class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 		}
 	}
 	
-	class func addUserToChatList(jidStr jidStr: String) {
+	public class func addUserToChatList(jidStr jidStr: String) {
 		if !knownUserForJid(jidStr: jidStr) {
 			sharedInstance.chatList.addObject(OneRoster.userFromRosterForJID(jid: jidStr)!)
 			sharedInstance.chatListBare.addObject(jidStr)
 		}
 	}
 	
-	class func removeUserFromChatList(user user: XMPPUserCoreDataStorageObject) {
+	public class func removeUserFromChatList(user user: XMPPUserCoreDataStorageObject) {
 		if sharedInstance.chatList.containsObject(user) {
 			sharedInstance.chatList.removeObjectIdenticalTo(user)
 			sharedInstance.chatListBare.removeObjectIdenticalTo(user.jidStr)
