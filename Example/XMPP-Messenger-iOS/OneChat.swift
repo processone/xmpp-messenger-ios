@@ -30,6 +30,7 @@ class OneChat: NSObject {
 	var xmppReconnect: XMPPReconnect?
 	var xmppRosterStorage = XMPPRosterCoreDataStorage()
 	var xmppRoster: XMPPRoster?
+    var xmppLastActivity: XMPPLastActivity?
 	var xmppvCardStorage: XMPPvCardCoreDataStorage?
 	var xmppvCardTempModule: XMPPvCardTempModule?
 	var xmppvCardAvatarModule: XMPPvCardAvatarModule?
@@ -41,7 +42,8 @@ class OneChat: NSObject {
 	let presenceTest = OnePresence()
 	let messageTest = OneMessage()
 	let rosterTest = OneRoster()
-	
+	let lastActivityTest = OneLastActivity()
+    
 	var customCertEvaluation: Bool?
 	var isXmppConnected: Bool?
 	var password: String?
@@ -158,6 +160,8 @@ class OneChat: NSObject {
 		xmppMessageDeliveryRecipts!.autoSendMessageDeliveryReceipts = true
 		xmppMessageDeliveryRecipts!.autoSendMessageDeliveryRequests = true
 		
+        xmppLastActivity = XMPPLastActivity()
+        
 		// Activate xmpp modules
 		xmppReconnect!.activate(xmppStream)
 		xmppRoster!.activate(xmppStream)
@@ -165,7 +169,8 @@ class OneChat: NSObject {
 		xmppvCardAvatarModule!.activate(xmppStream)
 		xmppCapabilities!.activate(xmppStream)
 		xmppMessageDeliveryRecipts!.activate(xmppStream)
-		
+		xmppLastActivity!.activate(xmppStream)
+        
 		// Add ourself as a delegate to anything we may be interested in
 		xmppStream!.addDelegate(self, delegateQueue: dispatch_get_main_queue())
 		xmppRoster!.addDelegate(self, delegateQueue: dispatch_get_main_queue())
@@ -179,7 +184,9 @@ class OneChat: NSObject {
 		xmppStream!.addDelegate(presenceTest, delegateQueue: dispatch_get_main_queue())
 		xmppRoster!.addDelegate(presenceTest, delegateQueue: dispatch_get_main_queue())
 		
-		// Optional:
+        xmppLastActivity!.addDelegate(lastActivityTest, delegateQueue: dispatch_get_main_queue())
+
+        // Optional:
 		//
 		// Replace me with the proper domain and port.
 		// The example below is setup for a typical google talk account.
@@ -201,8 +208,10 @@ class OneChat: NSObject {
 	private func teardownStream() {
 		xmppStream!.removeDelegate(self)
 		xmppRoster!.removeDelegate(self)
-		
-		xmppReconnect!.deactivate()
+        xmppLastActivity!.removeDelegate(lastActivityTest)
+
+        xmppLastActivity!.deactivate()
+        xmppReconnect!.deactivate()
 		xmppRoster!.deactivate()
 		xmppvCardTempModule!.deactivate()
 		xmppvCardAvatarModule!.deactivate()
@@ -220,6 +229,7 @@ class OneChat: NSObject {
 		xmppvCardAvatarModule = nil;
 		xmppCapabilities = nil;
 		xmppCapabilitiesStorage = nil;
+        xmppLastActivity = nil;
 	}
 	
 	// MARK: Connect / Disconnect

@@ -299,7 +299,6 @@
 		A9F64AB7F793BA447A65E0D418769629 /* JSQMessagesCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 301BC9BC7B770370B21F6DE894FF6AE9 /* JSQMessagesCollectionViewLayoutAttributes.m */; };
 		AA406D703336D1DFB49DB329D250D2DE /* XMPPMessageArchivingCoreDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5121A89E376BC7226673664D23EB06 /* XMPPMessageArchivingCoreDataStorage.m */; };
 		AA7DD572D8A0E89CD71D9931F3AA1BB8 /* XMPPRoom.h in Headers */ = {isa = PBXBuildFile; fileRef = 67C708FD997A98758D541B540EB0F9F6 /* XMPPRoom.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AB7D2EA3BC73F1FC66A975C8D69FA613 /* XMPPSystemInputActivityMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 39049F1DA23B453BCA2E3BBE215CBABB /* XMPPSystemInputActivityMonitor.m */; };
 		AC03EB6001FB5D567AB03D052F90D1AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D3F0BB1E63D1476D7F3E0B777795C2 /* Foundation.framework */; };
 		AC67CAFD3E9AAEA8E6C1C7E0BF05BEFB /* XMPPProcessOne.h in Headers */ = {isa = PBXBuildFile; fileRef = C73D6BF78E2D4EA90E7A63A4B1BC7E03 /* XMPPProcessOne.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AC9D6B6314A326AF55E5928828A8C2C6 /* idn-int.h in Headers */ = {isa = PBXBuildFile; fileRef = 7055AB63A41734AF042E1B94A866D815 /* idn-int.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2624,7 +2623,6 @@
 				7545730CB2400184AF849700CB95C919 /* XMPPStreamManagementMemoryStorage.m in Sources */,
 				D2DCC04A31575E275F73A3063625D0D3 /* XMPPStreamManagementStanzas.m in Sources */,
 				9A8E221F9EDF6B7B4599ACE660A073B4 /* XMPPStringPrep.m in Sources */,
-				AB7D2EA3BC73F1FC66A975C8D69FA613 /* XMPPSystemInputActivityMonitor.m in Sources */,
 				A61C2DC02E25C2282CB839C89E9038F1 /* XMPPTime.m in Sources */,
 				E838931301FDA29BB19FA9988C2BEC10 /* XMPPTimer.m in Sources */,
 				A7B74702F1F0195CD4238FB9BDFD9452 /* XMPPTransports.m in Sources */,

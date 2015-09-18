@@ -16,7 +16,8 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	var messages = NSMutableArray()
 	var recipient: XMPPUserCoreDataStorageObject?
 	var firstTime = true
-	
+    var contactLastSeen: String? = nil
+    
 	// Mark: Life Cycle
 	
 	override func viewDidLoad() {
@@ -31,6 +32,9 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		
 		self.collectionView!.collectionViewLayout.springinessEnabled = true
 		self.inputToolbar!.contentView!.leftBarButtonItem!.hidden = true
+        
+        
+        
 	}
 	
 	override func viewWillAppear(animated: Bool) {
@@ -72,10 +76,16 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	
 	func didSelectContact(recipient: XMPPUserCoreDataStorageObject) {
 		self.recipient = recipient
-		navigationItem.title = recipient.displayName
-		
+        navigationItem.title = recipient.displayName
+
+        OneLastActivity.sendLastActivityQueryToJID(recipient.jidStr, sender: OneChat.sharedInstance.xmppLastActivity) { (sender) -> Void in
+            let x = sender.lastActivitySeconds()
+            
+        }
+        
 		if !OneChats.knownUserForJid(jidStr: recipient.jidStr) {
 			OneChats.addUserToChatList(jidStr: recipient.jidStr)
+            
 		} else {
 			loadArchivedMessages()
 			finishReceivingMessageAnimated(true)
