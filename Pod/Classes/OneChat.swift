@@ -223,7 +223,32 @@ public class OneChat: NSObject {
 	
 	// MARK: Connect / Disconnect
 	
-	public func connect() -> Bool {
+	public func connect(completionHandler completion:OneChatAuthCompletionHandler) {
+		if !xmppStream!.isDisconnected() {
+			streamDidConnectCompletionBlock = completion //was true
+		}
+		
+		let myJID = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
+		let myPassword = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
+		
+		if let jid = myJID {
+			xmppStream?.myJID = XMPPJID.jidWithString(jid)
+		} else {
+			streamDidConnectCompletionBlock = completion //was false
+		}
+		
+		if let password = myPassword {
+			self.password = password
+		} else {
+			streamDidConnectCompletionBlock = completion //was false
+		}
+		
+		try! xmppStream!.connectWithTimeout(XMPPStreamTimeoutNone)
+		
+		streamDidConnectCompletionBlock = completion
+	}
+	
+	public func deprecatedConnect() -> Bool {
 		if !xmppStream!.isDisconnected() {
 			return true
 		}
