@@ -1,15 +1,13 @@
 //
 //  AppDelegate.swift
-//  XMPP-Messenger-iOS
+//  UltimateTest
 //
-//  Created by Paul on 08/09/2015.
+//  Created by Paul on 16/09/2015.
 //  Copyright © 2015 ProcessOne. All rights reserved.
 //
 
 import UIKit
-import Foundation
-import XMPPFramework
-import CoreData
+import xmpp_messenger_ios
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,15 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
-		
 		OneChat.start(true, delegate: nil) { (stream, error) -> Void in
-			if let error = error {
+			if let _ = error {
 				//handle start errors here
+				print("errors from appdelegate")
 			} else {
+				print("Yayyyy")
 				//Activate online UI
 			}
 		}
-		
 		return true
 	}
 
@@ -39,7 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func applicationDidEnterBackground(application: UIApplication) {
 		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
 		// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-		
 		if application.respondsToSelector("setKeepAliveTimeout:handler:") {
 			application.setKeepAliveTimeout(600, handler: { () -> Void in
 				// Do other keep alive stuff here.
@@ -61,5 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 		OneChat.stop()
 	}
+
+
 }
 

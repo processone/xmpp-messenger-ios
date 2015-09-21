@@ -8,6 +8,7 @@
 
 import UIKit
 import XMPPFramework
+import xmpp_messenger_ios
 
 protocol ContactPickerDelegate{
 	func didSelectContact(recipient: XMPPUserCoreDataStorageObject)
@@ -28,7 +29,7 @@ class ContactListTableViewController: UITableViewController, OneRosterDelegate {
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if OneChat.sharedInstance.connect() {
+		if OneChat.sharedInstance.isConnected() {
 			navigationItem.title = "Select a recipient"
 		}
 	}
@@ -104,7 +105,7 @@ class ContactListTableViewController: UITableViewController, OneRosterDelegate {
 	}
 	
 	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let user = OneRoster.userFromRosterAtIndexPath(indexPath: indexPath)
+		_ = OneRoster.userFromRosterAtIndexPath(indexPath: indexPath)
 		
 		delegate?.didSelectContact(OneRoster.userFromRosterAtIndexPath(indexPath: indexPath))
 		close(self)

@@ -280,6 +280,10 @@ public class OneChat: NSObject {
 		return true;
 	}
 	
+	public func isConnected() -> Bool {
+		return xmppStream!.isConnected()
+	}
+	
 	public func disconnect() {
 		OnePresence.goOffline()
 		xmppStream?.disconnect()

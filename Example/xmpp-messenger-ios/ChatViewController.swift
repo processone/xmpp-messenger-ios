@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import xmpp_messenger_ios
 import JSQMessagesViewController
 import XMPPFramework
 
@@ -24,7 +25,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		
 		OneMessage.sharedInstance.delegate = self
   
-		if OneChat.sharedInstance.connect() {
+		if OneChat.sharedInstance.isConnected() {
 			self.senderId = OneChat.sharedInstance.xmppStream?.myJID.bare()
 			self.senderDisplayName = OneChat.sharedInstance.xmppStream?.myJID.bare()
 		}
@@ -83,11 +84,11 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	}
 	
 	func loadArchivedMessages() {
-		var moc = OneMessage.sharedInstance.xmppMessageStorage?.mainThreadManagedObjectContext
-		var entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
-		var request = NSFetchRequest()
-		var predicateFormat = "bareJidStr like %@ "
-		var predicate = NSPredicate(format: predicateFormat, recipient!.jidStr)
+		let moc = OneMessage.sharedInstance.xmppMessageStorage?.mainThreadManagedObjectContext
+		let entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
+		let request = NSFetchRequest()
+		let predicateFormat = "bareJidStr like %@ "
+		let predicate = NSPredicate(format: predicateFormat, recipient!.jidStr)
 		
 		request.predicate = predicate
 		request.entity = entityDescription
@@ -95,7 +96,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		do {
 			let results = try moc?.executeFetchRequest(request)
 			var message: XMPPMessageArchiving_Message_CoreDataObject
-			var archivedMessage = NSMutableArray()
+			//var archivedMessage = NSMutableArray()
 			
 			for message in results! {
 				var element: DDXMLElement!
@@ -109,14 +110,14 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 				let sender: String
 				let date: NSDate
 				
-				var mutableDic = NSMutableDictionary()
+				//var mutableDic = NSMutableDictionary()
 				if message.body() != nil {
 					body = message.body()
 				} else {
 					body = ""
 				}
 				if element.attributeStringValueForName("to") == recipient!.jidStr {
-					var displayName = OneChat.sharedInstance.xmppStream?.myJID
+					let displayName = OneChat.sharedInstance.xmppStream?.myJID
 					sender = displayName!.bare()
 				} else {
 					sender = recipient!.jidStr
@@ -280,7 +281,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	
 	func oneStream(sender: XMPPStream, didReceiveMessage message: XMPPMessage, from user: XMPPUserCoreDataStorageObject) {
 		if message.isChatMessageWithBody() {
-			let displayName = user.displayName
+			//let displayName = user.displayName
 			
 			JSQSystemSoundPlayer.jsq_playMessageReceivedSound()
 			

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import xmpp_messenger_ios
 import XMPPFramework
 
 class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
@@ -24,7 +25,7 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if OneChat.sharedInstance.connect() {
+		if OneChat.sharedInstance.isConnected() {
 			//Set up online UI
 		} else {
 			performSegueWithIdentifier("One.HomeToSetting", sender: self)
@@ -99,7 +100,7 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	
 	override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
 		if identifier == "chat.to.add" {
-			if !OneChat.sharedInstance.connect() {
+			if !OneChat.sharedInstance.isConnected() {
 				let alert = UIAlertController(title: "Attention", message: "You have to be connected to start a chat", preferredStyle: UIAlertControllerStyle.Alert)
 				alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
 				

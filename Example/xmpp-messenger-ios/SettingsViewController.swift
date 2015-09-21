@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import XMPPFramework
+import xmpp_messenger_ios
 
 class SettingsViewController: UIViewController {
   
   @IBOutlet var usernameTextField: UITextField!
   @IBOutlet var passwordTextField: UITextField!
+	@IBOutlet var validateButton: UIButton!
   
   // Mark: Life Cycle
   
@@ -20,9 +23,15 @@ class SettingsViewController: UIViewController {
     
     let tap = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
     view.addGestureRecognizer(tap)
-    
-    usernameTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
-    passwordTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
+	
+	usernameTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
+	passwordTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
+	
+	if OneChat.sharedInstance.isConnected() {
+		usernameTextField.hidden = true
+		passwordTextField.hidden = true
+		validateButton.setTitle("Disconnect", forState: UIControlState.Normal)
+	}
   }
   
   // Mark: Private Methods
@@ -46,10 +55,28 @@ class SettingsViewController: UIViewController {
   // Mark: IBAction
   
   @IBAction func validate(sender: AnyObject) {
-    setField(usernameTextField, forKey: kXMPP.myJID)
-    setField(passwordTextField, forKey: kXMPP.myPassword)
-    
-    self.dismissViewControllerAnimated(true, completion: nil)
+
+	if OneChat.sharedInstance.isConnected() {
+		OneChat.sharedInstance.disconnect()
+		usernameTextField.hidden = false
+		passwordTextField.hidden = false
+		validateButton.setTitle("Validate", forState: UIControlState.Normal)
+	} else {
+		self.setField(self.usernameTextField, forKey: kXMPP.myJID)
+		self.setField(self.passwordTextField, forKey: kXMPP.myPassword)
+		
+		OneChat.sharedInstance.connect { (stream, error) -> Void in
+			if let _ = error {
+				let alertController = UIAlertController(title: "Sorry", message: "An error occured: \(error)", preferredStyle: UIAlertControllerStyle.Alert)
+				alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) -> Void in
+					//do something
+				}))
+				self.presentViewController(alertController, animated: true, completion: nil)
+			} else {
+				self.dismissViewControllerAnimated(true, completion: nil)
+			}
+		}
+	}
   }
   
   @IBAction func close(sender: AnyObject) {
