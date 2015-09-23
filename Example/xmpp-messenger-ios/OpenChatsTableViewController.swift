@@ -10,7 +10,7 @@ import UIKit
 import xmpp_messenger_ios
 import XMPPFramework
 
-class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
+class OpenChatsTableViewController: UITableViewController, OneRosterDelegate, NSFetchedResultsControllerDelegate {
 	
 	var chatList = NSArray()
 	
@@ -18,17 +18,26 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		OneRoster.sharedInstance.delegate = self
 	}
 	
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if OneChat.sharedInstance.isConnected() {
-			//Set up online UI
-		} else {
-			performSegueWithIdentifier("One.HomeToSetting", sender: self)
+		OneRoster.sharedInstance.delegate = self
+		OneRoster.sharedInstance.fetchedResultsController()?.delegate = OneRoster.sharedInstance
+		
+		if !OneChat.sharedInstance.isConnected() {
+			if kXMPP.myJID != "kXMPPmyJID" || kXMPP.myJID.characters.count > 0 {
+				OneChat.sharedInstance.connect { (stream, error) -> Void in
+					if let _ = error {
+						self.performSegueWithIdentifier("One.HomeToSetting", sender: self)
+					} else {
+						//set up online UI
+					}
+				}
+			} else {
+				performSegueWithIdentifier("One.HomeToSetting", sender: self)
+			}
 		}
 		
 		tableView.rowHeight = 50
@@ -90,9 +99,11 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 		
 		configurePhotoForCell(cell!, user: user)
 		
+		print("unread messages = \(user.unreadMessages) -- isOnline ? \(user.isOnline())")
+		
 		cell?.imageView?.layer.cornerRadius = 24// CGRectGetWidth(cell!.frame) / 2
 		cell?.imageView?.clipsToBounds = true
-
+		
 		return cell!
 	}
 	
