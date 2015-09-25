@@ -223,14 +223,6 @@ public class OneChat: NSObject {
 	
 	// MARK: Connect / Disconnect
 	
-	private func setValue(value: String, forKey key: String) {
-		if value.characters.count > 0 {
-			NSUserDefaults.standardUserDefaults().setObject(value, forKey: key)
-		} else {
-			NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
-		}
-	}
-	
 	public func connect(username username: String, password: String, completionHandler completion:OneChatConnectCompletionHandler) {
 		if isConnected() {
 			streamDidConnectCompletionBlock = completion
@@ -274,6 +266,34 @@ public class OneChat: NSObject {
 	public func disconnect() {
 		OnePresence.goOffline()
 		xmppStream?.disconnect()
+	}
+	
+	// Mark: Private function
+	
+	private func setValue(value: String, forKey key: String) {
+		if value.characters.count > 0 {
+			NSUserDefaults.standardUserDefaults().setObject(value, forKey: key)
+		} else {
+			NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
+		}
+	}
+	
+	// Mark: UITableViewCell helpers
+	
+	public func configurePhotoForCell(cell: UITableViewCell, user: XMPPUserCoreDataStorageObject) {
+		// Our xmppRosterStorage will cache photos as they arrive from the xmppvCardAvatarModule.
+		// We only need to ask the avatar module for a photo, if the roster doesn't have it.
+		if user.photo != nil {
+			cell.imageView!.image = user.photo!;
+		} else {
+			let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoDataForJID(user.jid)
+			
+			if let photoData = photoData {
+				cell.imageView!.image = UIImage(data: photoData)
+			} else {
+				cell.imageView!.image = UIImage(named: "defaultPerson")
+			}
+		}
 	}
 }
 
