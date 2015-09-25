@@ -13,12 +13,6 @@
 		DA6B54101B9F15B1006E84AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA6B540F1B9F15B1006E84AF /* Assets.xcassets */; };
 		DA6B54241B9F17B4006E84AF /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B541A1B9F17B4006E84AF /* ChatViewController.swift */; };
 		DA6B54251B9F17B4006E84AF /* kXMPP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B541B1B9F17B4006E84AF /* kXMPP.swift */; };
-		DA6B54261B9F17B4006E84AF /* OneChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B541C1B9F17B4006E84AF /* OneChat.swift */; };
-		DA6B54271B9F17B4006E84AF /* OneChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B541D1B9F17B4006E84AF /* OneChats.swift */; };
-		DA6B54281B9F17B4006E84AF /* OneMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B541E1B9F17B4006E84AF /* OneMessage.swift */; };
-		DA6B54291B9F17B4006E84AF /* OnePresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B541F1B9F17B4006E84AF /* OnePresence.swift */; };
-		DA6B542A1B9F17B4006E84AF /* OneRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B54201B9F17B4006E84AF /* OneRoom.swift */; };
-		DA6B542B1B9F17B4006E84AF /* OneRoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B54211B9F17B4006E84AF /* OneRoster.swift */; };
 		DA6B542C1B9F17B4006E84AF /* OpenChatsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B54221B9F17B4006E84AF /* OpenChatsTableViewController.swift */; };
 		DA6B542D1B9F17B4006E84AF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B54231B9F17B4006E84AF /* SettingsViewController.swift */; };
 		DA6B542F1B9F17CF006E84AF /* ContactListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B542E1B9F17CF006E84AF /* ContactListTableViewController.swift */; };
@@ -36,12 +30,6 @@
 		DA6B54141B9F15B1006E84AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA6B541A1B9F17B4006E84AF /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		DA6B541B1B9F17B4006E84AF /* kXMPP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = kXMPP.swift; sourceTree = "<group>"; };
-		DA6B541C1B9F17B4006E84AF /* OneChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneChat.swift; sourceTree = "<group>"; };
-		DA6B541D1B9F17B4006E84AF /* OneChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneChats.swift; sourceTree = "<group>"; };
-		DA6B541E1B9F17B4006E84AF /* OneMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneMessage.swift; sourceTree = "<group>"; };
-		DA6B541F1B9F17B4006E84AF /* OnePresence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnePresence.swift; sourceTree = "<group>"; };
-		DA6B54201B9F17B4006E84AF /* OneRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneRoom.swift; sourceTree = "<group>"; };
-		DA6B54211B9F17B4006E84AF /* OneRoster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneRoster.swift; sourceTree = "<group>"; };
 		DA6B54221B9F17B4006E84AF /* OpenChatsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenChatsTableViewController.swift; sourceTree = "<group>"; };
 		DA6B54231B9F17B4006E84AF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		DA6B542E1B9F17CF006E84AF /* ContactListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListTableViewController.swift; sourceTree = "<group>"; };
@@ -101,25 +89,11 @@
 			isa = PBXGroup;
 			children = (
 				DA6B54311B9F1A52006E84AF /* Classes */,
-				DA6B54301B9F1A36006E84AF /* Wrapper */,
 				DA6B540C1B9F15B1006E84AF /* Main.storyboard */,
 				DA6B540F1B9F15B1006E84AF /* Assets.xcassets */,
 				DA6B54141B9F15B1006E84AF /* Info.plist */,
 			);
 			path = "XMPP-Messenger-iOS";
-			sourceTree = "<group>";
-		};
-		DA6B54301B9F1A36006E84AF /* Wrapper */ = {
-			isa = PBXGroup;
-			children = (
-				DA6B541C1B9F17B4006E84AF /* OneChat.swift */,
-				DA6B541D1B9F17B4006E84AF /* OneChats.swift */,
-				DA6B541E1B9F17B4006E84AF /* OneMessage.swift */,
-				DA6B541F1B9F17B4006E84AF /* OnePresence.swift */,
-				DA6B54201B9F17B4006E84AF /* OneRoom.swift */,
-				DA6B54211B9F17B4006E84AF /* OneRoster.swift */,
-			);
-			name = Wrapper;
 			sourceTree = "<group>";
 		};
 		DA6B54311B9F1A52006E84AF /* Classes */ = {
@@ -258,16 +232,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA6B542C1B9F17B4006E84AF /* OpenChatsTableViewController.swift in Sources */,
-				DA6B542B1B9F17B4006E84AF /* OneRoster.swift in Sources */,
-				DA6B54281B9F17B4006E84AF /* OneMessage.swift in Sources */,
 				DA6B54241B9F17B4006E84AF /* ChatViewController.swift in Sources */,
-				DA6B542A1B9F17B4006E84AF /* OneRoom.swift in Sources */,
-				DA6B54291B9F17B4006E84AF /* OnePresence.swift in Sources */,
 				DA6B542F1B9F17CF006E84AF /* ContactListTableViewController.swift in Sources */,
 				DA6B54251B9F17B4006E84AF /* kXMPP.swift in Sources */,
 				DA6B54091B9F15B1006E84AF /* AppDelegate.swift in Sources */,
-				DA6B54271B9F17B4006E84AF /* OneChats.swift in Sources */,
-				DA6B54261B9F17B4006E84AF /* OneChat.swift in Sources */,
 				DA6B542D1B9F17B4006E84AF /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

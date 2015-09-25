@@ -26,17 +26,11 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate, NS
 		OneRoster.sharedInstance.delegate = self
 		OneRoster.sharedInstance.fetchedResultsController()?.delegate = OneRoster.sharedInstance
 		
-		if !OneChat.sharedInstance.isConnected() {
-			if kXMPP.myJID != "kXMPPmyJID" || kXMPP.myJID.characters.count > 0 {
-				OneChat.sharedInstance.connect { (stream, error) -> Void in
-					if let _ = error {
-						self.performSegueWithIdentifier("One.HomeToSetting", sender: self)
-					} else {
-						//set up online UI
-					}
-				}
+		OneChat.sharedInstance.connect(username: kXMPP.myJID, password: kXMPP.myPassword) { (stream, error) -> Void in
+			if let _ = error {
+				self.performSegueWithIdentifier("One.HomeToSetting", sender: self)
 			} else {
-				performSegueWithIdentifier("One.HomeToSetting", sender: self)
+				//set up online UI
 			}
 		}
 		

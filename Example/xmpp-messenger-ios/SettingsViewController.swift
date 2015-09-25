@@ -24,25 +24,19 @@ class SettingsViewController: UIViewController {
     let tap = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
     view.addGestureRecognizer(tap)
 	
-	usernameTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
-	passwordTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
-	
 	if OneChat.sharedInstance.isConnected() {
 		usernameTextField.hidden = true
 		passwordTextField.hidden = true
 		validateButton.setTitle("Disconnect", forState: UIControlState.Normal)
+	} else {
+		if NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID) != "kXMPPmyJID" {
+			usernameTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
+			passwordTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
+		}
 	}
   }
   
   // Mark: Private Methods
-  
-  func setField(field: UITextField, forKey key: String) {
-    if let text = field.text {
-      NSUserDefaults.standardUserDefaults().setObject(text, forKey: key)
-    } else {
-      NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
-    }
-  }
   
   func DismissKeyboard() {
     if usernameTextField.isFirstResponder() {
@@ -55,17 +49,13 @@ class SettingsViewController: UIViewController {
   // Mark: IBAction
   
   @IBAction func validate(sender: AnyObject) {
-
 	if OneChat.sharedInstance.isConnected() {
 		OneChat.sharedInstance.disconnect()
 		usernameTextField.hidden = false
 		passwordTextField.hidden = false
 		validateButton.setTitle("Validate", forState: UIControlState.Normal)
 	} else {
-		self.setField(self.usernameTextField, forKey: kXMPP.myJID)
-		self.setField(self.passwordTextField, forKey: kXMPP.myPassword)
-		
-		OneChat.sharedInstance.connect { (stream, error) -> Void in
+		OneChat.sharedInstance.connect(username: self.usernameTextField.text!, password: self.passwordTextField.text!) { (stream, error) -> Void in
 			if let _ = error {
 				let alertController = UIAlertController(title: "Sorry", message: "An error occured: \(error)", preferredStyle: UIAlertControllerStyle.Alert)
 				alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) -> Void in

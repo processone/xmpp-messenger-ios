@@ -223,61 +223,48 @@ public class OneChat: NSObject {
 	
 	// MARK: Connect / Disconnect
 	
-	public func connect(completionHandler completion:OneChatAuthCompletionHandler) {
-		if !xmppStream!.isDisconnected() {
-			streamDidConnectCompletionBlock = completion //was true
+	private func setValue(value: String, forKey key: String) {
+		if value.characters.count > 0 {
+			NSUserDefaults.standardUserDefaults().setObject(value, forKey: key)
+		} else {
+			NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
+		}
+	}
+	
+	public func connect(username username: String, password: String, completionHandler completion:OneChatConnectCompletionHandler) {
+		if isConnected() {
+			streamDidConnectCompletionBlock = completion
+			self.streamDidConnectCompletionBlock!(stream: self.xmppStream!, error: nil)
+			return
 		}
 		
-		let myJID = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
-		let myPassword = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
+		if (username == "kXMPPmyJID" && NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID) == "kXMPPmyJID") || (username == "kXMPPmyJID" && NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID) == nil) {
+			streamDidConnectCompletionBlock = completion
+			streamDidConnectCompletionBlock!(stream: self.xmppStream!, error: DDXMLElement(name: "Please set crendentials before trying to connect"))
+			return
+		}
 		
-		if let jid = myJID {
+		if username != "kXMPPmyJID" {
+			setValue(username, forKey: kXMPP.myJID)
+			setValue(password, forKey: kXMPP.myPassword)
+		}
+		
+		if let jid = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID) {
 			xmppStream?.myJID = XMPPJID.jidWithString(jid)
 		} else {
 			streamDidConnectCompletionBlock = completion //was false
+			streamDidConnectCompletionBlock!(stream: self.xmppStream!, error: DDXMLElement(name: "Bad username"))
 		}
 		
-		if let password = myPassword {
+		if let password = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword) {
 			self.password = password
 		} else {
 			streamDidConnectCompletionBlock = completion //was false
+			streamDidConnectCompletionBlock!(stream: self.xmppStream!, error: DDXMLElement(name: "Bad password"))
 		}
-		
 		try! xmppStream!.connectWithTimeout(XMPPStreamTimeoutNone)
 		
 		streamDidConnectCompletionBlock = completion
-	}
-	
-	public func deprecatedConnect() -> Bool {
-		if !xmppStream!.isDisconnected() {
-			return true
-		}
-		
-		let myJID = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
-		let myPassword = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
-		
-		if let jid = myJID {
-			xmppStream?.myJID = XMPPJID.jidWithString(jid)
-		} else {
-			return false
-		}
-		
-		if let password = myPassword {
-			self.password = password
-		} else {
-			return false
-		}
-		
-		do {
-			try xmppStream!.connectWithTimeout(XMPPStreamTimeoutNone)
-		} catch _ {
-			let alert = UIAlertController(title: "Error connecting", message: "See console for error details.", preferredStyle: UIAlertControllerStyle.Alert)
-			alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel, handler: nil))
-			UIApplication.sharedApplication().keyWindow!.rootViewController!.presentViewController(alert, animated: true, completion: nil)
-			
-			return false
-		}
-		return true;
 	}
 	
 	public func isConnected() -> Bool {
