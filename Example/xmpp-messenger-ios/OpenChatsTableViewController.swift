@@ -16,16 +16,10 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate, NS
 	
 	// Mark: Life Cycle
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-	}
-	
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		OneRoster.sharedInstance.delegate = self
-		OneRoster.sharedInstance.fetchedResultsController()?.delegate = OneRoster.sharedInstance
-		
 		OneChat.sharedInstance.connect(username: kXMPP.myJID, password: kXMPP.myPassword) { (stream, error) -> Void in
 			if let _ = error {
 				self.performSegueWithIdentifier("One.HomeToSetting", sender: self)
@@ -35,7 +29,6 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate, NS
 		}
 		
 		tableView.rowHeight = 50
-		tableView.reloadData()
 	}
 	
 	override func viewWillDisappear(animated: Bool) {
@@ -44,26 +37,11 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate, NS
 		OneRoster.sharedInstance.delegate = nil
 	}
 	
+	// Mark: OneRoster Delegates
+	
 	func oneRosterContentChanged(controller: NSFetchedResultsController) {
+		//Will reload the tableView to reflet roster's changes
 		tableView.reloadData()
-	}
-	
-	// Mark: UITableViewCell helpers
-	
-	func configurePhotoForCell(cell: UITableViewCell, user: XMPPUserCoreDataStorageObject) {
-		// Our xmppRosterStorage will cache photos as they arrive from the xmppvCardAvatarModule.
-		// We only need to ask the avatar module for a photo, if the roster doesn't have it.
-		if user.photo != nil {
-			cell.imageView!.image = user.photo!;
-		} else {
-			let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoDataForJID(user.jid)
-			
-			if let photoData = photoData {
-				cell.imageView!.image = UIImage(data: photoData)
-			} else {
-				cell.imageView!.image = UIImage(named: "defaultPerson")
-			}
-		}
 	}
 	
 	// Mark: UITableView Datasources
@@ -76,6 +54,8 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate, NS
 		//let sections: NSArray? = OneRoster.sharedInstance.fetchedResultsController()!.sections
 		return 1//sections
 	}
+	
+	// Mark: UITableView Delegates
 	
 	override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 		return 0.01
@@ -91,11 +71,9 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate, NS
 		
 		cell!.textLabel!.text = user.displayName
 		
-		configurePhotoForCell(cell!, user: user)
+		OneChat.sharedInstance.configurePhotoForCell(cell!, user: user)
 		
-		print("unread messages = \(user.unreadMessages) -- isOnline ? \(user.isOnline())")
-		
-		cell?.imageView?.layer.cornerRadius = 24// CGRectGetWidth(cell!.frame) / 2
+		cell?.imageView?.layer.cornerRadius = 24
 		cell?.imageView?.clipsToBounds = true
 		
 		return cell!

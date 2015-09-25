@@ -43,24 +43,6 @@ class ContactListTableViewController: UITableViewController, OneRosterDelegate {
 		tableView.reloadData()
 	}
 	
-	// Mark: UITableViewCell helpers
-	
-	func configurePhotoForCell(cell: UITableViewCell, user: XMPPUserCoreDataStorageObject) {
-		// Our xmppRosterStorage will cache photos as they arrive from the xmppvCardAvatarModule.
-		// We only need to ask the avatar module for a photo, if the roster doesn't have it.
-		if user.photo != nil {
-			cell.imageView!.image = user.photo!;
-		} else {
-			let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoDataForJID(user.jid)
-			
-			if let photoData = photoData {
-				cell.imageView!.image = UIImage(data: photoData)
-			} else {
-				cell.imageView!.image = UIImage(named: "defaultPerson")
-			}
-		}
-	}
-	
 	// Mark: UITableView Datasources
 	
 	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -122,7 +104,8 @@ class ContactListTableViewController: UITableViewController, OneRosterDelegate {
 		} else {
 			cell!.backgroundColor = .whiteColor()
 		}
-		configurePhotoForCell(cell!, user: user)
+		
+		OneChat.sharedInstance.configurePhotoForCell(cell!, user: user)
 		
 		return cell!;
 	}
