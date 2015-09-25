@@ -40,7 +40,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 			navigationItem.title = recipient.displayName
 			
 			dispatch_async(dispatch_get_main_queue(), { () -> Void in
-				self.loadArchivedMessages()
+				self.messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr)
 				self.finishReceivingMessageAnimated(true)
 			})
 		} else {
@@ -78,60 +78,8 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		if !OneChats.knownUserForJid(jidStr: recipient.jidStr) {
 			OneChats.addUserToChatList(jidStr: recipient.jidStr)
 		} else {
-			loadArchivedMessages()
+			messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr)
 			finishReceivingMessageAnimated(true)
-		}
-	}
-	
-	func loadArchivedMessages() {
-		let moc = OneMessage.sharedInstance.xmppMessageStorage?.mainThreadManagedObjectContext
-		let entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
-		let request = NSFetchRequest()
-		let predicateFormat = "bareJidStr like %@ "
-		let predicate = NSPredicate(format: predicateFormat, recipient!.jidStr)
-		
-		request.predicate = predicate
-		request.entity = entityDescription
-		
-		do {
-			let results = try moc?.executeFetchRequest(request)
-			var message: XMPPMessageArchiving_Message_CoreDataObject
-			//var archivedMessage = NSMutableArray()
-			
-			for message in results! {
-				var element: DDXMLElement!
-				do {
-					element = try DDXMLElement(XMLString: message.messageStr)
-				} catch _ {
-					element = nil
-				}
-				
-				let body: String
-				let sender: String
-				let date: NSDate
-				
-				//var mutableDic = NSMutableDictionary()
-				if message.body() != nil {
-					body = message.body()
-				} else {
-					body = ""
-				}
-				if element.attributeStringValueForName("to") == recipient!.jidStr {
-					let displayName = OneChat.sharedInstance.xmppStream?.myJID
-					sender = displayName!.bare()
-				} else {
-					sender = recipient!.jidStr
-				}
-				// Warning: Check here ambigious
-				//if message.timestamp != nil {
-				//	date = timestamp//message.timestamp
-				//} else {
-					date = NSDate()
-				//}
-				let fullMessage = JSQMessage(senderId: sender, senderDisplayName: sender, date: date, text: body)
-				self.messages.addObject(fullMessage)
-			}
-		} catch _ {
 		}
 	}
 	

@@ -286,7 +286,7 @@ public class OneChat: NSObject {
 		if user.photo != nil {
 			cell.imageView!.image = user.photo!;
 		} else {
-			let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoDataForJID(user.jid)
+			let photoData = xmppvCardAvatarModule?.photoDataForJID(user.jid)
 			
 			if let photoData = photoData {
 				cell.imageView!.image = UIImage(data: photoData)

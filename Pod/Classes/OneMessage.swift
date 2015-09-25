@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import JSQMessagesViewController
 import XMPPFramework
 
 public typealias OneChatMessageCompletionHandler = (stream: XMPPStream, message: XMPPMessage) -> Void
@@ -35,7 +36,7 @@ public class OneMessage: NSObject {
 		return OneMessageSingleton.instance
 	}
 	
-	// MARK: methods
+	// MARK: private methods
 	
 	func setupArchiving() {
 		xmppMessageStorage = XMPPMessageArchivingCoreDataStorage.sharedInstance()
@@ -45,6 +46,8 @@ public class OneMessage: NSObject {
 		xmppMessageArchiving?.activate(OneChat.sharedInstance.xmppStream)
 		xmppMessageArchiving?.addDelegate(self, delegateQueue: dispatch_get_main_queue())
 	}
+	
+	// MARK: public methods
 	
 	public class func sendMessage(message: String, to receiver: String, completionHandler completion:OneChatMessageCompletionHandler) {
 		let body = DDXMLElement.elementWithName("body") as! DDXMLElement
@@ -61,6 +64,56 @@ public class OneMessage: NSObject {
 		
 		sharedInstance.didSendMessageCompletionBlock = completion
 		OneChat.sharedInstance.xmppStream?.sendElement(completeMessage)
+	}
+	
+	public func loadArchivedMessagesFrom(jid jid: String) -> NSMutableArray {
+		let moc = xmppMessageStorage?.mainThreadManagedObjectContext
+		let entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
+		let request = NSFetchRequest()
+		let predicateFormat = "bareJidStr like %@ "
+		let predicate = NSPredicate(format: predicateFormat, jid)
+		let retrievedMessages = NSMutableArray()
+		
+		request.predicate = predicate
+		request.entity = entityDescription
+		
+		do {
+			let results = try moc?.executeFetchRequest(request)
+			
+			for message in results! {
+				var element: DDXMLElement!
+				do {
+					element = try DDXMLElement(XMLString: message.messageStr)
+				} catch _ {
+					element = nil
+				}
+				
+				let body: String
+				let sender: String
+				let date: NSDate
+				
+				date = message.timestamp
+				
+				if message.body() != nil {
+					body = message.body()
+				} else {
+					body = ""
+				}
+				
+				if element.attributeStringValueForName("to") == jid {
+					let displayName = OneChat.sharedInstance.xmppStream?.myJID
+					sender = displayName!.bare()
+				} else {
+					sender = jid
+				}
+				
+				let fullMessage = JSQMessage(senderId: sender, senderDisplayName: sender, date: date, text: body)
+				retrievedMessages.addObject(fullMessage)
+			}
+		} catch _ {
+			//catch fetch error here
+		}
+		return retrievedMessages
 	}
 }
 
