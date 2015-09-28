@@ -11,6 +11,7 @@ import XMPPFramework
 
 public typealias XMPPStreamCompletionHandler = (shouldTrustPeer: Bool?) -> Void
 public typealias OneChatAuthCompletionHandler = (stream: XMPPStream, error: DDXMLElement?) -> Void
+public typealias OneChatConnectCompletionHandler = (stream: XMPPStream, error: DDXMLElement?) -> Void
 
 public protocol OneChatDelegate {
 	func oneStream(sender: XMPPStream?, socketDidConnect socket: GCDAsyncSocket?)
@@ -46,6 +47,7 @@ public class OneChat: NSObject {
 	var password: String?
 	
 	var streamDidConnectCompletionBlock: OneChatAuthCompletionHandler?
+	var streamDidConnectCompletionBlock: OneChatConnectCompletionHandler?
 	
 	// MARK: Singleton
 	
@@ -71,6 +73,7 @@ public class OneChat: NSObject {
 		if let delegate: OneChatDelegate = delegate {
 			sharedInstance.delegate = delegate
 		}
+		OneRoster.sharedInstance.fetchedResultsController()?.delegate = OneRoster.sharedInstance
 		sharedInstance.streamDidConnectCompletionBlock = completion
 	}
 	
