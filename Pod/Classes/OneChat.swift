@@ -46,7 +46,7 @@ public class OneChat: NSObject {
 	var isXmppConnected: Bool?
 	var password: String?
 	
-	var streamDidConnectCompletionBlock: OneChatAuthCompletionHandler?
+	var streamDidAuthenticateCompletionBlock: OneChatAuthCompletionHandler?
 	var streamDidConnectCompletionBlock: OneChatConnectCompletionHandler?
 	
 	// MARK: Singleton
@@ -74,7 +74,7 @@ public class OneChat: NSObject {
 			sharedInstance.delegate = delegate
 		}
 		OneRoster.sharedInstance.fetchedResultsController()?.delegate = OneRoster.sharedInstance
-		sharedInstance.streamDidConnectCompletionBlock = completion
+		sharedInstance.streamDidAuthenticateCompletionBlock = completion
 	}
 	
 	public func setupStream() {
@@ -387,11 +387,13 @@ extension OneChat: XMPPStreamDelegate {
 	}
 	
 	public func xmppStreamDidAuthenticate(sender: XMPPStream) {
+		streamDidAuthenticateCompletionBlock!(stream: sender, error: nil)
 		streamDidConnectCompletionBlock!(stream: sender, error: nil)
 		OnePresence.goOnline()
 	}
 	
 	public func xmppStream(sender: XMPPStream, didNotAuthenticate error: DDXMLElement) {
+		streamDidAuthenticateCompletionBlock!(stream: sender, error: error)
 		streamDidConnectCompletionBlock!(stream: sender, error: error)
 	}
 	
