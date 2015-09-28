@@ -31,6 +31,8 @@ class ContactListTableViewController: UITableViewController, OneRosterDelegate {
 		
 		if OneChat.sharedInstance.isConnected() {
 			navigationItem.title = "Select a recipient"
+		} else {
+			performSegueWithIdentifier("One.HomeToSetting", sender: nil)
 		}
 	}
 	
