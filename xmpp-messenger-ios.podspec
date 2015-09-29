@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "xmpp-messenger-ios"
-  s.version          = "1.0"
+  s.version          = "1.0.1"
   s.summary          = "A Swift Wrapper Arround XMPP to build chat clients"
   s.description      = <<-DESC
                        xmpp-messenger-ios is a Swift XMPP Wrapper to quickly build xmpp chat clients.
@@ -31,6 +31,6 @@ s.dependency 'XMPPFramework'
 
 s.ios.frameworks = 'Foundation', 'CoreData', 'UIKit', 'CFNetwork', 'Security', 'XMPPFramework'
 s.source_files = ['Pod/Classes/**/*.{swift}']
-s.xcconfig = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2 $(PODS_ROOT)/XMPPFramework/module' }
+s.xcconfig = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2 $(PODS_ROOT)/XMPPFramework/module', 'ENABLE_BITCODE' => 'NO'}
 
 end
