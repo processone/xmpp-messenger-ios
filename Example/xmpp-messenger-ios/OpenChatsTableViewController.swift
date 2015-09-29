@@ -10,7 +10,7 @@ import UIKit
 import xmpp_messenger_ios
 import XMPPFramework
 
-class OpenChatsTableViewController: UITableViewController, OneRosterDelegate, NSFetchedResultsControllerDelegate {
+class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	
 	var chatList = NSArray()
 	
