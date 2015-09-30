@@ -42,7 +42,7 @@ extension OneLastActivity: XMPPLastActivityDelegate {
     
     func xmppLastActivity(sender: XMPPLastActivity!, didNotReceiveResponse queryID: String!, dueToTimeout timeout: NSTimeInterval) {
 
-        if let callback = didMakeLastCallCompletionBlock {
+        if let callback = OneLastActivity.sharedInstance.didMakeLastCallCompletionBlock {
             callback(response: nil, error: NSError(domain: "timeout", code: -99, userInfo: nil))
             sender?.removeDelegate(self)
 
@@ -51,7 +51,7 @@ extension OneLastActivity: XMPPLastActivityDelegate {
     
     func xmppLastActivity(sender: XMPPLastActivity!, didReceiveResponse response: XMPPIQ!) {
         
-        if let callback = didMakeLastCallCompletionBlock {
+        if let callback = OneLastActivity.sharedInstance.didMakeLastCallCompletionBlock {
             
             if let resp = response {
                 callback(response: resp, error: nil)
