@@ -9,7 +9,7 @@
 import Foundation
 import XMPPFramework
 
-typealias OneMakeLastCallCompletionHandler = (response: XMPPIQ?, error: NSError!) -> Void
+typealias OneMakeLastCallCompletionHandler = (response: XMPPIQ?, error: NSError?) -> Void
 
 class OneLastActivity: NSObject {
 
