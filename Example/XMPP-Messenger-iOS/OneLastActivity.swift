@@ -9,7 +9,7 @@
 import Foundation
 import XMPPFramework
 
-typealias OneMakeLastCallCompletionHandler = (sender: XMPPIQ) -> Void
+typealias OneMakeLastCallCompletionHandler = (response: XMPPIQ?, error: NSError!) -> Void
 
 class OneLastActivity: NSObject {
 
@@ -29,7 +29,7 @@ class OneLastActivity: NSObject {
     class func sendLastActivityQueryToJID(userName: String, sender: XMPPLastActivity? = nil, completionHandler completion:OneMakeLastCallCompletionHandler) {
         
         sharedInstance.didMakeLastCallCompletionBlock = completion
-        let userJID = XMPPJID.jidWithString("\(userName)")
+        let userJID = XMPPJID.jidWithString(userName)
         
         sender?.addDelegate(self, delegateQueue: dispatch_get_main_queue())
         sender?.sendLastActivityQueryToJID(userJID)
@@ -42,16 +42,29 @@ extension OneLastActivity: XMPPLastActivityDelegate {
     
     func xmppLastActivity(sender: XMPPLastActivity!, didNotReceiveResponse queryID: String!, dueToTimeout timeout: NSTimeInterval) {
 
+        if let callback = didMakeLastCallCompletionBlock {
+            callback(response: nil, error: NSError(domain: "timeout", code: -99, userInfo: nil))
+            sender?.removeDelegate(self)
+
+        }
     }
     
     func xmppLastActivity(sender: XMPPLastActivity!, didReceiveResponse response: XMPPIQ!) {
+        
+        if let callback = didMakeLastCallCompletionBlock {
+            
+            if let resp = response {
+                callback(response: resp, error: nil)
+                sender?.removeDelegate(self)
 
-        didMakeLastCallCompletionBlock!(sender: response)
+            }
+        }
+        
         
     }
     
     func numberOfIdleTimeSecondsForXMPPLastActivity(sender: XMPPLastActivity!, queryIQ iq: XMPPIQ!, currentIdleTimeSeconds idleSeconds: UInt) -> UInt {
-        return 30;
+        return 30
     }
     
 }

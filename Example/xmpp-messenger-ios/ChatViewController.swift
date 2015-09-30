@@ -77,9 +77,14 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	func didSelectContact(recipient: XMPPUserCoreDataStorageObject) {
 		self.recipient = recipient
         navigationItem.title = recipient.displayName
-
-        OneLastActivity.sendLastActivityQueryToJID(recipient.jidStr, sender: OneChat.sharedInstance.xmppLastActivity) { (sender) -> Void in
-            let x = sender.lastActivitySeconds()
+        
+        OneLastActivity.sendLastActivityQueryToJID(recipient.jidStr, sender: OneChat.sharedInstance.xmppLastActivity) { (sender, error) -> Void in
+            if let error = error {
+            
+            }
+            else if let timeInSeconds = sender?.lastActivitySeconds() {
+                
+            }
             
         }
         
@@ -126,7 +131,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 					body = ""
 				}
 				if element.attributeStringValueForName("to") == recipient!.jidStr {
-					var displayName = OneChat.sharedInstance.xmppStream?.myJID
+					let displayName = OneChat.sharedInstance.xmppStream?.myJID
 					sender = displayName!.bare()
 				} else {
 					sender = recipient!.jidStr
