@@ -200,8 +200,6 @@ class OneChat: NSObject {
 		//	[xmppStream setHostName:@"talk.google.com"];
 		//	[xmppStream setHostPort:5222];
 		
-		xmppStream!.hostName = "www.baseva.com"
-        
 		// You may need to alter these settings depending on the server you're connecting to
 		customCertEvaluation = true;
 	}
