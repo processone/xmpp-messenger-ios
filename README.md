@@ -32,7 +32,7 @@ We will build a Swift XMPP client built on [XMPP Framework](https://github.com/p
 ## Project setup 
 1. Open ```Xcode``` and select ```create a new project```, you are free to choose wich kind of template you want, for this example, we will use the ```single view application```. Fill up the required information, select ```Swift``` language and choose the folder location.
 
-![Xcode setup screenshot](/Users/paul/Desktop/Tuto Xmpp-Messenger/First setup/Xcode setup project.png)
+![Xcode setup screenshot](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Xcode setup project.png)
 
 2. Now quit ```Xcode``` and launch the terminal app (terminal.app)
 ![terminal scrteenshot](https://github.com/processone/demo-xmpp-ios/blob/master/Setup%20resources/Capture%20d’écran%202015-07-22%20à%2011.41.50.png?raw=true%20=350x)
@@ -44,13 +44,13 @@ We will build a Swift XMPP client built on [XMPP Framework](https://github.com/p
 
 4. Edit the newly created *Podfile* by taping ```emacs Podfile``` (Feel free to use ```vim``` :)). It should look like this:
 
-![Podfile screenshot](/Users/paul/Desktop/Tuto Xmpp-Messenger/First setup/podfile scree.png)
+![Podfile screenshot](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/podfile scree.png)
 
 *Press ctrl+x, ctrl+s to save, then ctrl+x, ctrl+c to end editing*
 
 5. Almost good to go, type ```pod install```, and wait until the installation is over.
 
-![PodInstall screenshot](/Users/paul/Desktop/Tuto Xmpp-Messenger/First setup/Pod_command line.png)
+![PodInstall screenshot](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Pod_command line.png)
 
 *From now one you will have to open your project using the ```xcworkspace``` file, and no more the ```xcodeproject``` file*
 
@@ -77,15 +77,15 @@ We are going to create 4 classes, one to display the conversations, name it ```O
 ###Let's start with the Storyboard
 1. Open your ```Main.storyboard``` file, and remove the current ViewController.
 2. Drop in a ```UITableViewController```, and asign it to ```OpenChatsTableViewController.swift```
-![Class asignment](/Users/paul/Desktop/Tuto Xmpp-Messenger/openchats/Class selection.png)
+![Class asignment](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Class selection.png)
 
 Now you will select this Controller as the ```initial view controller```
 
-![initialVC screen](/Users/paul/Desktop/Tuto Xmpp-Messenger/openchats/initial_VC.png)
+![initialVC screen](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/initial_VC.png)
 
 We will now embed an ```UINavigationController```: within ```Xcode```, go to ```editor```->```Embed in```->```Navigation controller```
 
-![Embed controller](/Users/paul/Desktop/Tuto Xmpp-Messenger/openchats/embed.png)
+![Embed controller](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/embed.png)
 
 Now that we have a ```UINavigationBar``` on ```OpenChatsViewController```, we will add two ```UIBarButtonItem```:
 
@@ -94,7 +94,7 @@ Now that we have a ```UINavigationBar``` on ```OpenChatsViewController```, we wi
 
 Once finished, it should look like this:
 
-![finished screen](/Users/paul/Desktop/Tuto Xmpp-Messenger/openchats/openchatVC .png)
+![finished screen](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/openchatVC .png)
 
 3. Drop an ```UIViewController```, asign it to ```SettingsViewController.swift```, then embed it inside an ```UINavigationController```.
 
@@ -102,11 +102,11 @@ Return on ```OpenChatsTableViewController```. Select the ```settings``` ```UIBar
 
 It should look like this:
 
-![segue example](/Users/paul/Desktop/Tuto Xmpp-Messenger/settings/settings segue.png)
+![segue example](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/settings segue.png)
 
 Now select the ```Segue```, and in the properties, name it ```One.HomeToSettings```
 
-![segue naming](/Users/paul/Desktop/Tuto Xmpp-Messenger/settings/segue.png)
+![segue naming](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/segue.png)
 
 Return on ```SettingsViewController```, and on the ```UINavigationBar```, add an ```UIBarButtonItem```, and name it "Done".
 
@@ -116,28 +116,28 @@ Name the ```UIbutton```'s title "validate" and set the ```UITextField```'s place
 
 It should look like this:
 
-![textfield placeholder](/Users/paul/Desktop/Tuto Xmpp-Messenger/settings/Capture d’écran 2015-09-28 à 15.38.36.png)
+![textfield placeholder](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Capture d’écran 2015-09-28 à 15.38.36.png)
 
 **Note: you should select -secure entry- on the password's ```UITextField``` to replace every entered letter into dots**
 
 
 You will now split ```Xcode```'s screen to display side by side both ```interface``` and ```code```, simply by selecting this button:
 
-![button tosplit](/Users/paul/Desktop/Tuto Xmpp-Messenger/Capture d’écran 2015-09-28 à 15.39.36.png)
+![button tosplit](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Capture d’écran 2015-09-28 à 15.39.36.png)
 
 Once done, ```ctrl``` select the textfield's and validate's button to the class to create ```IBOutlet```'s. Name them respetctivly userNameTextField, passwordTextField and validateButton.
 
-![creating outlets](/Users/paul/Desktop/Tuto Xmpp-Messenger/settings/Capture d’écran 2015-09-28 à 15.41.43.png)
+![creating outlets](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Capture d’écran 2015-09-28 à 15.41.43.png)
 
 For the last one, the validate button, you will have to ```ctrl``` drag again, but this time, select ```action``` instead of ```outlet```, and name the ```IBAction``` "close".
 
-![creating methods](/Users/paul/Desktop/Tuto Xmpp-Messenger/settings/action validate.png)
+![creating methods](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/action validate.png)
 
 Do the same operation, but on the "Done" ```UIBarButtonItem```, and name the method "close"
 
 We need to do one last operation: setting the ```UITextField```'s ```delegates```. For this, you will have to select a ```UITextField``` at the time, go to the connection tab and click-drag your cursor on the ```SettingsViewController```.
 
-![Setting delegates](/Users/paul/Desktop/Tuto Xmpp-Messenger/settings/settin delegate.png)
+![Setting delegates](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/settin delegate.png)
 
 ###This is all about 'connection'
 
@@ -257,7 +257,7 @@ The ```validate``` method will connect the user and dismiss the settings screen 
 
 3. Return to the ```Storyboard```, select the ```OpenChatsTableViewController```, then select the ```UITableViewCell``` inside the ```UITableView``` and in the property tabs, fill the ```reuse identifier``` to ```OneCellReuse```:
 
-![reuse screen](/Users/paul/Desktop/Tuto Xmpp-Messenger/openchats/cell reuse.png)
+![reuse screen](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/cell reuse.png)
 
 Open up the source code, ```OpenChatsTableViewController.swift```, and add the following imports at the top of the file:
 
@@ -326,7 +326,7 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate
 
 An error should now pop:
 
-![xcode error](/Users/paul/Desktop/Tuto Xmpp-Messenger/openchats/error.png)
+![xcode error](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/error.png)
 
 This is because we **have** to conform to the ```OneRosterProtocol```. Do it by implementing the following method:
 
@@ -365,13 +365,13 @@ self.performSegueWithIdentifier("One.HomeToSetting", sender: self)
 
 4. Displaying a list of chat conversation is great, but creating one is even better ! Switch back to your ```Storyboard```, and drop a ```UITableViewController```. Asing it to ```ContactListTableViewController.swift```. Embed a ```UINavigationController``` and name it's ```Storyboard ID``` "contactListNav":
 
-![storyboard name](/Users/paul/Desktop/Tuto Xmpp-Messenger/Capture d’écran 2015-09-29 à 18.22.01.png)
+![storyboard name](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Capture d’écran 2015-09-29 à 18.22.01.png)
 
 Now you will create a ```Modal presentation``` segue between the ```+ UIBarButtonItem``` in the ```OpenChatsTableViewController``` and the ```ContactListViewController```. 
 
 Name this segue "chat.to.add" 
 
-![chat segue](/Users/paul/Desktop/Tuto Xmpp-Messenger/chatVC/Capture d’écran 2015-09-29 à 17.16.34.png)
+![chat segue](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Capture d’écran 2015-09-29 à 17.16.34.png)
 
 Return to ```ContactListTableViewController``` and drop a ```UIBarButtonItem```, select the ```system style``` "done" and create an action method named "close":
 
@@ -461,11 +461,11 @@ Open your ```Storyboard``` and drop a ```UIViewController```. Asign it to ```Cha
 
 Remove the ```chat.to.add``` segue *from the + button to the ```ContactListTableViewController```* and re-create it from the ```ChatViewController``` itself. Name it "chat.to.contact". It should look like this:
 
-![storyboard screnfromconatct](/Users/paul/Desktop/Tuto Xmpp-Messenger/chatVC/first segue.png)
+![storyboard screnfromconatct](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/first segue.png)
 
 Now you will create two more ```push/show segue```, from ```OpenChatsTableViewController``` to ```ChatViewController```. One from the ```+``` button, you will name it ```chat.to.add```, and the other from the ```UITableViewCell``` of ```OpenChatsTableViewController``` to ```ChatViewController```, name it ```chat.to.chat```. The completed ```Storyboard``` should now look like this:
 
-![completed storyboard](/Users/paul/Desktop/Tuto Xmpp-Messenger/chatVC/completed storyboard.png)
+![completed storyboard](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/completed storyboard.png)
 
 You can return to ```ChatViewController.swift```. There will be a lot going on in this ```ViewController``` so make sure you're fully loaded with cafeine !
 
