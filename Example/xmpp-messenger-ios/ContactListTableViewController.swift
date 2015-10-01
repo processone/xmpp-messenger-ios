@@ -58,6 +58,20 @@ class ContactListTableViewController: UITableViewController, OneRosterDelegate {
 				cell.imageView!.image = UIImage(named: "defaultPerson")
 			}
 		}
+        
+        OneLastActivity.sendLastActivityQueryToJID(user.jidStr, sender: OneChat.sharedInstance.xmppLastActivity) { (sender, error) -> Void in
+            if let _ = error {
+                
+            }
+            else if let timeInSeconds = sender?.lastActivitySeconds() {
+                
+                let seconds: NSNumber = NSNumber(unsignedLong: timeInSeconds)
+                
+                cell.detailTextLabel?.text = NSString(format: "Last seen %@", NSDate(timeIntervalSinceNow:seconds.doubleValue)) as String                
+            }
+            
+        }
+
 	}
 	
 	// Mark: UITableView Datasources

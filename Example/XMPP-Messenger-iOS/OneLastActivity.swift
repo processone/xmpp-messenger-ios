@@ -30,8 +30,7 @@ class OneLastActivity: NSObject {
         
         sharedInstance.didMakeLastCallCompletionBlock = completion
         let userJID = XMPPJID.jidWithString(userName)
-        
-        sender?.addDelegate(self, delegateQueue: dispatch_get_main_queue())
+
         sender?.sendLastActivityQueryToJID(userJID)
         
     }
@@ -44,8 +43,6 @@ extension OneLastActivity: XMPPLastActivityDelegate {
 
         if let callback = OneLastActivity.sharedInstance.didMakeLastCallCompletionBlock {
             callback(response: nil, error: NSError(domain: "timeout", code: -99, userInfo: nil))
-            sender?.removeDelegate(self)
-
         }
     }
     
@@ -55,8 +52,6 @@ extension OneLastActivity: XMPPLastActivityDelegate {
             
             if let resp = response {
                 callback(response: resp, error: nil)
-                sender?.removeDelegate(self)
-
             }
         }
         
