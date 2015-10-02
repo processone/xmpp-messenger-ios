@@ -116,18 +116,18 @@ Name the ```UIbutton```'s title "validate" and set the ```UITextField```'s place
 
 It should look like this:
 
-![textfield placeholder](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Capture d’écran 2015-09-28 à 15.38.36.png)
+![textfield placeholder](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/texfield username.png)
 
 **Note: you should select -secure entry- on the password's ```UITextField``` to replace every entered letter into dots**
 
 
 You will now split ```Xcode```'s screen to display side by side both ```interface``` and ```code```, simply by selecting this button:
 
-![button tosplit](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Capture d’écran 2015-09-28 à 15.39.36.png)
+![button tosplit](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/xcode split.png)
 
 Once done, ```ctrl``` select the textfield's and validate's button to the class to create ```IBOutlet```'s. Name them respetctivly userNameTextField, passwordTextField and validateButton.
 
-![creating outlets](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Capture d’écran 2015-09-28 à 15.41.43.png)
+![creating outlets](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/creating outlets.png)
 
 For the last one, the validate button, you will have to ```ctrl``` drag again, but this time, select ```action``` instead of ```outlet```, and name the ```IBAction``` "close".
 
@@ -365,13 +365,13 @@ self.performSegueWithIdentifier("One.HomeToSetting", sender: self)
 
 4. Displaying a list of chat conversation is great, but creating one is even better ! Switch back to your ```Storyboard```, and drop a ```UITableViewController```. Asing it to ```ContactListTableViewController.swift```. Embed a ```UINavigationController``` and name it's ```Storyboard ID``` "contactListNav":
 
-![storyboard name](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Capture d’écran 2015-09-29 à 18.22.01.png)
+![storyboard name](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/storyboard id.png)
 
 Now you will create a ```Modal presentation``` segue between the ```+ UIBarButtonItem``` in the ```OpenChatsTableViewController``` and the ```ContactListViewController```. 
 
 Name this segue "chat.to.add" 
 
-![chat segue](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Capture d’écran 2015-09-29 à 17.16.34.png)
+![chat segue](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/segue naming.png)
 
 Return to ```ContactListTableViewController``` and drop a ```UIBarButtonItem```, select the ```system style``` "done" and create an action method named "close":
 
