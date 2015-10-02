@@ -152,11 +152,11 @@ Add the following code:
 
 ```swift
 OneChat.start(archiving: true, delegate: nil) { (stream, error) -> Void in
-if let _ = error {
-//handle start errors here
-} else {
-//Activate online UI
-}
+	if let _ = error {
+		//handle start errors here
+	} else {
+		//Activate online UI
+	}
 }
 ```
 
@@ -189,11 +189,11 @@ In your ```viewDidLoad``` method, then implement the ```DismissKeyboard``` metho
 
 ```swift
 func DismissKeyboard() {
-if usernameTextField.isFirstResponder() {
-usernameTextField.resignFirstResponder()
-} else if passwordTextField.isFirstResponder() {
-passwordTextField.resignFirstResponder()
-}
+	if usernameTextField.isFirstResponder() {
+		usernameTextField.resignFirstResponder()
+	} else if passwordTextField.isFirstResponder() {
+		passwordTextField.resignFirstResponder()
+	}
 }
 ```
 
@@ -201,14 +201,13 @@ And to trigger the validation, we'll use the ```UITextField``` delegates:
 
 ```swift
 func textFieldShouldReturn(textField: UITextField) -> Bool {
-if passwordTextField.isFirstResponder() {
-textField.resignFirstResponder()
-validate(self)
-} else {
-textField.resignFirstResponder()
-}
-
-return true
+	if passwordTextField.isFirstResponder() {
+		textField.resignFirstResponder()
+		validate(self)
+	} else {
+		textField.resignFirstResponder()
+	}
+	return true
 }
 ```
 Now we are going to set default values in the ```UITextfield```'s, and add a way to change the "validate" ```UIButton``` if the user is already connected.
@@ -217,14 +216,13 @@ Add the following in your ```viewWillappear```:
 
 ```swift
 if OneChat.sharedInstance.isConnected() {
-usernameTextField.hidden = true
-passwordTextField.hidden = true
-validateButton.setTitle("Disconnect", forState: UIControlState.Normal)
+	usernameTextField.hidden = true
+	passwordTextField.hidden = true
+	validateButton.setTitle("Disconnect", forState: UIControlState.Normal)
 } else {
-if NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID) != "kXMPPmyJID" {
-usernameTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
-passwordTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
-}
+	if NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID) != "kXMPPmyJID" {
+	usernameTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
+	passwordTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
 }
 ```
 
@@ -234,22 +232,21 @@ Place this inside the ```validate()``` method:
 
 ```swift
 if OneChat.sharedInstance.isConnected() {
-OneChat.sharedInstance.disconnect()
-usernameTextField.hidden = false
-passwordTextField.hidden = false
-validateButton.setTitle("Validate", forState: UIControlState.Normal)
+	OneChat.sharedInstance.disconnect()
+	usernameTextField.hidden = false
+	passwordTextField.hidden = false
+	validateButton.setTitle("Validate", forState: UIControlState.Normal)
 } else {
-OneChat.sharedInstance.connect(username: self.usernameTextField.text!, password: self.passwordTextField.text!) { (stream, error) -> Void in
-if let _ = error {
-let alertController = UIAlertController(title: "Sorry", message: "An error occured: \(error)", preferredStyle: UIAlertControllerStyle.Alert)
-alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) -> Void in
-//do something
-}))
-self.presentViewController(alertController, animated: true, completion: nil)
-} else {
-self.dismissViewControllerAnimated(true, completion: nil)
-}
-}
+	OneChat.sharedInstance.connect(username: self.usernameTextField.text!, password: 	self.passwordTextField.text!) { (stream, error) -> Void in
+	if let _ = error {
+		let alertController = UIAlertController(title: "Sorry", message: "An error occured: \(error)", preferredStyle: UIAlertControllerStyle.Alert)
+		alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) -> Void in
+				//do something
+		}))
+		self.presentViewController(alertController, animated: true, completion: nil)
+	} else {
+		self.dismissViewControllerAnimated(true, completion: nil)
+	}
 }
 ```
 
@@ -278,11 +275,11 @@ Then, implement the following ```datasource``` methods:
 
 ```swift
 override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-return OneChats.getChatsList().count
+	return OneChats.getChatsList().count
 }
 
 override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-return 1
+	return 1
 }
 ```
 
@@ -290,17 +287,17 @@ And the most important ```delegate```:
 
 ```swift
 override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-let cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("OneCellReuse", forIndexPath: indexPath)
-let user = OneChats.getChatsList().objectAtIndex(indexPath.row) as! XMPPUserCoreDataStorageObject
+	let cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("OneCellReuse", forIndexPath: indexPath)
+	let user = OneChats.getChatsList().objectAtIndex(indexPath.row) as! XMPPUserCoreDataStorageObject
 
-cell!.textLabel!.text = user.displayName
+	cell!.textLabel!.text = user.displayName
 
-OneChat.sharedInstance.configurePhotoForCell(cell!, user: user)
+	OneChat.sharedInstance.configurePhotoForCell(cell!, user: user)
 
-cell?.imageView?.layer.cornerRadius = 24
-cell?.imageView?.clipsToBounds = true
+	cell?.imageView?.layer.cornerRadius = 24
+	cell?.imageView?.clipsToBounds = true
 
-return cell!
+	return cell!
 }
 ```
 
@@ -308,11 +305,11 @@ If, like me, you don't like the extra lines on the ```UITableView```, you can ad
 
 ```swift
 override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-return 0.01
+	return 0.01
 }
 
 override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-return UIView()
+	return UIView()
 }
 ```
 
@@ -332,8 +329,8 @@ This is because we **have** to conform to the ```OneRosterProtocol```. Do it by 
 
 ```swift
 func oneRosterContentChanged(controller: NSFetchedResultsController) {
-//Will reload the tableView to reflect roster's changes
-tableView.reloadData()
+	//Will reload the tableView to reflect roster's changes
+	tableView.reloadData()
 }
 ```
 Implementing a ```delegate``` method is great, but we need to set yourself as the delegate if we want to be notified when the roster content change.
@@ -353,11 +350,11 @@ Return to the top, in your ```viewWillAppear```, and add the ```connect()``` fun
 
 ```swift
 OneChat.sharedInstance.connect(username: kXMPP.myJID, password: kXMPP.myPassword) { (stream, error) -> Void in
-if let _ = error {
-self.performSegueWithIdentifier("One.HomeToSetting", sender: self)
-} else {
-//set up online UI
-}
+	if let _ = error {
+		self.performSegueWithIdentifier("One.HomeToSetting", sender: self)
+	} else {
+		//set up online UI
+	}
 }
 ```
 
@@ -377,7 +374,7 @@ Return to ```ContactListTableViewController``` and drop a ```UIBarButtonItem```,
 
 ```swift
 @IBAction func close(sender: AnyObject) {
-self.dismissViewControllerAnimated(true, completion: nil)
+	self.dismissViewControllerAnimated(true, completion: nil)
 }
 ```
 
@@ -396,58 +393,58 @@ Let's implement the ```UITableViewDelegate``` now:
 
 ```swift
 override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-let sections: NSArray? =  OneRoster.buddyList.sections
+	let sections: NSArray? =  OneRoster.buddyList.sections
 
-if section < sections!.count {
-let sectionInfo: AnyObject = sections![section]
+	if section < sections!.count {
+		let sectionInfo: AnyObject = sections![section]
 
-return sectionInfo.numberOfObjects
-}
+		return sectionInfo.numberOfObjects
+	}
 
-return 0;
+	return 0;
 }
 
 override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-return OneRoster.buddyList.sections!.count
+	return OneRoster.buddyList.sections!.count
 }
 
 override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-let sections: NSArray? = OneRoster.sharedInstance.fetchedResultsController()!.sections
+	let sections: NSArray? = OneRoster.sharedInstance.fetchedResultsController()!.sections
 
-if section < sections!.count {
-let sectionInfo: AnyObject = sections![section]
-let tmpSection: Int = Int(sectionInfo.name)!
+	if section < sections!.count {
+		let sectionInfo: AnyObject = sections![section]
+		let tmpSection: Int = Int(sectionInfo.name)!
 
-switch (tmpSection) {
-case 0 :
-return "Available"
+		switch (tmpSection) {
+			case 0 :
+				return "Available"
 
-case 1 :
-return "Away"
+			case 1 :
+				return "Away"
 
-default :
-return "Offline"
+			default :
+				return "Offline"
 
-}
-}
+		}
+	}
 
-return ""
+	return ""
 }
 
 override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-let cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("OneCellReuse", forIndexPath: indexPath)
-let user = OneRoster.userFromRosterAtIndexPath(indexPath: indexPath)
+	let cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("OneCellReuse", forIndexPath: indexPath)
+	let user = OneRoster.userFromRosterAtIndexPath(indexPath: indexPath)
 
-cell!.textLabel!.text = user.displayName;
+	cell!.textLabel!.text = user.displayName;
 
-if user.unreadMessages.intValue > 0 {
-cell!.backgroundColor = .orangeColor()
-} else {
-cell!.backgroundColor = .whiteColor()
-}
-OneChat.sharedInstance.configurePhotoForCell(cell!, user: user)
+	if user.unreadMessages.intValue > 0 {
+		cell!.backgroundColor = .orangeColor()
+	} else {
+		cell!.backgroundColor = .whiteColor()
+	}
+	OneChat.sharedInstance.configurePhotoForCell(cell!, user: user)
 
-return cell!;
+	return cell!;
 }
 ```
 
@@ -489,13 +486,13 @@ In your ```viewWillAppear``` method, we will check if a recipient has been set, 
 
 ```swift
 if let recipient = recipient {
-navigationItem.rightBarButtonItems = []
-navigationItem.title = recipient.displayName
+	navigationItem.rightBarButtonItems = []
+	navigationItem.title = recipient.displayName
 } else {
-navigationItem.title = "New message"
+	navigationItem.title = "New message"
 
-navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addRecipient"), animated: true)
-addRecipient()
+	navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addRecipient"), animated: true)
+	addRecipient()
 }
 ```
 
@@ -503,9 +500,9 @@ Implement the ```addRecipient()``` method:
 
 ```swift
 func addRecipient() {
-let navController = storyboard?.instantiateViewControllerWithIdentifier("contactListNav") as? UINavigationController
+	let navController = storyboard?.instantiateViewControllerWithIdentifier("contactListNav") as? UINavigationController
 
-presentViewController(navController!, animated: true, completion: nil)
+	presentViewController(navController!, animated: true, completion: nil)
 }
 ```
 
@@ -515,8 +512,8 @@ Add the ```var firstTime = true```, then, in your ```viewWillAppear```, encapsul
 
 ```swift
 if firstTime {
-firstTime = false
-addRecipient()
+	firstTime = false
+	addRecipient()
 }
 ```
 
@@ -524,7 +521,7 @@ Now, it’s time to create your ```delegate``` ! Open ```ContactListTableViewCon
 
 ```swift
 protocol ContactPickerDelegate {
-func didSelectContact(recipient: XMPPUserCoreDataStorageObject)
+	func didSelectContact(recipient: XMPPUserCoreDataStorageObject)
 }
 ```
 
@@ -539,8 +536,8 @@ And implement it in the ```UITableView didselectRowAtIndex``` method:
 
 ```swift
 override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-delegate?.didSelectContact(OneRoster.userFromRosterAtIndexPath(indexPath: indexPath))
-close(self)
+	delegate?.didSelectContact(OneRoster.userFromRosterAtIndexPath(indexPath: indexPath))
+	close(self)
 }
 ```
 
@@ -548,8 +545,8 @@ Now that the protocol is setup, go back to ```ChatViewController.swift```, and a
 
 ```swift
 func didSelectContact(recipient: XMPPUserCoreDataStorageObject) {
-self.recipient = recipient
-navigationItem.title = recipient.displayName
+	self.recipient = recipient
+	navigationItem.title = recipient.displayName
 }
 ```
 
@@ -564,28 +561,28 @@ We will now extend the contact selection, open up ```OpenChatsViewController``` 
 
 ```swift
 override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-if identifier == "chat.to.add" {
-if !OneChat.sharedInstance.isConnected() {
-let alert = UIAlertController(title: "Attention", message: "You have to be connected to start a chat", preferredStyle: UIAlertControllerStyle.Alert)
-alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+	if identifier == "chat.to.add" {
+		if !OneChat.sharedInstance.isConnected() {
+			let alert = UIAlertController(title: "Attention", message: "You have to be connected to start a chat", preferredStyle: UIAlertControllerStyle.Alert)
+			alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
 
-self.presentViewController(alert, animated: true, completion: nil)
+			self.presentViewController(alert, animated: true, completion: nil)
 
-return false
-}
-}
-return true
+			return false
+		}
+	}
+	return true
 }
 
 override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {
-if segue?.identifier == "chats.to.chat" {
-if let controller = segue?.destinationViewController as? ChatViewController {
-if let cell: UITableViewCell? = sender as? UITableViewCell {
-let user = OneChats.getChatsList().objectAtIndex(tableView.indexPathForCell(cell!)!.row) as! XMPPUserCoreDataStorageObject
-controller.recipient = user
-}
-}
-}
+	if segue?.identifier == "chats.to.chat" {
+		if let controller = segue?.destinationViewController as? ChatViewController {
+			if let cell: UITableViewCell? = sender as? UITableViewCell {
+				let user = OneChats.getChatsList().objectAtIndex(tableView.indexPathForCell(cell!)!.row) as! XMPPUserCoreDataStorageObject
+				controller.recipient = user
+			}
+		}
+	}
 }
 ```
 
@@ -605,130 +602,129 @@ Now, you will need to implement the ```JSQMessageViewController``` delegates. Th
 
 ```swift
 override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
-let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
+	let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 
-return message
+	return message
 }
 
 override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
-let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
+	let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 
-let bubbleFactory = JSQMessagesBubbleImageFactory()
+	let bubbleFactory = JSQMessagesBubbleImageFactory()
 
-let outgoingBubbleImageData = bubbleFactory.outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleLightGrayColor())
-let incomingBubbleImageData = bubbleFactory.incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleGreenColor())
+	let outgoingBubbleImageData = bubbleFactory.outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleLightGrayColor())
+	let incomingBubbleImageData = bubbleFactory.incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleGreenColor())
 
-if message.senderId == self.senderId {
-return outgoingBubbleImageData
-}
+	if message.senderId == self.senderId {
+		return outgoingBubbleImageData
+	}
 
-return incomingBubbleImageData
+	return incomingBubbleImageData
 }
 
 override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
-let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
+	let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 
-if message.senderId == self.senderId {
-if let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoDataForJID(OneChat.sharedInstance.xmppStream?.myJID) {
-let senderAvatar = JSQMessagesAvatarImageFactory.avatarImageWithImage(UIImage(data: photoData), diameter: 30)
-return senderAvatar
-} else {
-let senderAvatar = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("SR", backgroundColor: UIColor(white: 0.85, alpha: 1.0), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont(name: "Helvetica Neue", size: 14.0), diameter: 30)
-return senderAvatar
-}
-} else {
-if let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoDataForJID(recipient!.jid!) {
-let recipientAvatar = JSQMessagesAvatarImageFactory.avatarImageWithImage(UIImage(data: photoData), diameter: 30)
-return recipientAvatar
-} else {
-let recipientAvatar = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("SR", backgroundColor: UIColor(white: 0.85, alpha: 1.0), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont(name: "Helvetica Neue", size: 14.0)!, diameter: 30)
-return recipientAvatar
-}
-}
+	if message.senderId == self.senderId {
+		if let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoDataForJID(OneChat.sharedInstance.xmppStream?.myJID) {
+			let senderAvatar = JSQMessagesAvatarImageFactory.avatarImageWithImage(UIImage(data: photoData), diameter: 30)
+				return senderAvatar
+			} else {
+				let senderAvatar = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("SR", backgroundColor: UIColor(white: 0.85, alpha: 1.0), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont(name: "Helvetica Neue", size: 14.0), diameter: 30)
+				return senderAvatar
+			}
+		} else {
+			if let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoDataForJID(recipient!.jid!) {
+				let recipientAvatar = JSQMessagesAvatarImageFactory.avatarImageWithImage(UIImage(data: photoData), diameter: 30)
+				return recipientAvatar
+			} else {
+				let recipientAvatar = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("SR", backgroundColor: UIColor(white: 0.85, alpha: 1.0), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont(name: "Helvetica Neue", size: 14.0)!, diameter: 30)
+				return recipientAvatar
+			}
+		}
 }
 
 override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
-if indexPath.item % 3 == 0 {
-let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
-return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(message.date)
-}
+	if indexPath.item % 3 == 0 {
+		let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
+		return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(message.date)
+	}
 
-return nil;
+	return nil;
 }
 
 override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
-let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
+	let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 
-if message.senderId == self.senderId {
-return nil
-}
+	if message.senderId == self.senderId {
+		return nil
+	}
 
-if indexPath.item - 1 > 0 {
-let previousMessage: JSQMessage = self.messages[indexPath.item - 1] as! JSQMessage
-if previousMessage.senderId == message.senderId {
-return nil
-}
-}
+	if indexPath.item - 1 > 0 {
+		let previousMessage: JSQMessage = self.messages[indexPath.item - 1] as! JSQMessage
+		if previousMessage.senderId == message.senderId {
+			return nil
+		}
+	}
 
-return nil
+	return nil
 }
 
 override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
-return nil
+	return nil
 }
 
 // Mark: UICollectionView DataSource
 
 override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-print("message count = \(self.messages.count)")
-return self.messages.count
+	return self.messages.count
 }
 
 override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-let cell: JSQMessagesCollectionViewCell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
-let msg: JSQMessage = self.messages[indexPath.item] as! JSQMessage
+	let cell: JSQMessagesCollectionViewCell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
+	let msg: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 
-if !msg.isMediaMessage {
-if msg.senderId == self.senderId {
-cell.textView!.textColor = UIColor.blackColor()
-cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.blackColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
-} else {
-cell.textView!.textColor = UIColor.whiteColor()
-cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
-}
-}
+	if !msg.isMediaMessage {
+		if msg.senderId == self.senderId {
+			cell.textView!.textColor = UIColor.blackColor()
+			cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.blackColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+		} else {
+			cell.textView!.textColor = UIColor.whiteColor()
+			cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+		}
+	}
 
-return cell
+	return cell
 }
 
 // Mark: JSQMessages collection view flow layout delegate
 
 override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-if indexPath.item % 3 == 0 {
-return kJSQMessagesCollectionViewCellLabelHeightDefault
-}
+	if indexPath.item % 3 == 0 {
+		return kJSQMessagesCollectionViewCellLabelHeightDefault
+	}
 
-return 0.0
+	return 0.0
 }
 
 override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-let currentMessage: JSQMessage = self.messages[indexPath.item] as! JSQMessage
-if currentMessage.senderId == self.senderId {
-return 0.0
-}
+	let currentMessage: JSQMessage = self.messages[indexPath.item] as! JSQMessage
+		if currentMessage.senderId == self.senderId {
+			return 0.0
+		}
 
-if indexPath.item - 1 > 0 {
-let previousMessage: JSQMessage = self.messages[indexPath.item - 1] as! JSQMessage
-if previousMessage.senderId == currentMessage.senderId {
-return 0.0
-}
-}
+		if indexPath.item - 1 > 0 {
+			let previousMessage: JSQMessage = self.messages[indexPath.item - 1] as! JSQMessage
+			if previousMessage.senderId == currentMessage.senderId {
+				return 0.0
+			}
+		}
 
-return kJSQMessagesCollectionViewCellLabelHeightDefault
+	return kJSQMessagesCollectionViewCellLabelHeightDefault
 }
 
 override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-return 0.0
+	return 0.0
 }
 ```
 
@@ -736,20 +732,18 @@ return 0.0
 
 ```swift
 func oneStream(sender: XMPPStream, didReceiveMessage message: XMPPMessage, from user: XMPPUserCoreDataStorageObject) {
-if message.isChatMessageWithBody() {
-//let displayName = user.displayName
+	if message.isChatMessageWithBody() {
+		JSQSystemSoundPlayer.jsq_playMessageReceivedSound()
 
-JSQSystemSoundPlayer.jsq_playMessageReceivedSound()
+		if let msg: String = message.elementForName("body")?.stringValue() {
+			if let from: String = message.attributeForName("from")?.stringValue() {
+				let message = JSQMessage(senderId: from, senderDisplayName: from, date: NSDate(), text: msg)
+				messages.addObject(message)
 
-if let msg: String = message.elementForName("body")?.stringValue() {
-if let from: String = message.attributeForName("from")?.stringValue() {
-let message = JSQMessage(senderId: from, senderDisplayName: from, date: NSDate(), text: msg)
-messages.addObject(message)
-
-self.finishReceivingMessageAnimated(true)
-}
-}
-}
+				self.finishReceivingMessageAnimated(true)
+			}
+		}
+	}
 }
 
 func oneStream(sender: XMPPStream, userIsComposing user: XMPPUserCoreDataStorageObject) {
@@ -768,8 +762,8 @@ The first method will be called whenever a message is received, while the second
 OneMessage.sharedInstance.delegate = self
 
 if OneChat.sharedInstance.isConnected() {
-self.senderId = OneChat.sharedInstance.xmppStream?.myJID.bare()
-self.senderDisplayName = OneChat.sharedInstance.xmppStream?.myJID.bare()
+	self.senderId = OneChat.sharedInstance.xmppStream?.myJID.bare()
+	self.senderDisplayName = OneChat.sharedInstance.xmppStream?.myJID.bare()
 }
 self.inputToolbar!.contentView!.leftBarButtonItem!.hidden = true
 self.collectionView!.collectionViewLayout.springinessEnabled = true
@@ -786,22 +780,22 @@ The completed ```viewWillAppear``` function should now look like this:
 
 ```swift
 override func viewWillAppear(animated: Bool) {
-if let recipient = recipient {
-navigationItem.rightBarButtonItems = []
-navigationItem.title = recipient.displayName
+	if let recipient = recipient {
+		navigationItem.rightBarButtonItems = []
+		navigationItem.title = recipient.displayName
 
-self.messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr)
-self.collectionView?.reloadData()
-} else {
-navigationItem.title = "New message"
+		self.messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr)
+		self.collectionView?.reloadData()
+	} else {
+		navigationItem.title = "New message"
 
-navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addRecipient"), animated: true)
+		navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addRecipient"), animated: true)
 
-if firstTime {
-firstTime = false
-addRecipient()
-}
-}
+		if firstTime {
+			firstTime = false
+			addRecipient()
+		}
+	}
 }
 ```
 
@@ -809,10 +803,10 @@ Now, edit ```didSelectContact```, and add the following:
 
 ```swift
 if !OneChats.knownUserForJid(jidStr: recipient.jidStr) {
-OneChats.addUserToChatList(jidStr: recipient.jidStr)
+	OneChats.addUserToChatList(jidStr: recipient.jidStr)
 } else {
-messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr)
-finishReceivingMessageAnimated(true)
+	messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr)
+	finishReceivingMessageAnimated(true)
 }
 ```
 
@@ -824,15 +818,15 @@ It will fetch the stored message of un user we just select form the roster.
 
 ```swift
 override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-let fullMessage = JSQMessage(senderId: OneChat.sharedInstance.xmppStream?.myJID.bare(), senderDisplayName: OneChat.sharedInstance.xmppStream?.myJID.bare(), date: NSDate(), text: text)
-messages.addObject(fullMessage)
+	let fullMessage = JSQMessage(senderId: OneChat.sharedInstance.xmppStream?.myJID.bare(), senderDisplayName: OneChat.sharedInstance.xmppStream?.myJID.bare(), date: NSDate(), text: text)
+	messages.addObject(fullMessage)
 
-if let recipient = recipient {
-OneMessage.sendMessage(text, to: recipient.jidStr, completionHandler: { (stream, message) -> Void in
-JSQSystemSoundPlayer.jsq_playMessageSentSound()
-self.finishSendingMessageAnimated(true)
-})
-}
+	if let recipient = recipient {
+		OneMessage.sendMessage(text, to: recipient.jidStr, completionHandler: { (stream, message) -> Void in
+			JSQSystemSoundPlayer.jsq_playMessageSentSound()
+			self.finishSendingMessageAnimated(true)
+		})
+	}
 }
 ```
 
