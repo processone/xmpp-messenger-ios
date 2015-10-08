@@ -10,11 +10,11 @@ import Foundation
 import XMPPFramework
 
 // MARK: Protocol
-protocol OnePresenceDelegate {
+public protocol OnePresenceDelegate {
 	func onePresenceDidReceivePresence()
 }
 
-class OnePresence: NSObject {
+public class OnePresence: NSObject {
 	var delegate: OnePresenceDelegate?
 	
 	// MARK: Singleton
@@ -41,13 +41,13 @@ class OnePresence: NSObject {
 	}
 	
 	class func goOffline() {
-		var presence = XMPPPresence(type: "unavailable")
+		var _ = XMPPPresence(type: "unavailable")
 	}
 }
 
 extension OnePresence: XMPPStreamDelegate {
 	
-	func xmppStream(sender: XMPPStream, didReceivePresence presence: XMPPPresence) {
+	public func xmppStream(sender: XMPPStream, didReceivePresence presence: XMPPPresence) {
 		print("did received presence : \(presence)")
 	}
 }

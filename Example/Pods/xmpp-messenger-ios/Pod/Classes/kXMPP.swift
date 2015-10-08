@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct kXMPP {
-	static let myJID: String = "kXMPPmyJID"
-	static let myPassword: String = "kXMPPmyPassword"
+public struct kXMPP {
+	public static let myJID: String = "kXMPPmyJID"
+	public static let myPassword: String = "kXMPPmyPassword"
 }

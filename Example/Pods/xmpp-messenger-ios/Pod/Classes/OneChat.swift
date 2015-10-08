@@ -8,12 +8,12 @@
 
 import Foundation
 import XMPPFramework
-import CoreData
 
-typealias XMPPStreamCompletionHandler = (shouldTrustPeer: Bool?) -> Void
-typealias OneChatAuthCompletionHandler = (stream: XMPPStream, error: DDXMLElement?) -> Void
+public typealias XMPPStreamCompletionHandler = (shouldTrustPeer: Bool?) -> Void
+public typealias OneChatAuthCompletionHandler = (stream: XMPPStream, error: DDXMLElement?) -> Void
+public typealias OneChatConnectCompletionHandler = (stream: XMPPStream, error: DDXMLElement?) -> Void
 
-protocol OneChatDelegate {
+public protocol OneChatDelegate {
 	func oneStream(sender: XMPPStream?, socketDidConnect socket: GCDAsyncSocket?)
 	func oneStreamDidConnect(sender: XMPPStream)
 	func oneStreamDidAuthenticate(sender: XMPPStream)
@@ -21,18 +21,18 @@ protocol OneChatDelegate {
 	func oneStreamDidDisconnect(sender: XMPPStream, withError error: NSError)
 }
 
-class OneChat: NSObject {
+public class OneChat: NSObject {
 	
 	var delegate: OneChatDelegate?
 	var window: UIWindow?
 	
-	var xmppStream: XMPPStream?
+	public var xmppStream: XMPPStream?
 	var xmppReconnect: XMPPReconnect?
 	var xmppRosterStorage = XMPPRosterCoreDataStorage()
 	var xmppRoster: XMPPRoster?
 	var xmppvCardStorage: XMPPvCardCoreDataStorage?
 	var xmppvCardTempModule: XMPPvCardTempModule?
-	var xmppvCardAvatarModule: XMPPvCardAvatarModule?
+	public var xmppvCardAvatarModule: XMPPvCardAvatarModule?
 	var xmppCapabilitiesStorage: XMPPCapabilitiesCoreDataStorage?
 	var xmppMessageDeliveryRecipts: XMPPMessageDeliveryReceipts?
 	var xmppCapabilities: XMPPCapabilities?
@@ -46,11 +46,12 @@ class OneChat: NSObject {
 	var isXmppConnected: Bool?
 	var password: String?
 	
-	var streamDidConnectCompletionBlock: OneChatAuthCompletionHandler?
+	var streamDidAuthenticateCompletionBlock: OneChatAuthCompletionHandler?
+	var streamDidConnectCompletionBlock: OneChatConnectCompletionHandler?
 	
 	// MARK: Singleton
 	
-	class var sharedInstance : OneChat {
+	public class var sharedInstance : OneChat {
 		struct OneChatSingleton {
 			static let instance = OneChat()
 		}
@@ -59,11 +60,11 @@ class OneChat: NSObject {
 	
 	// MARK: Functions
 	
-	class func stop() {
+	public class func stop() {
 		sharedInstance.teardownStream()
 	}
 	
-	class func start(archiving: Bool? = false, delegate: OneChatDelegate? = nil, completionHandler completion:OneChatAuthCompletionHandler) {
+	public class func start(archiving: Bool? = false, delegate: OneChatDelegate? = nil, completionHandler completion:OneChatAuthCompletionHandler) {
 		sharedInstance.setupStream()
 		
 		if archiving! {
@@ -72,10 +73,11 @@ class OneChat: NSObject {
 		if let delegate: OneChatDelegate = delegate {
 			sharedInstance.delegate = delegate
 		}
-		sharedInstance.streamDidConnectCompletionBlock = completion
+		OneRoster.sharedInstance.fetchedResultsController()?.delegate = OneRoster.sharedInstance
+		sharedInstance.streamDidAuthenticateCompletionBlock = completion
 	}
 	
-	 func setupStream() {
+	public func setupStream() {
 		// Setup xmpp stream
 		//
 		// The XMPPStream is the base class for all activity.
@@ -224,41 +226,77 @@ class OneChat: NSObject {
 	
 	// MARK: Connect / Disconnect
 	
-	func connect() -> Bool {
-		if !xmppStream!.isDisconnected() {
-			return true
+	public func connect(username username: String, password: String, completionHandler completion:OneChatConnectCompletionHandler) {
+		if isConnected() {
+			streamDidConnectCompletionBlock = completion
+			self.streamDidConnectCompletionBlock!(stream: self.xmppStream!, error: nil)
+			return
 		}
 		
-		let myJID = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
-		let myPassword = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
+		if (username == "kXMPPmyJID" && NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID) == "kXMPPmyJID") || (username == "kXMPPmyJID" && NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID) == nil) {
+			streamDidConnectCompletionBlock = completion
+			streamDidConnectCompletionBlock!(stream: self.xmppStream!, error: DDXMLElement(name: "Please set crendentials before trying to connect"))
+			return
+		}
 		
-		if let jid = myJID {
+		if username != "kXMPPmyJID" {
+			setValue(username, forKey: kXMPP.myJID)
+			setValue(password, forKey: kXMPP.myPassword)
+		}
+		
+		if let jid = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID) {
 			xmppStream?.myJID = XMPPJID.jidWithString(jid)
 		} else {
-			return false
+			streamDidConnectCompletionBlock = completion //was false
+			streamDidConnectCompletionBlock!(stream: self.xmppStream!, error: DDXMLElement(name: "Bad username"))
 		}
 		
-		if let password = myPassword {
+		if let password = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword) {
 			self.password = password
 		} else {
-			return false
+			streamDidConnectCompletionBlock = completion //was false
+			streamDidConnectCompletionBlock!(stream: self.xmppStream!, error: DDXMLElement(name: "Bad password"))
 		}
+		try! xmppStream!.connectWithTimeout(XMPPStreamTimeoutNone)
 		
-		do {
-			try xmppStream!.connectWithTimeout(XMPPStreamTimeoutNone)
-		} catch _ {
-			let alert = UIAlertController(title: "Error connecting", message: "See console for error details.", preferredStyle: UIAlertControllerStyle.Alert)
-			alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel, handler: nil))
-			UIApplication.sharedApplication().keyWindow!.rootViewController!.presentViewController(alert, animated: true, completion: nil)
-			
-			return false
-		}
-		return true;
+		streamDidConnectCompletionBlock = completion
 	}
 	
-	func disconnect() {
+	public func isConnected() -> Bool {
+		return xmppStream!.isConnected()
+	}
+	
+	public func disconnect() {
 		OnePresence.goOffline()
 		xmppStream?.disconnect()
+	}
+	
+	// Mark: Private function
+	
+	private func setValue(value: String, forKey key: String) {
+		if value.characters.count > 0 {
+			NSUserDefaults.standardUserDefaults().setObject(value, forKey: key)
+		} else {
+			NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
+		}
+	}
+	
+	// Mark: UITableViewCell helpers
+	
+	public func configurePhotoForCell(cell: UITableViewCell, user: XMPPUserCoreDataStorageObject) {
+		// Our xmppRosterStorage will cache photos as they arrive from the xmppvCardAvatarModule.
+		// We only need to ask the avatar module for a photo, if the roster doesn't have it.
+		if user.photo != nil {
+			cell.imageView!.image = user.photo!;
+		} else {
+			let photoData = xmppvCardAvatarModule?.photoDataForJID(user.jid)
+			
+			if let photoData = photoData {
+				cell.imageView!.image = UIImage(data: photoData)
+			} else {
+				cell.imageView!.image = UIImage(named: "defaultPerson")
+			}
+		}
 	}
 }
 
@@ -266,11 +304,11 @@ class OneChat: NSObject {
 
 extension OneChat: XMPPStreamDelegate {
 	
-	func xmppStream(sender: XMPPStream?, socketDidConnect socket: GCDAsyncSocket?) {
+	public func xmppStream(sender: XMPPStream?, socketDidConnect socket: GCDAsyncSocket?) {
 		delegate?.oneStream(sender, socketDidConnect: socket)
 	}
 	
-	func xmppStream(sender: XMPPStream?, willSecureWithSettings settings: NSMutableDictionary?) {
+	public func xmppStream(sender: XMPPStream?, willSecureWithSettings settings: NSMutableDictionary?) {
 		let expectedCertName: String? = xmppStream?.myJID.domain
 		
 		if expectedCertName != nil {
@@ -318,7 +356,7 @@ extension OneChat: XMPPStreamDelegate {
 	* And subsequent invocations of the completionHandler are ignored.
 	**/
 	
-	func xmppStream(sender: XMPPStream, didReceiveTrust trust: SecTrustRef, completionHandler:
+	public func xmppStream(sender: XMPPStream, didReceiveTrust trust: SecTrustRef, completionHandler:
 		XMPPStreamCompletionHandler) {
 			let bgQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 			
@@ -334,11 +372,11 @@ extension OneChat: XMPPStreamDelegate {
 			})
 	}
 	
-	func xmppStreamDidSecure(sender: XMPPStream) {
+	public func xmppStreamDidSecure(sender: XMPPStream) {
 		//did secure
 	}
 	
-	func xmppStreamDidConnect(sender: XMPPStream) {
+	public func xmppStreamDidConnect(sender: XMPPStream) {
 		isXmppConnected = true
 		
 		do {
@@ -348,16 +386,18 @@ extension OneChat: XMPPStreamDelegate {
 		}
 	}
 	
-	func xmppStreamDidAuthenticate(sender: XMPPStream) {
+	public func xmppStreamDidAuthenticate(sender: XMPPStream) {
+		streamDidAuthenticateCompletionBlock!(stream: sender, error: nil)
 		streamDidConnectCompletionBlock!(stream: sender, error: nil)
 		OnePresence.goOnline()
 	}
 	
-	func xmppStream(sender: XMPPStream, didNotAuthenticate error: DDXMLElement) {
+	public func xmppStream(sender: XMPPStream, didNotAuthenticate error: DDXMLElement) {
+		streamDidAuthenticateCompletionBlock!(stream: sender, error: error)
 		streamDidConnectCompletionBlock!(stream: sender, error: error)
 	}
 	
-	func xmppStreamDidDisconnect(sender: XMPPStream, withError error: NSError) {
+	public func xmppStreamDidDisconnect(sender: XMPPStream, withError error: NSError) {
 		delegate?.oneStreamDidDisconnect(sender, withError: error)
 	}
 }

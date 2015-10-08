@@ -15,6 +15,8 @@
 #import "JSQMessagesTimestampFormatter.h"
 #import "JSQMessagesToolbarButtonFactory.h"
 #import "JSQMessages.h"
+#import "JSQMessagesBubbleSizeCalculating.h"
+#import "JSQMessagesBubblesSizeCalculator.h"
 #import "JSQMessagesCollectionViewFlowLayout.h"
 #import "JSQMessagesCollectionViewFlowLayoutInvalidationContext.h"
 #import "JSQMessagesCollectionViewLayoutAttributes.h"

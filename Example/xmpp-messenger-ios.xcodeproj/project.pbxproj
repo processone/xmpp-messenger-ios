@@ -7,12 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9042BFC0001E4749BA4C5783 /* Pods_XMPP_Messenger_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1D67A415BF6847F0BCE37B /* Pods_XMPP_Messenger_iOS.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		6E7371DD571D0510043A5D3F /* Pods_XMPP_Messenger_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9222E627CA022D899172BD4 /* Pods_XMPP_Messenger_iOS.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DA6B54091B9F15B1006E84AF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B54081B9F15B1006E84AF /* AppDelegate.swift */; };
 		DA6B540E1B9F15B1006E84AF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA6B540C1B9F15B1006E84AF /* Main.storyboard */; };
 		DA6B54101B9F15B1006E84AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA6B540F1B9F15B1006E84AF /* Assets.xcassets */; };
 		DA6B54241B9F17B4006E84AF /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B541A1B9F17B4006E84AF /* ChatViewController.swift */; };
-		DA6B54251B9F17B4006E84AF /* kXMPP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B541B1B9F17B4006E84AF /* kXMPP.swift */; };
 		DA6B542C1B9F17B4006E84AF /* OpenChatsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B54221B9F17B4006E84AF /* OpenChatsTableViewController.swift */; };
 		DA6B542D1B9F17B4006E84AF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B54231B9F17B4006E84AF /* SettingsViewController.swift */; };
 		DA6B542F1B9F17CF006E84AF /* ContactListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6B542E1B9F17CF006E84AF /* ContactListTableViewController.swift */; };
@@ -20,20 +19,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		02747EE093FB13F62ED03243 /* Pods-XMPP-Messenger-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XMPP-Messenger-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-XMPP-Messenger-iOS/Pods-XMPP-Messenger-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		4D1D67A415BF6847F0BCE37B /* Pods_XMPP_Messenger_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XMPP_Messenger_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		81F7D2E70F55508312CCE317 /* Pods-XMPP-Messenger-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XMPP-Messenger-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XMPP-Messenger-iOS/Pods-XMPP-Messenger-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		3107B7F4F47A43E706804426 /* Pods-XMPP-Messenger-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XMPP-Messenger-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XMPP-Messenger-iOS/Pods-XMPP-Messenger-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A9222E627CA022D899172BD4 /* Pods_XMPP_Messenger_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XMPP_Messenger_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA6B54051B9F15B1006E84AF /* XMPP-Messenger-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "XMPP-Messenger-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA6B54081B9F15B1006E84AF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA6B540D1B9F15B1006E84AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DA6B540F1B9F15B1006E84AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DA6B54141B9F15B1006E84AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA6B541A1B9F17B4006E84AF /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
-		DA6B541B1B9F17B4006E84AF /* kXMPP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = kXMPP.swift; sourceTree = "<group>"; };
 		DA6B54221B9F17B4006E84AF /* OpenChatsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenChatsTableViewController.swift; sourceTree = "<group>"; };
 		DA6B54231B9F17B4006E84AF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		DA6B542E1B9F17CF006E84AF /* ContactListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListTableViewController.swift; sourceTree = "<group>"; };
 		DA6B54321B9F2D86006E84AF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		E1621F587E8732E5BFAE233B /* Pods-XMPP-Messenger-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XMPP-Messenger-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-XMPP-Messenger-iOS/Pods-XMPP-Messenger-iOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,18 +40,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA6B54331B9F2D86006E84AF /* CoreData.framework in Frameworks */,
-				9042BFC0001E4749BA4C5783 /* Pods_XMPP_Messenger_iOS.framework in Frameworks */,
+				6E7371DD571D0510043A5D3F /* Pods_XMPP_Messenger_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1764DF190810FA163250A711 /* Pods */ = {
+		0E4D2D84BC7A5DD603EFA591 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				81F7D2E70F55508312CCE317 /* Pods-XMPP-Messenger-iOS.debug.xcconfig */,
-				02747EE093FB13F62ED03243 /* Pods-XMPP-Messenger-iOS.release.xcconfig */,
+				3107B7F4F47A43E706804426 /* Pods-XMPP-Messenger-iOS.debug.xcconfig */,
+				E1621F587E8732E5BFAE233B /* Pods-XMPP-Messenger-iOS.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -62,7 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				DA6B54321B9F2D86006E84AF /* CoreData.framework */,
-				4D1D67A415BF6847F0BCE37B /* Pods_XMPP_Messenger_iOS.framework */,
+				A9222E627CA022D899172BD4 /* Pods_XMPP_Messenger_iOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -73,7 +71,7 @@
 				DA6B54071B9F15B1006E84AF /* XMPP-Messenger-iOS */,
 				DA6B54061B9F15B1006E84AF /* Products */,
 				849A627B95587B398E841CD1 /* Frameworks */,
-				1764DF190810FA163250A711 /* Pods */,
+				0E4D2D84BC7A5DD603EFA591 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,7 +99,6 @@
 			children = (
 				DA6B54081B9F15B1006E84AF /* AppDelegate.swift */,
 				DA6B541A1B9F17B4006E84AF /* ChatViewController.swift */,
-				DA6B541B1B9F17B4006E84AF /* kXMPP.swift */,
 				DA6B54221B9F17B4006E84AF /* OpenChatsTableViewController.swift */,
 				DA6B542E1B9F17CF006E84AF /* ContactListTableViewController.swift */,
 				DA6B54231B9F17B4006E84AF /* SettingsViewController.swift */,
@@ -116,12 +113,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DA6B54171B9F15B1006E84AF /* Build configuration list for PBXNativeTarget "XMPP-Messenger-iOS" */;
 			buildPhases = (
-				FCB73D10C8D130E6AD6A3F29 /* Check Pods Manifest.lock */,
+				57A32837A3DC00656BD881E9 /* Check Pods Manifest.lock */,
 				DA6B54011B9F15B1006E84AF /* Sources */,
 				DA6B54021B9F15B1006E84AF /* Frameworks */,
 				DA6B54031B9F15B1006E84AF /* Resources */,
-				88D963FECECE8EE9599F9631 /* Embed Pods Frameworks */,
-				145395AF640779D8AE129B5F /* Copy Pods Resources */,
+				23B40A71CB20D13E6AB1DA83 /* Embed Pods Frameworks */,
+				068CB797DC4E0142EE129350 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -178,13 +175,12 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		145395AF640779D8AE129B5F /* Copy Pods Resources */ = {
+		068CB797DC4E0142EE129350 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"",
 			);
 			name = "Copy Pods Resources";
 			outputPaths = (
@@ -194,7 +190,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-XMPP-Messenger-iOS/Pods-XMPP-Messenger-iOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		88D963FECECE8EE9599F9631 /* Embed Pods Frameworks */ = {
+		23B40A71CB20D13E6AB1DA83 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -209,7 +205,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-XMPP-Messenger-iOS/Pods-XMPP-Messenger-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FCB73D10C8D130E6AD6A3F29 /* Check Pods Manifest.lock */ = {
+		57A32837A3DC00656BD881E9 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -234,7 +230,6 @@
 				DA6B542C1B9F17B4006E84AF /* OpenChatsTableViewController.swift in Sources */,
 				DA6B54241B9F17B4006E84AF /* ChatViewController.swift in Sources */,
 				DA6B542F1B9F17CF006E84AF /* ContactListTableViewController.swift in Sources */,
-				DA6B54251B9F17B4006E84AF /* kXMPP.swift in Sources */,
 				DA6B54091B9F15B1006E84AF /* AppDelegate.swift in Sources */,
 				DA6B542D1B9F17B4006E84AF /* SettingsViewController.swift in Sources */,
 			);
@@ -341,7 +336,7 @@
 		};
 		DA6B54181B9F15B1006E84AF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 81F7D2E70F55508312CCE317 /* Pods-XMPP-Messenger-iOS.debug.xcconfig */;
+			baseConfigurationReference = 3107B7F4F47A43E706804426 /* Pods-XMPP-Messenger-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -357,7 +352,7 @@
 		};
 		DA6B54191B9F15B1006E84AF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 02747EE093FB13F62ED03243 /* Pods-XMPP-Messenger-iOS.release.xcconfig */;
+			baseConfigurationReference = E1621F587E8732E5BFAE233B /* Pods-XMPP-Messenger-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

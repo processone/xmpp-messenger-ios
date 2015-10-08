@@ -1,6 +1,6 @@
 ![JSQMessagesViewController banner](https://raw.githubusercontent.com/jessesquires/JSQMessagesViewController/develop/Assets/jsq_messages_banner.png)
 
-[![Build Status](https://secure.travis-ci.org/jessesquires/JSQMessagesViewController.svg)](http://travis-ci.org/jessesquires/JSQMessagesViewController) [![Version Status](http://img.shields.io/cocoapods/v/JSQMessagesViewController.png)][docsLink] [![license MIT](http://img.shields.io/badge/license-MIT-orange.png)][mitLink]
+[![Build Status](https://secure.travis-ci.org/jessesquires/JSQMessagesViewController.svg)](http://travis-ci.org/jessesquires/JSQMessagesViewController) [![Version Status](http://img.shields.io/cocoapods/v/JSQMessagesViewController.png)][docsLink] [![license MIT](http://img.shields.io/badge/license-MIT-orange.png)][mitLink] [![codecov.io](https://img.shields.io/codecov/c/github/jessesquires/JSQMessagesViewController.svg)](http://codecov.io/github/jessesquires/JSQMessagesViewController) ![Platform](https://cocoapod-badges.herokuapp.com/p/JSQMessagesViewController/badge.png)
 
 ![Screenshot0][img0] &nbsp;&nbsp; ![Screenshot1][img1] &nbsp;&nbsp; 
 
@@ -152,7 +152,7 @@ Without CocoaPods:
 
 ## Questions & Help
 
-There's [a label](https://github.com/jessesquires/JSQMessagesViewController/labels/questions%20&%20help) for that. Before asking a question, see if it has [already been answered](https://github.com/jessesquires/JSQMessagesViewController/issues?q=label%3A%22questions+%26+help%22+is%3Aclosed). **Please only ask questions that are _specific_ to this library.**
+There's [a label](https://github.com/jessesquires/JSQMessagesViewController/labels/questions%20&%20help) for that. Before asking a question, see if it has [already been answered](https://github.com/jessesquires/JSQMessagesViewController/issues?q=label%3A%22questions+%26+help%22+is%3Aclosed). There's also a tag on [StackOverflow](http://stackoverflow.com/questions/tagged/jsqmessagesviewcontroller), which is often the more appropriate place for questions and help. **Please only ask questions that are _specific_ to this library.**
 
 >**NOTE:** Please try to avoid emailing me with questions. I prefer to keep questions and their answers open-source.
 
@@ -172,7 +172,7 @@ Read the fucking docs, [available here][docsLink] via [@CocoaDocs](https://twitt
 
 ## Contribute
 
-Please follow these sweet [contribution guidelines](https://github.com/jessesquires/HowToContribute).
+Please follow these fucking sweet [contribution guidelines](https://github.com/jessesquires/JSQMessagesViewController/blob/develop/CONTRIBUTING.md).
 
 ## Donate
 
@@ -237,6 +237,7 @@ Feel free to read [my blog](http://bit.ly/jsqsf) and check out my work at [Hexed
 * [NotificationChat](https://github.com/relatedcode/NotificationChat)
 * [RealtimeChat](https://github.com/relatedcode/RealtimeChat)
 * [Bazar](https://itunes.apple.com/ru/app/bazar-talk-about-everything/id885453058)
+* [Roomie](https://itunes.apple.com/us/app/roomie-find-your-roomie/id962585201)
 * *Your app here*
 
 ## License

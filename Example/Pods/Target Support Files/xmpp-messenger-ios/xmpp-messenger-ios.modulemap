@@ -1,0 +1,6 @@
+framework module xmpp_messenger_ios {
+  umbrella header "xmpp-messenger-ios-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -88,6 +88,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-XMPP-Messenger-iOS/JSQMessagesViewController.framework"
   install_framework "Pods-XMPP-Messenger-iOS/JSQSystemSoundPlayer.framework"
   install_framework "Pods-XMPP-Messenger-iOS/XMPPFramework.framework"
+  install_framework "Pods-XMPP-Messenger-iOS/xmpp_messenger_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-XMPP-Messenger-iOS/CocoaAsyncSocket.framework"
@@ -96,4 +97,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-XMPP-Messenger-iOS/JSQMessagesViewController.framework"
   install_framework "Pods-XMPP-Messenger-iOS/JSQSystemSoundPlayer.framework"
   install_framework "Pods-XMPP-Messenger-iOS/XMPPFramework.framework"
+  install_framework "Pods-XMPP-Messenger-iOS/xmpp_messenger_ios.framework"
 fi

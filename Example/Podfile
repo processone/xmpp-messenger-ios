@@ -3,6 +3,6 @@
 use_frameworks!
 
 target 'XMPP-Messenger-iOS' do
-pod 'xmpp-messenger-ios', :path => '/Users/paul/Desktop/xmpp-messenger-ios__POD/xmpp-messenger-ios.podspec'
+pod 'xmpp-messenger-ios'
 end
 

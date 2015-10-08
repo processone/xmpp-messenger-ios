@@ -162,7 +162,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 ## xmpp-messenger-ios
 
-Copyright (c) 2015 Paul <pmglemaire@gmail.com>
+Copyright (c) 2015 ProcessOne <pmglemaire@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

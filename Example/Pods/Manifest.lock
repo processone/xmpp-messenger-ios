@@ -6,13 +6,14 @@ PODS:
   - CocoaLumberjack/Extensions (1.9.2):
     - CocoaLumberjack/Core
   - FMDB (1.5.1)
-  - JSQMessagesViewController (7.1.0):
+  - JSQMessagesViewController (7.2.0):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - xmpp-messenger-ios (0.1.0):
+  - xmpp-messenger-ios (1.0.1):
     - FMDB (~> 1.0)
     - JSQMessagesViewController
-    - XMPPFramework (~> 3.6.6)
+    - JSQSystemSoundPlayer (~> 2.0)
+    - XMPPFramework
   - XMPPFramework (3.6.6):
     - XMPPFramework/Authentication (= 3.6.6)
     - XMPPFramework/BandwidthMonitor (= 3.6.6)
@@ -157,19 +158,15 @@ PODS:
     - XMPPFramework/Core
 
 DEPENDENCIES:
-  - xmpp-messenger-ios (from `/Users/paul/Desktop/xmpp-messenger-ios__POD/xmpp-messenger-ios.podspec`)
-
-EXTERNAL SOURCES:
-  xmpp-messenger-ios:
-    :path: /Users/paul/Desktop/xmpp-messenger-ios__POD/xmpp-messenger-ios.podspec
+  - xmpp-messenger-ios
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: f5783bdedd232d91b89769bc4b5a1580aed518ad
   CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
   FMDB: 0c3eed7342fdf9dc03b8fe3d8de8e7a9f08bfacc
-  JSQMessagesViewController: ca11f86fa68ca70835f05e169df9244147c1dc40
+  JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  xmpp-messenger-ios: 20c65b205f9b178c02e5d5bfec097df006267629
+  xmpp-messenger-ios: e1a81270a0d62f1307c86b493209f01853e82e6b
   XMPPFramework: b06c210b0b71c08aa41a646bffd2021fa43bb43b
 
 COCOAPODS: 0.39.0.beta.4
