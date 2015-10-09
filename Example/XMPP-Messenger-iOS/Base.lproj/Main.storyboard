@@ -148,6 +148,7 @@
                     <connections>
                         <outlet property="passwordTextField" destination="Uq5-UO-ybZ" id="JcQ-cR-DgE"/>
                         <outlet property="usernameTextField" destination="aZV-G8-SVj" id="t2A-Aq-UaC"/>
+                        <outlet property="validateButton" destination="hZd-NM-wEg" id="Efo-Jv-8vq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9GK-1D-OjC" userLabel="First Responder" sceneMemberID="firstResponder"/>
