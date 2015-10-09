@@ -70,6 +70,7 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 		let user = OneChats.getChatsList().objectAtIndex(indexPath.row) as! XMPPUserCoreDataStorageObject
 		
 		cell!.textLabel!.text = user.displayName
+		cell!.detailTextLabel?.hidden = true
 		
 		OneChat.sharedInstance.configurePhotoForCell(cell!, user: user)
 		

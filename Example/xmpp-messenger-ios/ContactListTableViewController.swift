@@ -98,6 +98,7 @@ class ContactListTableViewController: UITableViewController, OneRosterDelegate {
 		let user = OneRoster.userFromRosterAtIndexPath(indexPath: indexPath)
 		
 		cell!.textLabel!.text = user.displayName;
+		cell!.detailTextLabel?.hidden = true
 		
 		if user.unreadMessages.intValue > 0 {
 			cell!.backgroundColor = .orangeColor()
