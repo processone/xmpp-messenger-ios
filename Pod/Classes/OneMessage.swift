@@ -120,7 +120,10 @@ public class OneMessage: NSObject {
 extension OneMessage: XMPPStreamDelegate {
 	
 	public func xmppStream(sender: XMPPStream, didSendMessage message: XMPPMessage) {
-		OneMessage.sharedInstance.didSendMessageCompletionBlock!(stream: sender, message: message)
+		if let completion = OneMessage.sharedInstance.didSendMessageCompletionBlock {
+			completion(stream: sender, message: message)
+		}
+		//OneMessage.sharedInstance.didSendMessageCompletionBlock!(stream: sender, message: message)
 	}
 	
 	public func xmppStream(sender: XMPPStream, didReceiveMessage message: XMPPMessage) {
