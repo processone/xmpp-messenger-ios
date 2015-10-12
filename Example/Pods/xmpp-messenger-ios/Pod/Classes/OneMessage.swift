@@ -146,6 +146,38 @@ public class OneMessage: NSObject {
 		}
 		return retrievedMessages
 	}
+	
+	public func deleteMessagesFrom(jid jid: String, messages: NSArray) {
+		messages.enumerateObjectsUsingBlock { (message, idx, stop) -> Void in
+			let moc = self.xmppMessageStorage?.mainThreadManagedObjectContext
+			let entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
+			let request = NSFetchRequest()
+			let predicateFormat = "messageStr like %@ "
+			let predicate = NSPredicate(format: predicateFormat, message as! String)
+			
+			request.predicate = predicate
+			request.entity = entityDescription
+			
+			do {
+				let results = try moc?.executeFetchRequest(request)
+				
+				for message in results! {
+					var element: DDXMLElement!
+					do {
+						element = try DDXMLElement(XMLString: message.messageStr)
+					} catch _ {
+						element = nil
+					}
+					
+					if element.attributeStringValueForName("messageStr") == message as! String {
+						moc?.deleteObject(message as! NSManagedObject)
+					}
+				}
+			} catch _ {
+				//catch fetch error here
+			}
+		}
+	}
 }
 
 extension OneMessage: XMPPStreamDelegate {

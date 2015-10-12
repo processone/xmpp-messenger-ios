@@ -47,12 +47,12 @@ public class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 			let predicate = NSPredicate(format: predicateFormat, predicateString)
 			request.predicate = predicate
 			request.entity = entityDescription
-			
+
 			do {
 				let results = try moc?.executeFetchRequest(request)
 				var _: XMPPMessageArchiving_Message_CoreDataObject
 				let archivedMessage = NSMutableArray()
-				
+
 				for message in results! {
 					var element: DDXMLElement!
 					do {
@@ -133,10 +133,69 @@ public class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 		}
 	}
 	
+	public class func removeUserAtIndexPath(indexPath: NSIndexPath) {
+		let user = OneChats.getChatsList().objectAtIndex(indexPath.row) as! XMPPUserCoreDataStorageObject
+		
+		sharedInstance.removeMyUserActivityFromCoreDataStorageWith(user: user)
+		sharedInstance.removeUserActivityFromCoreDataStorage(user: user)
+		removeUserFromChatList(user: user)
+	}
+	
 	public class func removeUserFromChatList(user user: XMPPUserCoreDataStorageObject) {
 		if sharedInstance.chatList.containsObject(user) {
 			sharedInstance.chatList.removeObjectIdenticalTo(user)
 			sharedInstance.chatListBare.removeObjectIdenticalTo(user.jidStr)
+		}
+	}
+
+	func removeUserActivityFromCoreDataStorage(user user: XMPPUserCoreDataStorageObject) {
+		let moc = OneMessage.sharedInstance.xmppMessageStorage?.mainThreadManagedObjectContext
+		let entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
+		let request = NSFetchRequest()
+		let predicateFormat = "bareJidStr like %@ "
+		
+		let predicate = NSPredicate(format: predicateFormat, user.jidStr)
+		request.predicate = predicate
+		request.entity = entityDescription
+			
+		do {
+			let results = try moc?.executeFetchRequest(request)
+			for message in results! {
+				moc?.deleteObject(message as! NSManagedObject)
+			}
+		} catch _ {
+		}
+	}
+	
+	func removeMyUserActivityFromCoreDataStorageWith(user user: XMPPUserCoreDataStorageObject) {
+		let moc = OneMessage.sharedInstance.xmppMessageStorage?.mainThreadManagedObjectContext
+		let entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
+		let request = NSFetchRequest()
+		let predicateFormat = "streamBareJidStr like %@ "
+		
+		if let predicateString = NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID") {
+			let predicate = NSPredicate(format: predicateFormat, predicateString)
+			request.predicate = predicate
+			request.entity = entityDescription
+	
+			do {
+				let results = try moc?.executeFetchRequest(request)
+				for message in results! {
+					var element: DDXMLElement!
+					do {
+						element = try DDXMLElement(XMLString: message.messageStr)
+					} catch _ {
+						element = nil
+					}
+					
+					if element.attributeStringValueForName("to") != NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")! && !(element.attributeStringValueForName("to") as NSString).containsString(NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")!) {
+						if element.attributeStringValueForName("to") == user.jidStr {
+							moc?.deleteObject(message as! NSManagedObject)
+						}
+					}
+				}
+			} catch _ {
+			}
 		}
 	}
 }

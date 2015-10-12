@@ -90,6 +90,11 @@ public class OneRoster: NSObject, NSFetchedResultsControllerDelegate {
 		}
 	}
 	
+	public class func removeUserFromRosterAtIndexPath(indexPath indexPath: NSIndexPath) {
+		let user = userFromRosterAtIndexPath(indexPath: indexPath)
+		sharedInstance.fetchedResultsControllerVar?.managedObjectContext.deleteObject(user)
+	}
+	
 	public func controllerDidChangeContent(controller: NSFetchedResultsController) {
 		delegate?.oneRosterContentChanged(controller)
 	}

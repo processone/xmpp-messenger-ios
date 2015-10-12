@@ -80,6 +80,14 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 		return cell!
 	}
 	
+	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+		if editingStyle == UITableViewCellEditingStyle.Delete {
+			OneChats.removeUserAtIndexPath(indexPath)
+			tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+//			tableView.reloadData()
+		}
+	}
+	
 	// Mark: Segue support
 	
 	override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
