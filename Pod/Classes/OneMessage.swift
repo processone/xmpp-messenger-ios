@@ -66,6 +66,34 @@ public class OneMessage: NSObject {
 		OneChat.sharedInstance.xmppStream?.sendElement(completeMessage)
 	}
 	
+	public class func sendIsComposingMessage(recipient: String, completionHandler completion:OneChatMessageCompletionHandler) {
+		if recipient.characters.count > 0 {
+			let message = DDXMLElement.elementWithName("message") as! DDXMLElement
+			message.addAttributeWithName("type", stringValue: "chat")
+			message.addAttributeWithName("to", stringValue: recipient)
+			
+			let composing = DDXMLElement.elementWithName("composing", stringValue: "http://jabber.org/protocol/chatstates") as! DDXMLElement
+			message.addChild(composing)
+			
+			sharedInstance.didSendMessageCompletionBlock = completion
+			OneChat.sharedInstance.xmppStream?.sendElement(message)
+		}
+	}
+	
+	public class func sendIsNotComposingMessage(recipient: String, completionHandler completion:OneChatMessageCompletionHandler) {
+		if recipient.characters.count > 0 {
+			let message = DDXMLElement.elementWithName("message") as! DDXMLElement
+			message.addAttributeWithName("type", stringValue: "chat")
+			message.addAttributeWithName("to", stringValue: recipient)
+			
+			let active = DDXMLElement.elementWithName("active", stringValue: "http://jabber.org/protocol/chatstates") as! DDXMLElement
+			message.addChild(active)
+			
+			sharedInstance.didSendMessageCompletionBlock = completion
+			OneChat.sharedInstance.xmppStream?.sendElement(message)
+		}
+	}
+	
 	public func loadArchivedMessagesFrom(jid jid: String) -> NSMutableArray {
 		let moc = xmppMessageStorage?.mainThreadManagedObjectContext
 		let entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
