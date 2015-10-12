@@ -17,6 +17,10 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	var messages = NSMutableArray()
 	var recipient: XMPPUserCoreDataStorageObject?
 	var firstTime = true
+	var lastSeenText: String?
+    
+    	let width = UIScreen.mainScreen().bounds.width
+    	var userDetails = UIView?()
 	
 	// Mark: Life Cycle
 	
@@ -37,15 +41,14 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	override func viewWillAppear(animated: Bool) {
 		if let recipient = recipient {
 			self.navigationItem.rightBarButtonItems = []
-			navigationItem.title = recipient.displayName
+
+			self.lastActivity()
 			
 			dispatch_async(dispatch_get_main_queue(), { () -> Void in
 				self.messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr)
 				self.finishReceivingMessageAnimated(true)
 			})
 		} else {
-			navigationItem.title = "New message"
-			
 			self.inputToolbar!.contentView!.rightBarButtonItem!.enabled = false
 			self.navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addRecipient"), animated: true)
 			if firstTime {
@@ -61,6 +64,10 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		self.scrollToBottomAnimated(true)
 	}
 	
+	override func viewWillDisappear(animated: Bool) {
+        	userDetails?.removeFromSuperview()
+    	}
+	
 	// Mark: Private methods
 	
 	func addRecipient() {
@@ -73,7 +80,6 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	
 	func didSelectContact(recipient: XMPPUserCoreDataStorageObject) {
 		self.recipient = recipient
-		navigationItem.title = recipient.displayName
 		
 		if !OneChats.knownUserForJid(jidStr: recipient.jidStr) {
 			OneChats.addUserToChatList(jidStr: recipient.jidStr)
@@ -277,4 +283,54 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
+	
+	func lastActivity() {
+        	OneLastActivity.sendLastActivityQueryToJID((recipient?.jidStr)!, sender: OneChat.sharedInstance.xmppLastActivity) { (response, forJID, error) -> Void in
+            		if let timeInSeconds = response?.lastActivitySeconds() {
+                		let time: NSNumber = NSNumber(unsignedLong: timeInSeconds)
+                
+                	if timeInSeconds == 0 {
+                    		self.lastSeenText = "online"
+                	}
+                
+                	if timeInSeconds > 0 && timeInSeconds < 60 {
+                    		self.lastSeenText = "last seen \(timeInSeconds) seconds ago"
+                	}
+                
+                	if timeInSeconds > 59 && timeInSeconds < 3600 {
+                    		self.lastSeenText = "last seen \(timeInSeconds / 60) minutes ago"
+                	}
+                
+                	if timeInSeconds > 3600 && timeInSeconds < 86400 {
+                		self.lastSeenText = "last seen \(timeInSeconds / 3600) hours ago"
+                	}
+                
+                	if timeInSeconds > 86400 {
+                    		let date = NSDate(timeIntervalSinceNow:-time.doubleValue)
+                    		let dateFormatter = NSDateFormatter()
+                    
+                    		dateFormatter.dateFormat = "dd.MM.yyyy"
+                    		self.lastSeenText = "last seen on \(dateFormatter.stringFromDate(date))"
+                	}
+            	}
+            	self.addValues(self.lastSeenText!)
+        }
+    }
+    
+    func addValues(text: String) {
+        userDetails = UIView(frame: CGRect(x: (width - 140) / 2, y: 25, width: 140, height: 40))
+        
+        let displayName = UILabel(frame: CGRect(x: 0, y: 0, width: 140, height: 17))
+        displayName.text = self.recipient?.displayName
+        displayName.textAlignment = .Center
+        userDetails!.addSubview(displayName)
+        
+        let lastSeen = UILabel(frame: CGRect(x: 0, y: 20, width: 140, height: 12))
+        lastSeen.text = text
+        lastSeen.font = UIFont.systemFontOfSize(10)
+        lastSeen.textAlignment = .Center
+        userDetails!.addSubview(lastSeen)
+        
+        self.navigationController?.view.addSubview(userDetails!)
+    }
 }
