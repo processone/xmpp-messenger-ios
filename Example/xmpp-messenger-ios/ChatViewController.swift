@@ -85,6 +85,26 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	
 	// Mark: JSQMessagesViewController method overrides
 	
+	override func textViewDidBeginEditing(textView: UITextView) {
+		super.textViewDidBeginEditing(textView)
+		
+		if let recipient = recipient {
+			OneMessage.sendIsComposingMessage(recipient.jidStr, completionHandler: { (stream, message) -> Void in
+				//compose sent
+			})
+		}
+	}
+	
+	override func textViewDidEndEditing(textView: UITextView) {
+		super.textViewDidEndEditing(textView)
+	
+		if let recipient = recipient {
+			OneMessage.sendIsNotComposingMessage(recipient.jidStr, completionHandler: { (stream, message) -> Void in
+				//end compose sent
+			})
+		}
+	}
+	
 	override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
 		let fullMessage = JSQMessage(senderId: OneChat.sharedInstance.xmppStream?.myJID.bare(), senderDisplayName: OneChat.sharedInstance.xmppStream?.myJID.bare(), date: NSDate(), text: text)
 		messages.addObject(fullMessage)
@@ -224,6 +244,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
 		return 0.0
 	}
+
 	
 	// Mark: Chat message Delegates
 	

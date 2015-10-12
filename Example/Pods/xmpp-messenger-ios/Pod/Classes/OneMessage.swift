@@ -49,7 +49,7 @@ public class OneMessage: NSObject {
 	
 	// MARK: public methods
 	
-	public class func sendMessage(message: String, to receiver: String, completionHandler completion:OneChatMessageCompletionHandler) {
+	public class func sendMessage(message: String, to recipient: String, completionHandler completion:OneChatMessageCompletionHandler) {
 		let body = DDXMLElement.elementWithName("body") as! DDXMLElement
 		let messageID = OneChat.sharedInstance.xmppStream?.generateUUID()
 		
@@ -59,11 +59,42 @@ public class OneMessage: NSObject {
 		
 		completeMessage.addAttributeWithName("id", stringValue: messageID)
 		completeMessage.addAttributeWithName("type", stringValue: "chat")
-		completeMessage.addAttributeWithName("to", stringValue: receiver)
+		completeMessage.addAttributeWithName("to", stringValue: recipient)
 		completeMessage.addChild(body)
+		
+		let active = DDXMLElement.elementWithName("active", stringValue: "http://jabber.org/protocol/chatstates") as! DDXMLElement
+		completeMessage.addChild(active)
 		
 		sharedInstance.didSendMessageCompletionBlock = completion
 		OneChat.sharedInstance.xmppStream?.sendElement(completeMessage)
+	}
+	
+	public class func sendIsComposingMessage(recipient: String, completionHandler completion:OneChatMessageCompletionHandler) {
+		if recipient.characters.count > 0 {
+			let message = DDXMLElement.elementWithName("message") as! DDXMLElement
+			message.addAttributeWithName("type", stringValue: "chat")
+			message.addAttributeWithName("to", stringValue: recipient)
+			
+			let composing = DDXMLElement.elementWithName("composing", stringValue: "http://jabber.org/protocol/chatstates") as! DDXMLElement
+			message.addChild(composing)
+			
+			sharedInstance.didSendMessageCompletionBlock = completion
+			OneChat.sharedInstance.xmppStream?.sendElement(message)
+		}
+	}
+	
+	public class func sendIsNotComposingMessage(recipient: String, completionHandler completion:OneChatMessageCompletionHandler) {
+		if recipient.characters.count > 0 {
+			let message = DDXMLElement.elementWithName("message") as! DDXMLElement
+			message.addAttributeWithName("type", stringValue: "chat")
+			message.addAttributeWithName("to", stringValue: recipient)
+			
+			let active = DDXMLElement.elementWithName("active", stringValue: "http://jabber.org/protocol/chatstates") as! DDXMLElement
+			message.addChild(active)
+			
+			sharedInstance.didSendMessageCompletionBlock = completion
+			OneChat.sharedInstance.xmppStream?.sendElement(message)
+		}
 	}
 	
 	public func loadArchivedMessagesFrom(jid jid: String) -> NSMutableArray {
@@ -129,7 +160,6 @@ extension OneMessage: XMPPStreamDelegate {
 		if !OneChats.knownUserForJid(jidStr: user.jidStr) {
 			OneChats.addUserToChatList(jidStr: user.jidStr)
 		}
-		
 		if message.isChatMessageWithBody() {
 			OneMessage.sharedInstance.delegate?.oneStream(sender, didReceiveMessage: message, from: user)
 		} else {
