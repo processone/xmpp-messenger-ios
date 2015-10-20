@@ -40,16 +40,16 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 			self.navigationItem.rightBarButtonItems = []
 			
 			if userDetails == nil {
-                navigationItem.title = recipient.displayName
-            }
+                		navigationItem.title = recipient.displayName
+            		}
             
-            // Mark: Adding LastActivity functionality to NavigationBar
-            OneLastActivity.sendLastActivityQueryToJID((recipient.jidStr), sender: OneChat.sharedInstance.xmppLastActivity) { (response, forJID, error) -> Void in
-                let lastActivityResponse = OneLastActivity.sharedInstance.getLastActivityFrom((response?.lastActivitySeconds())!)
+            		// Mark: Adding LastActivity functionality to NavigationBar
+            		OneLastActivity.sendLastActivityQueryToJID((recipient.jidStr), sender: OneChat.sharedInstance.xmppLastActivity) { (response, forJID, error) -> Void in
+                		let lastActivityResponse = OneLastActivity.sharedInstance.getLastActivityFrom((response?.lastActivitySeconds())!)
                 
-                self.userDetails = OneLastActivity.sharedInstance.addLastActivityLabelToNavigationBar(lastActivityResponse, displayName: recipient.displayName)
-                self.navigationController!.view.addSubview(self.userDetails!)
-            }
+                		self.userDetails = OneLastActivity.sharedInstance.addLastActivityLabelToNavigationBar(lastActivityResponse, displayName: recipient.displayName)
+                		self.navigationController!.view.addSubview(self.userDetails!)
+            		}
 			
 			dispatch_async(dispatch_get_main_queue(), { () -> Void in
 				self.messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr)
@@ -57,8 +57,8 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 			})
 		} else {
 			if userDetails == nil {
-                navigationItem.title = "New message"
-            }
+                        	navigationItem.title = "New message"
+            		}
 			
 			self.inputToolbar!.contentView!.rightBarButtonItem!.enabled = false
 			self.navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addRecipient"), animated: true)
@@ -92,8 +92,8 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	func didSelectContact(recipient: XMPPUserCoreDataStorageObject) {
 		self.recipient = recipient
 		if userDetails == nil {
-            navigationItem.title = recipient.displayName
-        }
+            		navigationItem.title = recipient.displayName
+        	}
 		
 		if !OneChats.knownUserForJid(jidStr: recipient.jidStr) {
 			OneChats.addUserToChatList(jidStr: recipient.jidStr)
