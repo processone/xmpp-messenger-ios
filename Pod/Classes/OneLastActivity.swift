@@ -89,6 +89,54 @@ public class OneLastActivity: NSObject {
 		return elapsedTime
 	}
 	
+	// Mark: Simple last activity converter
+	public func getLastActivityFrom(timeInSeconds: UInt) -> String {
+        	let time: NSNumber = NSNumber(unsignedLong: timeInSeconds)
+        	var lastSeenInfo = ""
+        
+        	switch timeInSeconds {
+        		case 0:
+            			lastSeenInfo = "online"
+        		case _ where timeInSeconds > 0 && timeInSeconds < 60:
+            			lastSeenInfo = "last seen \(timeInSeconds) seconds ago"
+        		case _ where timeInSeconds > 59 && timeInSeconds < 3600:
+            			lastSeenInfo = "last seen \(timeInSeconds / 60) minutes ago"
+        		case _ where timeInSeconds > 3600 && timeInSeconds < 86400:
+			            lastSeenInfo = "last seen \(timeInSeconds / 3600) hours ago"
+        		case _ where timeInSeconds > 86400:
+            			let date = NSDate(timeIntervalSinceNow:-time.doubleValue)
+			        let dateFormatter = NSDateFormatter()
+            
+			        dateFormatter.dateFormat = "dd.MM.yyyy"
+            	    lastSeenInfo = "last seen on \(dateFormatter.stringFromDate(date))"
+		        default:
+            		lastSeenInfo = "never been online"
+        	}
+        
+        return lastSeenInfo
+    }
+    
+    // Add Last Activity Details to NavigationBar
+    public func addLastActivityLabelToNavigationBar(lastActivityText: String, displayName: String) -> UIView {
+        var userDetails: UIView?
+        let width = UIScreen.mainScreen().bounds.width
+        
+        userDetails = UIView(frame: CGRect(x: (width - 140) / 2, y: 25, width: 140, height: 40))
+        
+        let title = UILabel(frame: CGRect(x: 0, y: 0, width: 140, height: 17))
+        title.text = displayName
+        title.textAlignment = .Center
+        userDetails!.addSubview(title)
+        
+        let lastSeen = UILabel(frame: CGRect(x: 0, y: 20, width: 140, height: 12))
+        lastSeen.text = lastActivityText
+        lastSeen.font = UIFont.systemFontOfSize(10)
+        lastSeen.textAlignment = .Center
+        userDetails!.addSubview(lastSeen)
+        
+        return userDetails!
+    }
+	
 	public class func sendLastActivityQueryToJID(userName: String, sender: XMPPLastActivity? = nil, completionHandler completion:OneMakeLastCallCompletionHandler) {
 		sharedInstance.didMakeLastCallCompletionBlock = completion
 		let userJID = XMPPJID.jidWithString(userName)
