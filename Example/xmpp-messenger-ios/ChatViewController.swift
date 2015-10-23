@@ -39,16 +39,18 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		if let recipient = recipient {
 			self.navigationItem.rightBarButtonItems = []
 			
-			if userDetails == nil {
-                		navigationItem.title = recipient.displayName
-            		}
-            
+                	navigationItem.title = recipient.displayName
+
             		// Mark: Adding LastActivity functionality to NavigationBar
             		OneLastActivity.sendLastActivityQueryToJID((recipient.jidStr), sender: OneChat.sharedInstance.xmppLastActivity) { (response, forJID, error) -> Void in
                 		let lastActivityResponse = OneLastActivity.sharedInstance.getLastActivityFrom((response?.lastActivitySeconds())!)
                 
                 		self.userDetails = OneLastActivity.sharedInstance.addLastActivityLabelToNavigationBar(lastActivityResponse, displayName: recipient.displayName)
                 		self.navigationController!.view.addSubview(self.userDetails!)
+                		
+                		if (self.userDetails != nil) {
+                    			self.navigationItem.title = ""
+                		}
             		}
 			
 			dispatch_async(dispatch_get_main_queue(), { () -> Void in
