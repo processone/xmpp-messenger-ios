@@ -82,9 +82,18 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	
 	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 		if editingStyle == UITableViewCellEditingStyle.Delete {
-			OneChats.removeUserAtIndexPath(indexPath)
-			tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
-//			tableView.reloadData()
+			let refreshAlert = UIAlertController(title: "", message: "Are you sure you want to clear the entire message history? \n This cannot be undone.", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            
+            		refreshAlert.addAction(UIAlertAction(title: "Clear message history", style: .Destructive, handler: { (action: UIAlertAction!) in
+                		OneChats.removeUserAtIndexPath(indexPath)
+                		tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+            		}))
+            
+            		refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action: UIAlertAction!) in
+
+            		}))
+            
+            		presentViewController(refreshAlert, animated: true, completion: nil)
 		}
 	}
 	
