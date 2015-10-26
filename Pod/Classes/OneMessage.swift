@@ -14,13 +14,13 @@ public typealias OneChatMessageCompletionHandler = (stream: XMPPStream, message:
 
 // MARK: Protocols
 
-public protocol OneMessageDelegate {
+public protocol OneMessageDelegate : NSObjectProtocol {
 	func oneStream(sender: XMPPStream, didReceiveMessage message: XMPPMessage, from user: XMPPUserCoreDataStorageObject)
 	func oneStream(sender: XMPPStream, userIsComposing user: XMPPUserCoreDataStorageObject)
 }
 
 public class OneMessage: NSObject {
-	public var delegate: OneMessageDelegate?
+	public weak var delegate: OneMessageDelegate?
 	
 	public var xmppMessageStorage: XMPPMessageArchivingCoreDataStorage?
 	var xmppMessageArchiving: XMPPMessageArchiving?
