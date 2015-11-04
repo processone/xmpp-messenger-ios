@@ -31,7 +31,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 			self.senderDisplayName = OneChat.sharedInstance.xmppStream?.myJID.bare()
 		}
 		
-		self.collectionView!.collectionViewLayout.springinessEnabled = true
+		self.collectionView!.collectionViewLayout.springinessEnabled = false
 		self.inputToolbar!.contentView!.leftBarButtonItem!.hidden = true
 	}
 	
