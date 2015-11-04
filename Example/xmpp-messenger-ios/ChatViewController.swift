@@ -85,25 +85,37 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	
 	// Mark: JSQMessagesViewController method overrides
 	
-	override func textViewDidBeginEditing(textView: UITextView) {
-		super.textViewDidBeginEditing(textView)
-		
-		if let recipient = recipient {
-			OneMessage.sendIsComposingMessage(recipient.jidStr, completionHandler: { (stream, message) -> Void in
-				//compose sent
-			})
-		}
-	}
-	
-	override func textViewDidEndEditing(textView: UITextView) {
-		super.textViewDidEndEditing(textView)
-	
-		if let recipient = recipient {
-			OneMessage.sendIsNotComposingMessage(recipient.jidStr, completionHandler: { (stream, message) -> Void in
-				//end compose sent
-			})
-		}
-	}
+	var isComposing = false
+    	var timer: NSTimer?
+    
+	override func textViewDidChange(textView: UITextView) {
+        	super.textViewDidChange(textView)
+        
+        	if textView.text.characters.count == 0 {
+            		if isComposing {
+                		hideTypingIndicator()
+            		}
+        	} else {
+            		timer?.invalidate()
+            		if !isComposing {
+                		self.isComposing = true
+                		OneMessage.sendIsComposingMessage((recipient?.jidStr)!, completionHandler: { (stream, message) -> Void in
+                    			self.timer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: "hideTypingIndicator", userInfo: nil, repeats: false)
+                		})
+            		} else {
+                		self.timer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: "hideTypingIndicator", userInfo: nil, repeats: false)
+            		}
+        	}
+    	}
+    
+    	func hideTypingIndicator() {
+        	if let recipient = recipient {
+            		self.isComposing = false
+            		OneMessage.sendIsComposingMessage((recipient.jidStr)!, completionHandler: { (stream, message) -> Void in
+            
+            		})
+        	}
+    	}
 	
 	override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
 		let fullMessage = JSQMessage(senderId: OneChat.sharedInstance.xmppStream?.myJID.bare(), senderDisplayName: OneChat.sharedInstance.xmppStream?.myJID.bare(), date: NSDate(), text: text)
