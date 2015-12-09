@@ -112,6 +112,15 @@ extension OneRoster: XMPPRosterDelegate {
 		print("List=\(jidList)")
 		
 	}
+	
+	public func sendBuddyRequestTo(username: String) {
+		let presence: DDXMLElement = DDXMLElement.elementWithName("presence") as! DDXMLElement
+		presence.addAttributeWithName("type", stringValue: "subscribe")
+        	presence.addAttributeWithName("to", stringValue: username)
+        	presence.addAttributeWithName("from", stringValue: OneChat.sharedInstance.xmppStream?.myJID.bare())
+        
+		OneChat.sharedInstance.xmppStream?.sendElement(presence)
+    	}
 }
 
 extension OneRoster: XMPPStreamDelegate {
