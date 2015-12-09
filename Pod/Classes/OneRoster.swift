@@ -113,7 +113,7 @@ extension OneRoster: XMPPRosterDelegate {
 		
 	}
 	
-	public func sendFriendRequestTo(username: String) {
+	public func sendBuddyRequestTo(username: String) {
 		let presence: DDXMLElement = DDXMLElement.elementWithName("presence") as! DDXMLElement
 		presence.addAttributeWithName("type", stringValue: "subscribe")
         	presence.addAttributeWithName("to", stringValue: username)
