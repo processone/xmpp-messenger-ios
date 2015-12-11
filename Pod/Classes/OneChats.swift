@@ -163,6 +163,11 @@ public class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 			for message in results! {
 				moc?.deleteObject(message as! NSManagedObject)
 			}
+			do {
+                		try moc?.save()
+            		} catch let error {
+                		print(error)
+            		}
 		} catch _ {
 		}
 	}
@@ -192,6 +197,12 @@ public class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 						if element.attributeStringValueForName("to") == user.jidStr {
 							moc?.deleteObject(message as! NSManagedObject)
 						}
+						
+						do {
+                            				try moc?.save()
+                        			} catch let error {
+                            				print(error)
+                				}
 					}
 				}
 			} catch _ {
