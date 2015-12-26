@@ -87,6 +87,7 @@ public class OneMessage: NSObject {
 		let predicateFormat = "bareJidStr like %@ "
 		let predicate = NSPredicate(format: predicateFormat, jid)
 		let retrievedMessages = NSMutableArray()
+        var sortedRetrievedMessages = NSArray()
 		
 		request.predicate = predicate
 		request.entity = entityDescription
@@ -123,11 +124,15 @@ public class OneMessage: NSObject {
 				
 				let fullMessage = JSQMessage(senderId: sender, senderDisplayName: sender, date: date, text: body)
 				retrievedMessages.addObject(fullMessage)
+                
+                let sortDescriptor:NSSortDescriptor = NSSortDescriptor(key: "date", ascending: true);
+                
+                sortedRetrievedMessages = retrievedMessages.sortedArrayUsingDescriptors([descriptor]);
 			}
 		} catch _ {
 			//catch fetch error here
 		}
-		return retrievedMessages
+		return sortedRetrievedMessages.mutableCopy() as! NSMutableArray
 	}
 	
 	public func deleteMessagesFrom(jid jid: String, messages: NSArray) {
