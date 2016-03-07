@@ -13,6 +13,7 @@ public class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 	
 	var chatList = NSMutableArray()
 	var chatListBare = NSMutableArray()
+    var threadedChatList = NSMutableDictionary()
 	
 	// MARK: Class function
 	class var sharedInstance : OneChats {
@@ -36,6 +37,79 @@ public class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 		}
 		return sharedInstance.chatList
 	}
+    
+    
+    public class func getThreadedChatsList() -> NSDictionary {
+        if 0 == sharedInstance.threadedChatList.allKeys.count {
+             sharedInstance.threadedChatList = sharedInstance.getThreadedActiveUsersFromCoreDataStorage()!
+        }
+        
+        
+        return sharedInstance.threadedChatList
+    }
+    
+    
+    private func getThreadedActiveUsersFromCoreDataStorage() -> NSMutableDictionary? {
+        let moc = OneMessage.sharedInstance.xmppMessageStorage?.mainThreadManagedObjectContext
+        let entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
+        let request = NSFetchRequest()
+        let predicateFormat = "streamBareJidStr like %@ "
+        
+        if let predicateString = NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID") {
+            let predicate = NSPredicate(format: predicateFormat, predicateString)
+            request.predicate = predicate
+            request.entity = entityDescription
+            
+            do {
+                let results = try moc?.executeFetchRequest(request)
+                var _: XMPPMessageArchiving_Message_CoreDataObject
+                
+                let archivedMessage = NSMutableDictionary()
+                
+                for message in results! {
+                    var element: DDXMLElement!
+                    do {
+                        element = try DDXMLElement(XMLString: message.messageStr)
+                    } catch _ {
+                        element = nil
+                    }
+                    let sender: String
+                    let thread: String
+                    
+//                    if element.attributeStringValueForName("to") == NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")! || (element.attributeStringValueForName("to") as NSString).containsString(NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")!) {
+                        sender = message.bareJidStr;
+                        thread = message.thread()
+                        
+                        print(sender, "----", thread);
+                        
+                        if let chats = archivedMessage.objectForKey(thread) {
+                            
+                            if !chats.containsObject(sender) {
+
+                                //                                if let user = OneRoster.userFromRosterForJID(jid: jidStr as! String) {
+                                //                                    OneChats.sharedInstance.chatList.addObject(user)
+                                //                                }
+                                chats.addObject(sender)
+                            }
+                            
+                            
+                        } else {
+                            archivedMessage.setObject([sender].mutableCopy(), forKey: thread)
+                        }
+                        
+                        
+                        
+                    //}
+                }
+                return archivedMessage
+            } catch _ {
+                
+                
+            }
+        }
+        return nil
+    }
+
 	
 	private func getActiveUsersFromCoreDataStorage() -> NSArray? {
 		let moc = OneMessage.sharedInstance.xmppMessageStorage?.mainThreadManagedObjectContext
@@ -62,11 +136,13 @@ public class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 					}
 					let sender: String
 					
-					if element.attributeStringValueForName("to") != NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")! && !(element.attributeStringValueForName("to") as NSString).containsString(NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")!) {
-						sender = element.attributeStringValueForName("to")
-						if !archivedMessage.containsObject(sender) {
-							archivedMessage.addObject(sender)
-						}
+                    if element.attributeStringValueForName("to") == NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")! || (element.attributeStringValueForName("to") as NSString).containsString(NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")!) {
+                        sender = message.bareJidStr;
+                        
+                        
+                        if !archivedMessage.containsObject(sender) {
+                            archivedMessage.addObject(sender)
+                        }
 					}
 				}
 				return archivedMessage
@@ -94,27 +170,27 @@ public class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 		fetchRequest.predicate = predicate
 		fetchRequest.fetchLimit = 1
 		
-		//		if let results = moc?.executeFetchRequest(fetchRequest, error: nil) {
-		//			println("get user from xmpp - results")
-		//			var user: XMPPUserCoreDataStorageObject
-		//			var archivedUser = NSMutableArray()
-		//
-		//			for user in results {
-		//				println(user)
-		//				// var element = DDXMLElement(XMLString: user.messageStr, error: nil)
-		//				//        let sender: String
-		//				//
-		//				//        if element.attributeStringValueForName("to") != NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")! && !(element.attributeStringValueForName("to") as NSString).containsString(NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")!) {
-		//				//          sender = element.attributeStringValueForName("to")
-		//				//          if !archivedMessage.containsObject(sender) {
-		//				//            archivedMessage.addObject(sender)
-		//				//          }
-		//				//        }
-		//			}
-		//			//println("so response \(archivedMessage.count) from \(archivedMessage)")
-		//			//return archivedMessage
-		//		}
-		//return nil
+//				if let results = moc?.executeFetchRequest(fetchRequest, error: nil) {
+//					println("get user from xmpp - results")
+//					var user: XMPPUserCoreDataStorageObject
+//					var archivedUser = NSMutableArray()
+//		
+//					for user in results {
+//						println(user)
+//						// var element = DDXMLElement(XMLString: user.messageStr, error: nil)
+//						//        let sender: String
+//						//
+//						//        if element.attributeStringValueForName("to") != NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")! && !(element.attributeStringValueForName("to") as NSString).containsString(NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")!) {
+//						//          sender = element.attributeStringValueForName("to")
+//						//          if !archivedMessage.containsObject(sender) {
+//						//            archivedMessage.addObject(sender)
+//						//          }
+//						//        }
+//					}
+//					//println("so response \(archivedMessage.count) from \(archivedMessage)")
+//					//return archivedMessage
+//				}
+//		return nil
 	}
 	
 	
