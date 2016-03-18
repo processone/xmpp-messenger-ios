@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.homepage         = "https://github.com/processone/xmpp-messenger-ios"
   s.license          = 'MIT'
   s.author           = { "ProcessOne" => "pmglemaire@gmail.com" }
-  s.source           = { :git => "https://github.com/abbasmousavi/xmpp-messenger-ios.git"}
+  s.source           = { :git => "https://github.com/processone/xmpp-messenger-ios.git"}
 
 s.platform = :ios, '8.0'
 s.ios.deployment_target = '8.0'
