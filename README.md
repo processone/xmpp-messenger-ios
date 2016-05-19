@@ -20,13 +20,13 @@ If you can't use cocoapod, you will have to download the files and add it to you
 If you encounter compilation errors after the installation, you may change the following file:
 
 
-In ```XMPPStream.h```, change ```#import "CocoaAsyncSocket/GCDAsyncSocket.h"``` to ```@import CocoaAsyncSocket```
+1. In `XMPPFramework/Core/XMPPStream.h`, change `#import "CocoaAsyncSocket/GCDAsyncSocket.h"` to `@import CocoaAsyncSocket;`
 
 
-In ```XMMPLogging.h```, change ```#import "CocoaLumberjack/DDLog.h"``` to ```@import CocoaLumberjack```
+2. In `XMPPFramework/Core/XMPPLogging.h`, change `#import "CocoaLumberjack/DDLog.h"` to `@import CocoaLumberjack;`
 
 
-In ```JSQSystemSoundPlayer+JSQMessages.h```, change to ```@import JSQSystemSoundPlayer;```
+3. In `JSQMessagesViewController/JSQSystemSoundPlayer+JSQMessages.h`, change to `@import JSQSystemSoundPlayer;`
 
 
 A pull request will be made to the XMPPFramework to include thoses changes.
