@@ -15,6 +15,14 @@ pod "xmpp-messenger-ios"
 
 If you can't use cocoapod, you will have to download the files and add it to your ```Xcode```project.
 
+###UPDATE 04/19/16
+
+If you encounter compilation errors after the installation, you may change the following file:
+In ```XMPPStream.h```, change ```#import "CocoaAsyncSocket/GCDAsyncSocket.h"``` to ```@import CocoaAsyncSocket```
+In ```XMMPLogging.h```, change ```#import "CocoaLumberjack/DDLog.h"``` to ```@import CocoaLumberjack```
+
+A pull request will be made to the XMPPFramework to include thoses changes.
+
 ###Disclaimer
 xmpp-messenger-ios was build for ```Xcode 7``` and ```Swift 2```, if you haven't upgraded yet, you should.
 
