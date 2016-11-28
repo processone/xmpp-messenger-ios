@@ -63,6 +63,8 @@ class SettingsViewController: UIViewController {
 				}))
 				self.presentViewController(alertController, animated: true, completion: nil)
 			} else {
+                                NSUserDefaults.standartUserDefaults().setObject(self.usernameTextField.text, forKey: "myJID")
+                                NSUserDefaults.standartUserDefaults().setObject(self.passwordTextField.text, forKey: "myPassword")
 				self.dismissViewControllerAnimated(true, completion: nil)
 			}
 		}
