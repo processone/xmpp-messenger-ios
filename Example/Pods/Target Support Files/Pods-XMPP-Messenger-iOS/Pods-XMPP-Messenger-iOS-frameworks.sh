@@ -16,7 +16,7 @@ install_framework()
     local source="$1"
   fi
 
-  local destination="${CONFIGURATION_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
+  local destination="${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
 
   if [ -L "${source}" ]; then
       echo "Symlinked..."
@@ -42,14 +42,16 @@ install_framework()
   # Resign the code if required by the build settings to avoid unstable apps
   code_sign_if_enabled "${destination}/$(basename "$1")"
 
-  # Embed linked Swift runtime libraries
-  local swift_runtime_libs
-  swift_runtime_libs=$(xcrun otool -LX "$binary" | grep --color=never @rpath/libswift | sed -E s/@rpath\\/\(.+dylib\).*/\\1/g | uniq -u  && exit ${PIPESTATUS[0]})
-  for lib in $swift_runtime_libs; do
-    echo "rsync -auv \"${SWIFT_STDLIB_PATH}/${lib}\" \"${destination}\""
-    rsync -auv "${SWIFT_STDLIB_PATH}/${lib}" "${destination}"
-    code_sign_if_enabled "${destination}/${lib}"
-  done
+  # Embed linked Swift runtime libraries. No longer necessary as of Xcode 7.
+  if [ "${XCODE_VERSION_MAJOR}" -lt 7 ]; then
+    local swift_runtime_libs
+    swift_runtime_libs=$(xcrun otool -LX "$binary" | grep --color=never @rpath/libswift | sed -E s/@rpath\\/\(.+dylib\).*/\\1/g | uniq -u  && exit ${PIPESTATUS[0]})
+    for lib in $swift_runtime_libs; do
+      echo "rsync -auv \"${SWIFT_STDLIB_PATH}/${lib}\" \"${destination}\""
+      rsync -auv "${SWIFT_STDLIB_PATH}/${lib}" "${destination}"
+      code_sign_if_enabled "${destination}/${lib}"
+    done
+  fi
 }
 
 # Signs a framework with the provided identity
@@ -57,8 +59,13 @@ code_sign_if_enabled() {
   if [ -n "${EXPANDED_CODE_SIGN_IDENTITY}" -a "${CODE_SIGNING_REQUIRED}" != "NO" -a "${CODE_SIGNING_ALLOWED}" != "NO" ]; then
     # Use the current code_sign_identitiy
     echo "Code Signing $1 with Identity ${EXPANDED_CODE_SIGN_IDENTITY_NAME}"
-    echo "/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements \"$1\""
-    /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements "$1"
+    local code_sign_cmd="/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} ${OTHER_CODE_SIGN_FLAGS} --preserve-metadata=identifier,entitlements "$1""
+
+    if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
+      code_sign_cmd="$code_sign_cmd &"
+    fi
+    echo "$code_sign_cmd"
+    eval "$code_sign_cmd"
   fi
 }
 
@@ -82,20 +89,23 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "Pods-XMPP-Messenger-iOS/CocoaAsyncSocket.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/CocoaLumberjack.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/FMDB.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/JSQMessagesViewController.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/JSQSystemSoundPlayer.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/XMPPFramework.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/xmpp_messenger_ios.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CocoaAsyncSocket/CocoaAsyncSocket.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CocoaLumberjack/CocoaLumberjack.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FMDB/FMDB.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/JSQMessagesViewController/JSQMessagesViewController.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/KissXML/KissXML.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/XMPPFramework/XMPPFramework.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "Pods-XMPP-Messenger-iOS/CocoaAsyncSocket.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/CocoaLumberjack.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/FMDB.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/JSQMessagesViewController.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/JSQSystemSoundPlayer.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/XMPPFramework.framework"
-  install_framework "Pods-XMPP-Messenger-iOS/xmpp_messenger_ios.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CocoaAsyncSocket/CocoaAsyncSocket.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CocoaLumberjack/CocoaLumberjack.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FMDB/FMDB.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/JSQMessagesViewController/JSQMessagesViewController.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/KissXML/KissXML.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/XMPPFramework/XMPPFramework.framework"
+fi
+if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
+  wait
 fi

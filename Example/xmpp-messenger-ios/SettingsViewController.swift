@@ -8,7 +8,6 @@
 
 import UIKit
 import XMPPFramework
-import xmpp_messenger_ios
 
 class SettingsViewController: UIViewController {
   
@@ -21,17 +20,17 @@ class SettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let tap = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
+    let tap = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.DismissKeyboard))
     view.addGestureRecognizer(tap)
 	
 	if OneChat.sharedInstance.isConnected() {
-		usernameTextField.hidden = true
-		passwordTextField.hidden = true
-		validateButton.setTitle("Disconnect", forState: UIControlState.Normal)
+		usernameTextField.isHidden = true
+		passwordTextField.isHidden = true
+		validateButton.setTitle("Disconnect", for: UIControlState())
 	} else {
-		if NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID) != "kXMPPmyJID" {
-			usernameTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myJID)
-			passwordTextField.text = NSUserDefaults.standardUserDefaults().stringForKey(kXMPP.myPassword)
+		if UserDefaults.standard.string(forKey: kXMPP.myJID) != "kXMPPmyJID" {
+			usernameTextField.text = UserDefaults.standard.string(forKey: kXMPP.myJID)
+			passwordTextField.text = UserDefaults.standard.string(forKey: kXMPP.myPassword)
 		}
 	}
   }
@@ -39,44 +38,44 @@ class SettingsViewController: UIViewController {
   // Mark: Private Methods
   
   func DismissKeyboard() {
-    if usernameTextField.isFirstResponder() {
+    if usernameTextField.isFirstResponder {
       usernameTextField.resignFirstResponder()
-    } else if passwordTextField.isFirstResponder() {
+    } else if passwordTextField.isFirstResponder {
       passwordTextField.resignFirstResponder()
     }
   }
   
   // Mark: IBAction
   
-  @IBAction func validate(sender: AnyObject) {
+  @IBAction func validate(_ sender: AnyObject) {
 	if OneChat.sharedInstance.isConnected() {
 		OneChat.sharedInstance.disconnect()
-		usernameTextField.hidden = false
-		passwordTextField.hidden = false
-		validateButton.setTitle("Validate", forState: UIControlState.Normal)
+		usernameTextField.isHidden = false
+		passwordTextField.isHidden = false
+		validateButton.setTitle("Validate", for: UIControlState())
 	} else {
 		OneChat.sharedInstance.connect(username: self.usernameTextField.text!, password: self.passwordTextField.text!) { (stream, error) -> Void in
 			if let _ = error {
-				let alertController = UIAlertController(title: "Sorry", message: "An error occured: \(error)", preferredStyle: UIAlertControllerStyle.Alert)
-				alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) -> Void in
+				let alertController = UIAlertController(title: "Sorry", message: "An error occured: \(error)", preferredStyle: UIAlertControllerStyle.alert)
+				alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (UIAlertAction) -> Void in
 					//do something
 				}))
-				self.presentViewController(alertController, animated: true, completion: nil)
+				self.present(alertController, animated: true, completion: nil)
 			} else {
-				self.dismissViewControllerAnimated(true, completion: nil)
+				self.dismiss(animated: true, completion: nil)
 			}
 		}
 	}
   }
   
-  @IBAction func close(sender: AnyObject) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @IBAction func close(_ sender: AnyObject) {
+    self.dismiss(animated: true, completion: nil)
   }
   
   // Mark: UITextField Delegates
   
-  func textFieldShouldReturn(textField: UITextField) -> Bool {
-    if passwordTextField.isFirstResponder() {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    if passwordTextField.isFirstResponder {
       textField.resignFirstResponder()
       validate(self)
     } else {

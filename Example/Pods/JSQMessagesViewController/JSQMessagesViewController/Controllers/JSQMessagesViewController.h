@@ -268,4 +268,60 @@
  */
 - (void)scrollToBottomAnimated:(BOOL)animated;
 
+/**
+ * Used to decide if a message is incoming or outgoing.
+ *
+ * @discussion The default implementation of this method compares the `senderId` of the message to the
+ * value of the `senderId` property and returns `YES` if they are equal. Subclasses can override
+ * this method to specialize the decision logic.
+ */
+- (BOOL)isOutgoingMessage:(id<JSQMessageData>)messageItem;
+
+/**
+ * Scrolls the collection view so that the cell at the specified indexPath is completely visible above the `inputToolbar`.
+ *
+ * @param indexPath The indexPath for the cell that will be visible.
+ * @param animated Pass `YES` if you want to animate scrolling, `NO` otherwise.
+ */
+- (void)scrollToIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated;
+
+/**
+ Call to super required.
+ */
+- (void)viewDidLoad NS_REQUIRES_SUPER;
+
+/**
+ Call to super required.
+ */
+- (void)viewWillAppear:(BOOL)animated NS_REQUIRES_SUPER;
+
+/**
+ Call to super required.
+ */
+- (void)viewDidAppear:(BOOL)animated NS_REQUIRES_SUPER;
+
+/**
+ Call to super required.
+ */
+- (void)viewWillDisappear:(BOOL)animated NS_REQUIRES_SUPER;
+
+/**
+ Call to super required.
+ */
+- (void)viewDidDisappear:(BOOL)animated NS_REQUIRES_SUPER;
+
+/**
+ Called when `UIMenuControllerWillShowMenuNotification` is posted.
+
+ @param notification The posted notification.
+ */
+- (void)didReceiveMenuWillShowNotification:(NSNotification *)notification;
+
+/**
+ Called when `UIMenuControllerWillHideMenuNotification` is posted.
+
+ @param notification The posted notification.
+ */
+- (void)didReceiveMenuWillHideNotification:(NSNotification *)notification;
+
 @end
