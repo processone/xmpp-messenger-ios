@@ -15,7 +15,7 @@ pod "xmpp-messenger-ios"
 
 If you can't use cocoapod, you will have to download the files and add it to your ```Xcode```project.
 
-###UPDATE 04/19/16
+### UPDATE 04/19/16
 
 If you encounter compilation errors after the installation, you may change the following file:
 
@@ -31,7 +31,7 @@ If you encounter compilation errors after the installation, you may change the f
 
 A pull request will be made to the XMPPFramework to include thoses changes.
 
-###Disclaimer
+### Disclaimer
 xmpp-messenger-ios was build for ```Xcode 7``` and ```Swift 2```, if you haven't upgraded yet, you should.
 
 ## Author
@@ -51,7 +51,7 @@ We will build a Swift XMPP client built on [XMPP Framework](https://github.com/p
 ![Xcode setup screenshot](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Xcode setup project.png)
 
 2. Now quit ```Xcode``` and launch the terminal app (terminal.app)
-![terminal scrteenshot](https://github.com/processone/demo-xmpp-ios/blob/master/Setup%20resources/Capture%20d’écran%202015-07-22%20à%2011.41.50.png?raw=true%20=350x)
+![terminal screenshot](https://github.com/processone/demo-xmpp-ios/blob/master/Setup%20resources/Capture%20d’écran%202015-07-22%20à%2011.41.50.png?raw=true%20=350x)
 
 3. Navigate to your project directory, and type ```pod init``` like so:
 ![terminal podinit](https://github.com/processone/demo-xmpp-ios/blob/master/Setup%20resources/Capture%20d’écran%202015-07-22%20à%2011.42.02.png?raw=true%20=350x)
@@ -81,7 +81,7 @@ to your ``` AppDelegate.swift```  file. Build & run to confirm that everything w
 
 
 
-##Let's create your chat client !
+## Let's create your chat client !
 
 **At this point your project should compile without errors**
 
@@ -90,7 +90,7 @@ We are going to create 4 classes, one to display the conversations, name it ```O
 *You can remove or reuse the apple-provided ```ViewController.swift``` file*
 
 
-###Let's start with the Storyboard
+### Let's start with the Storyboard
 1. Open your ```Main.storyboard``` file, and remove the current ViewController.
 2. Drop in a ```UITableViewController```, and asign it to ```OpenChatsTableViewController.swift```
 ![Class asignment](https://raw.githubusercontent.com/processone/xmpp-messenger-ios/master/Tutorial%20assets/Class selection.png)
@@ -374,7 +374,7 @@ OneChat.sharedInstance.connect(username: kXMPP.myJID, password: kXMPP.myPassword
 }
 ```
 
-###Build & Run, you should be redirected to the settings page, where you can login sucessfully.
+### Build & Run, you should be redirected to the settings page, where you can login sucessfully.
 
 4. Displaying a list of chat conversation is great, but creating one is even better ! Switch back to your ```Storyboard```, and drop a ```UITableViewController```. Asing it to ```ContactListTableViewController.swift```. Embed a ```UINavigationController``` and name it's ```Storyboard ID``` "contactListNav":
 
@@ -466,7 +466,7 @@ override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:
 
 This will populate the ```UITableView``` with the content of your ```roster```. It will display the name and picture of your contacts, ordered by status *available, away, offline*.
 
-###Build & Run, tap on the + button to see if everything is working properly.
+### Build & Run, tap on the + button to see if everything is working properly.
 
 5. In this section we will add the ability to select a contact and start chatting !
 
@@ -604,7 +604,7 @@ override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {
 
 The first one will prevent contact selection if the user is offline, the second will fill the ```recipient``` corresponding at the selected cell.
 
-###BUILD & RUN, you should be able to select a contact !
+### BUILD & RUN, you should be able to select a contact !
 
 6. Now go back to ChatViewController, for the final part, the Chat !
 
@@ -770,7 +770,7 @@ self.scrollToBottomAnimated(true)
 
 The first method will be called whenever a message is received, while the second will be called when the remote user is composing a new message.
 
-###We can now receive messages ! It would be great if we could send some too no ?
+### We can now receive messages ! It would be great if we could send some too no ?
 
 8. Add this to your ```viewDidLoad``` method :
 
@@ -828,7 +828,7 @@ if !OneChats.knownUserForJid(jidStr: recipient.jidStr) {
 
 It will fetch the stored message of un user we just select form the roster.
 
-#####The final touch, sending a message ! 
+##### The final touch, sending a message ! 
 
 8. Implement the ```JSQMessageViewController``` delegate:
 
@@ -846,4 +846,4 @@ override func didPressSendButton(button: UIButton!, withMessageText text: String
 }
 ```
 
-###Build & run, CONGRATULATION, you have a fully functionnal chat client !
+### Build & run, CONGRATULATION, you have a fully functionnal chat client !
