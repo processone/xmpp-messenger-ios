@@ -7,17 +7,16 @@
 //
 
 import UIKit
-import xmpp_messenger_ios
 import JSQMessagesViewController
 import XMPPFramework
 
 class ChatViewController: JSQMessagesViewController, OneMessageDelegate, ContactPickerDelegate {
 	
-	let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+	let appDelegate = UIApplication.shared.delegate as? AppDelegate
 	var messages = NSMutableArray()
 	var recipient: XMPPUserCoreDataStorageObject?
 	var firstTime = true
-	var userDetails = UIView?()
+//	var userDetails = UIView?()
 	
 	// Mark: Life Cycle
 	
@@ -32,10 +31,10 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		}
 		
 		self.collectionView!.collectionViewLayout.springinessEnabled = false
-		self.inputToolbar!.contentView!.leftBarButtonItem!.hidden = true
+		self.inputToolbar!.contentView!.leftBarButtonItem!.isHidden = true
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		if let recipient = recipient {
 			self.navigationItem.rightBarButtonItems = []
 			
@@ -53,17 +52,17 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
                 		}
             		} */
 			
-			dispatch_async(dispatch_get_main_queue(), { () -> Void in
-				self.messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr)
-				self.finishReceivingMessageAnimated(true)
+			DispatchQueue.main.async(execute: { () -> Void in
+                self.messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr, thread: "test")
+				self.finishReceivingMessage(animated: true)
 			})
 		} else {
-			if userDetails == nil {
-                        	navigationItem.title = "New message"
-            		}
+//			if userDetails == nil {
+//                        	navigationItem.title = "New message"
+//            		}
 			
-			self.inputToolbar!.contentView!.rightBarButtonItem!.enabled = false
-			self.navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addRecipient"), animated: true)
+			self.inputToolbar!.contentView!.rightBarButtonItem!.isEnabled = false
+			self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(ChatViewController.addRecipient)), animated: true)
 			if firstTime {
 				firstTime = false
 				addRecipient()
@@ -71,46 +70,46 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		}
 	}
 	
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		self.scrollToBottomAnimated(true)
+		self.scrollToBottom(animated: true)
 	}
 	
-	override func viewWillDisappear(animated: Bool) {
-        userDetails?.removeFromSuperview()
+	override func viewWillDisappear(_ animated: Bool) {
+//        userDetails?.removeFromSuperview()
     }
 	
 	// Mark: Private methods
 	
 	func addRecipient() {
-		let navController = self.storyboard?.instantiateViewControllerWithIdentifier("contactListNav") as? UINavigationController
+		let navController = self.storyboard?.instantiateViewController(withIdentifier: "contactListNav") as? UINavigationController
 		let contactController: ContactListTableViewController? = navController?.viewControllers[0] as? ContactListTableViewController
 		contactController?.delegate = self
 		
-		self.presentViewController(navController!, animated: true, completion: nil)
+		self.present(navController!, animated: true, completion: nil)
 	}
 	
-	func didSelectContact(recipient: XMPPUserCoreDataStorageObject) {
+	func didSelectContact(_ recipient: XMPPUserCoreDataStorageObject) {
 		self.recipient = recipient
-		if userDetails == nil {
-            		navigationItem.title = recipient.displayName
-        	}
+//		if userDetails == nil {
+//            		navigationItem.title = recipient.displayName
+//        	}
 		
 		if !OneChats.knownUserForJid(jidStr: recipient.jidStr) {
 			OneChats.addUserToChatList(jidStr: recipient.jidStr)
 		} else {
-			messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr)
-			finishReceivingMessageAnimated(true)
+			messages = OneMessage.sharedInstance.loadArchivedMessagesFrom(jid: recipient.jidStr, thread: "test")
+			finishReceivingMessage(animated: true)
 		}
 	}
 	
 	// Mark: JSQMessagesViewController method overrides
 	
 	var isComposing = false
-    	var timer: NSTimer?
+    	var timer: Timer?
     
-	override func textViewDidChange(textView: UITextView) {
+	override func textViewDidChange(_ textView: UITextView) {
         	super.textViewDidChange(textView)
         
         	if textView.text.characters.count == 0 {
@@ -121,51 +120,51 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
             		timer?.invalidate()
             		if !isComposing {
                 		self.isComposing = true
-                		OneMessage.sendIsComposingMessage((recipient?.jidStr)!, completionHandler: { (stream, message) -> Void in
-                    			self.timer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: "hideTypingIndicator", userInfo: nil, repeats: false)
-                		})
+                        OneMessage.sendIsComposingMessage((recipient?.jidStr)!, thread: "test", completionHandler: { (stream, message) -> Void in
+                            self.timer = Timer.scheduledTimer(timeInterval: 4.0, target: self, selector: #selector(self.hideTypingIndicator), userInfo: nil, repeats: false)
+                        })
             		} else {
-                		self.timer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: "hideTypingIndicator", userInfo: nil, repeats: false)
+                		self.timer = Timer.scheduledTimer(timeInterval: 4.0, target: self, selector: #selector(ChatViewController.hideTypingIndicator), userInfo: nil, repeats: false)
             		}
         	}
     	}
     
     	func hideTypingIndicator() {
         	if let recipient = recipient {
-            		self.isComposing = false
-            		OneMessage.sendIsComposingMessage((recipient.jidStr)!, completionHandler: { (stream, message) -> Void in
-            
-            		})
+                self.isComposing = false
+                OneMessage.sendIsComposingMessage(recipient.jidStr, thread: "test", completionHandler: { (stream, message) -> Void in
+                    
+                })
         	}
     	}
 	
-	override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-		let fullMessage = JSQMessage(senderId: OneChat.sharedInstance.xmppStream?.myJID.bare(), senderDisplayName: OneChat.sharedInstance.xmppStream?.myJID.bare(), date: NSDate(), text: text)
-		messages.addObject(fullMessage)
+	override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
+		let fullMessage = JSQMessage(senderId: OneChat.sharedInstance.xmppStream?.myJID.bare(), senderDisplayName: OneChat.sharedInstance.xmppStream?.myJID.bare(), date: Date(), text: text)!
+		messages.add(fullMessage)
 		
 		if let recipient = recipient {
-			OneMessage.sendMessage(text, to: recipient.jidStr, completionHandler: { (stream, message) -> Void in
-				JSQSystemSoundPlayer.jsq_playMessageSentSound()
-				self.finishSendingMessageAnimated(true)
-			})
+            OneMessage.sendMessage(text, thread: "test", to: recipient.jidStr, completionHandler: { (stream, message) -> Void in
+                JSQSystemSoundPlayer.jsq_playMessageSentSound()
+                self.finishSendingMessage(animated: true)
+            })
 		}
 	}
 	
 	// Mark: JSQMessages CollectionView DataSource
 	
-	override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
+	override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
 		let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 		
 		return message
 	}
  
-	override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+	override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
 		let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 		
 		let bubbleFactory = JSQMessagesBubbleImageFactory()
 		
-		let outgoingBubbleImageData = bubbleFactory.outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleLightGrayColor())
-		let incomingBubbleImageData = bubbleFactory.incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleGreenColor())
+		let outgoingBubbleImageData = bubbleFactory?.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
+		let incomingBubbleImageData = bubbleFactory?.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleGreen())
 		
 		if message.senderId == self.senderId {
 			return outgoingBubbleImageData
@@ -174,38 +173,38 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		return incomingBubbleImageData
 	}
 	
-	override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
+	override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
 		let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 		
 		if message.senderId == self.senderId {
-			if let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoDataForJID(OneChat.sharedInstance.xmppStream?.myJID) {
-				let senderAvatar = JSQMessagesAvatarImageFactory.avatarImageWithImage(UIImage(data: photoData), diameter: 30)
+			if let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoData(for: OneChat.sharedInstance.xmppStream?.myJID) {
+				let senderAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(data: photoData), diameter: 30)
 				return senderAvatar
 			} else {
-				let senderAvatar = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("SR", backgroundColor: UIColor(white: 0.85, alpha: 1.0), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont(name: "Helvetica Neue", size: 14.0), diameter: 30)
+				let senderAvatar = JSQMessagesAvatarImageFactory.avatarImage(withUserInitials: "SR", backgroundColor: UIColor(white: 0.85, alpha: 1.0), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont(name: "Helvetica Neue", size: 14.0), diameter: 30)
 				return senderAvatar
 			}
 		} else {
-			if let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoDataForJID(recipient!.jid!) {
-				let recipientAvatar = JSQMessagesAvatarImageFactory.avatarImageWithImage(UIImage(data: photoData), diameter: 30)
+			if let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoData(for: recipient!.jid!) {
+				let recipientAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(data: photoData), diameter: 30)
 				return recipientAvatar
 			} else {
-				let recipientAvatar = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials("SR", backgroundColor: UIColor(white: 0.85, alpha: 1.0), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont(name: "Helvetica Neue", size: 14.0)!, diameter: 30)
+				let recipientAvatar = JSQMessagesAvatarImageFactory.avatarImage(withUserInitials: "SR", backgroundColor: UIColor(white: 0.85, alpha: 1.0), textColor: UIColor(white: 0.60, alpha: 1.0), font: UIFont(name: "Helvetica Neue", size: 14.0)!, diameter: 30)
 				return recipientAvatar
 			}
 		}
 	}
 	
-	override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+	override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAt indexPath: IndexPath!) -> NSAttributedString! {
 		if indexPath.item % 3 == 0 {
 			let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
-			return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(message.date)
+			return JSQMessagesTimestampFormatter.shared().attributedTimestamp(for: message.date)
 		}
 		
 		return nil;
 	}
 	
-	override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+	override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) -> NSAttributedString! {
 		let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 		
 		if message.senderId == self.senderId {
@@ -222,27 +221,27 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		return nil
 	}
 	
-	override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+	override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAt indexPath: IndexPath!) -> NSAttributedString! {
 		return nil
 	}
 	
 	// Mark: UICollectionView DataSource
 	
-	override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.messages.count
 	}
 	
-	override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-		let cell: JSQMessagesCollectionViewCell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
+	override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+		let cell: JSQMessagesCollectionViewCell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
 		let msg: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 		
 		if !msg.isMediaMessage {
 			if msg.senderId == self.senderId {
-				cell.textView!.textColor = UIColor.blackColor()
-				cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.blackColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+				cell.textView!.textColor = UIColor.black
+				cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.black, NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
 			} else {
-				cell.textView!.textColor = UIColor.whiteColor()
-				cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+				cell.textView!.textColor = UIColor.white
+				cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.white, NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
 			}
 		}
 		
@@ -251,7 +250,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	
 	// Mark: JSQMessages collection view flow layout delegate
 	
-	override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+	override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAt indexPath: IndexPath!) -> CGFloat {
 		if indexPath.item % 3 == 0 {
 			return kJSQMessagesCollectionViewCellLabelHeightDefault
 		}
@@ -259,7 +258,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		return 0.0
 	}
 	
-	override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+	override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAt indexPath: IndexPath!) -> CGFloat {
 		let currentMessage: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 		if currentMessage.senderId == self.senderId {
 			return 0.0
@@ -275,33 +274,33 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		return kJSQMessagesCollectionViewCellLabelHeightDefault
 	}
  
-	override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+	override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAt indexPath: IndexPath!) -> CGFloat {
 		return 0.0
 	}
 
 	
 	// Mark: Chat message Delegates
 	
-	func oneStream(sender: XMPPStream, didReceiveMessage message: XMPPMessage, from user: XMPPUserCoreDataStorageObject) {
+	func oneStream(_ sender: XMPPStream, didReceiveMessage message: XMPPMessage, from user: XMPPUserCoreDataStorageObject) {
 		if message.isChatMessageWithBody() {
 			//let displayName = user.displayName
 			
 			JSQSystemSoundPlayer.jsq_playMessageReceivedSound()
 			
-			if let msg: String = message.elementForName("body")?.stringValue() {
-				if let from: String = message.attributeForName("from")?.stringValue() {
-					let message = JSQMessage(senderId: from, senderDisplayName: from, date: NSDate(), text: msg)
-					messages.addObject(message)
+			if let msg: String = message.forName("body")?.stringValue {
+				if let from: String = message.attribute(forName: "from")?.stringValue {
+					let message = JSQMessage(senderId: from, senderDisplayName: from, date: Date(), text: msg)!
+					messages.add(message)
 					
-					self.finishReceivingMessageAnimated(true)
+					self.finishReceivingMessage(animated: true)
 				}
 			}
 		}
 	}
 	
-	func oneStream(sender: XMPPStream, userIsComposing user: XMPPUserCoreDataStorageObject) {
+	func oneStream(_ sender: XMPPStream, userIsComposing user: XMPPUserCoreDataStorageObject) {
 		self.showTypingIndicator = !self.showTypingIndicator
-		self.scrollToBottomAnimated(true)
+		self.scrollToBottom(animated: true)
 	}
 	
 	// Mark: Memory Management

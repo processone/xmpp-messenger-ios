@@ -1,1 +1,0 @@
-../../../XMPPFramework/XMPPFramework.h

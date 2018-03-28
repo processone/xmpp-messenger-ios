@@ -111,6 +111,7 @@ enum XMPPStreamConfig
     XMPPStreamStartTLSPolicy startTLSPolicy;
     BOOL skipStartSession;
     BOOL validatesResponses;
+    BOOL preferIPv6;
 	
 	id <XMPPSASLAuthentication> auth;
 	id <XMPPCustomBinding> customBinding;
@@ -159,6 +160,7 @@ enum XMPPStreamConfig
 @implementation XMPPStream
 
 @synthesize tag = userTag;
+@synthesize asyncSocket = asyncSocket;
 
 /**
  * Shared initialization between the various init methods.
@@ -195,6 +197,7 @@ enum XMPPStreamConfig
     idTracker = [[XMPPIDTracker alloc] initWithStream:self dispatchQueue:xmppQueue];
 	
 	receipts = [[NSMutableArray alloc] init];
+    preferIPv6 = YES;
 }
 
 /**
@@ -209,7 +212,7 @@ enum XMPPStreamConfig
 		[self commonInit];
 		
 		// Initialize socket
-		asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:xmppQueue];
+        asyncSocket = [self newSocket];
 	}
 	return self;
 }
@@ -391,6 +394,30 @@ enum XMPPStreamConfig
 		block();
 	else
 		dispatch_async(xmppQueue, block);
+}
+
+- (void) setPreferIPv6:(BOOL)_preferIPv6 {
+    dispatch_block_t block = ^{
+        preferIPv6 = _preferIPv6;
+    };
+    
+    if (dispatch_get_specific(xmppQueueTag))
+        block();
+    else
+        dispatch_async(xmppQueue, block);
+}
+
+- (BOOL) preferIPv6 {
+    __block BOOL result;
+    dispatch_block_t block = ^{
+        result = preferIPv6;
+    };
+    
+    if (dispatch_get_specific(xmppQueueTag))
+        block();
+    else
+        dispatch_sync(xmppQueue, block);
+    return result;
 }
 
 - (XMPPJID *)myJID
@@ -1255,7 +1282,7 @@ enum XMPPStreamConfig
 		state = STATE_XMPP_CONNECTING;
 		
 		// Initailize socket
-		asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:xmppQueue];
+        asyncSocket = [self newSocket];
 		
 		NSError *connectErr = nil;
 		result = [asyncSocket connectToAddress:remoteAddr error:&connectErr];
@@ -5016,6 +5043,13 @@ enum XMPPStreamConfig
 - (NSString *)generateUUID
 {
 	return [[self class] generateUUID];
+}
+
+/** Allocates and configures a new socket */
+- (GCDAsyncSocket*) newSocket {
+    GCDAsyncSocket *socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:xmppQueue];
+    socket.IPv4PreferredOverIPv6 = !self.preferIPv6;
+    return socket;
 }
 
 @end

@@ -1,1 +1,0 @@
-../../../XMPPFramework/Extensions/XEP-0198/Memory Storage/XMPPStreamManagementMemoryStorage.h

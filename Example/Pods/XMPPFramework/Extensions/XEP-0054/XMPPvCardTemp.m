@@ -256,7 +256,7 @@ NSString *const kXMPPvCardTempElement = @"vCard";
 }
 
 
-- (NSString *)prefix {
+- (NSString *)vPrefix {
 	NSString *result = nil;
 	NSXMLElement *name = [self elementForName:@"N"];
 	
@@ -272,7 +272,7 @@ NSString *const kXMPPvCardTempElement = @"vCard";
 }
 
 
-- (void)setPrefix:(NSString *)prefix {
+- (void)setVPrefix:(NSString *)prefix {
 	XMPP_VCARD_SET_N_CHILD(prefix, @"PREFIX");
 }
 
@@ -322,11 +322,43 @@ NSString *const kXMPPvCardTempElement = @"vCard";
 - (void)clearTelecomsAddresses { }
 
 
-- (NSArray *)emailAddresses { return nil; }
-- (void)addEmailAddress:(XMPPvCardTempEmail *)email { }
-- (void)removeEmailAddress:(XMPPvCardTempEmail *)email { }
-- (void)setEmailAddresses:(NSArray *)emails { }
-- (void)clearEmailAddresses { }
+- (NSArray *)emailAddresses {
+    NSMutableArray *result = [NSMutableArray new];
+    NSArray *emails = [self elementsForName:@"EMAIL"];
+    for (NSXMLElement *email in emails) {
+        XMPPvCardTempEmail *vCardTempEmail = [XMPPvCardTempEmail vCardEmailFromElement:email];
+        [result addObject:vCardTempEmail];
+    }
+        
+    return result;
+}
+
+- (void)addEmailAddress:(XMPPvCardTempEmail *)email {
+    [self addChild:email];
+}
+
+- (void)removeEmailAddress:(XMPPvCardTempEmail *)email {
+    NSArray *emailElements = [self elementsForName:@"EMAIL"];
+    for (NSXMLElement *element in emailElements) {
+        XMPPvCardTempEmail *vCardTempEmail = [XMPPvCardTempEmail vCardEmailFromElement:[element copy]];
+        if ([vCardTempEmail.userid isEqualToString:email.userid]) {
+            NSUInteger index = [[self children] indexOfObject:element];
+            [self removeChildAtIndex:index];
+        }
+    }
+
+}
+
+- (void)setEmailAddresses:(NSArray *)emails {
+    [self clearEmailAddresses];
+    for (XMPPvCardTempEmail *email in emails) {
+        [self addEmailAddress:email];
+    }
+}
+
+- (void)clearEmailAddresses {
+    [self removeElementsForName:@"EMAIL"];
+}
 
 
 - (XMPPJID *)jid {
@@ -746,7 +778,14 @@ NSString *const kXMPPvCardTempElement = @"vCard";
 	if (phonetic != nil) {
 		[elem setStringValue:phonetic];
 	} else if (sound != nil) {
-		[self removeChildAtIndex:[[self children] indexOfObject:phonetic]];
+        // The old code never actually did anything
+        // because the phonetic object is a NSString but
+        // the children are DDXMLNodes.
+        //
+        // [self removeChildAtIndex:[[self children] indexOfObject:phonetic]];
+        
+        // Maybe this is what was intended? I'm not sure.
+        [self removeChildAtIndex:[[self children] indexOfObject:sound]];
 	}
 }
 

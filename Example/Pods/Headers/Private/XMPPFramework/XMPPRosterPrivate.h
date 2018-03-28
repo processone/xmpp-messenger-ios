@@ -1,1 +1,0 @@
-../../../XMPPFramework/Extensions/Roster/XMPPRosterPrivate.h

@@ -1,11 +1,10 @@
-CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES
 ENABLE_BITCODE = NO
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/CocoaAsyncSocket" "$PODS_CONFIGURATION_BUILD_DIR/CocoaLumberjack" "$PODS_CONFIGURATION_BUILD_DIR/FMDB" "$PODS_CONFIGURATION_BUILD_DIR/JSQMessagesViewController" "$PODS_CONFIGURATION_BUILD_DIR/JSQSystemSoundPlayer" "$PODS_CONFIGURATION_BUILD_DIR/KissXML" "$PODS_CONFIGURATION_BUILD_DIR/XMPPFramework"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) $(SDKROOT)/usr/include/libxml2 $(PODS_ROOT)/XMPPFramework/module $(SDKROOT)/usr/include/libresolv $(SDKROOT)/usr/include/libxml2 $(PODS_ROOT)/XMPPFramework/module
+HEADER_SEARCH_PATHS = $(SDKROOT)/usr/include/libxml2 $(inherited) $(SDKROOT)/usr/include/libxml2 $(SDKROOT)/usr/include/libresolv
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/XMPPFramework/Vendor/libidn"
-OTHER_CFLAGS = $(inherited) -iquote "$CONFIGURATION_BUILD_DIR/CocoaAsyncSocket.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/CocoaLumberjack.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/FMDB.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/JSQMessagesViewController.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/JSQSystemSoundPlayer.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/XMPPFramework.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/xmpp_messenger_ios.framework/Headers"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"xml2" -framework "CocoaAsyncSocket" -framework "CocoaLumberjack" -framework "FMDB" -framework "JSQMessagesViewController" -framework "JSQSystemSoundPlayer" -framework "XMPPFramework" -framework "xmpp_messenger_ios"
-OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS"
-PODS_FRAMEWORK_BUILD_PATH = $(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Pods-XMPP-Messenger-iOS
+OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/CocoaAsyncSocket/CocoaAsyncSocket.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/CocoaLumberjack/CocoaLumberjack.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/FMDB/FMDB.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/JSQMessagesViewController/JSQMessagesViewController.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/KissXML/KissXML.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/XMPPFramework/XMPPFramework.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -ObjC -framework "CocoaAsyncSocket" -framework "CocoaLumberjack" -framework "FMDB" -framework "JSQMessagesViewController" -framework "JSQSystemSoundPlayer" -framework "KissXML" -framework "XMPPFramework"
+PODS_BUILD_DIR = $BUILD_DIR
+PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}/Pods

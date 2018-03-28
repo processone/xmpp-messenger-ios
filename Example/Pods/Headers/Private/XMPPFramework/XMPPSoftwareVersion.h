@@ -1,1 +1,0 @@
-../../../XMPPFramework/Extensions/XEP-0092/XMPPSoftwareVersion.h
