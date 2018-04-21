@@ -1,1 +1,0 @@
-../../../XMPPFramework/Extensions/XEP-0066/XMPPIQ+XEP_0066.h

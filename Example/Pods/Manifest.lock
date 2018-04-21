@@ -1,172 +1,53 @@
 PODS:
-  - CocoaAsyncSocket (7.4.2)
-  - CocoaLumberjack (1.9.2):
-    - CocoaLumberjack/Extensions (= 1.9.2)
-  - CocoaLumberjack/Core (1.9.2)
-  - CocoaLumberjack/Extensions (1.9.2):
-    - CocoaLumberjack/Core
-  - FMDB (1.5.1)
-  - JSQMessagesViewController (7.2.0):
+  - CocoaAsyncSocket (7.6.3)
+  - CocoaLumberjack (3.4.2):
+    - CocoaLumberjack/Default (= 3.4.2)
+    - CocoaLumberjack/Extensions (= 3.4.2)
+  - CocoaLumberjack/Default (3.4.2)
+  - CocoaLumberjack/Extensions (3.4.2):
+    - CocoaLumberjack/Default
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
+  - JSQMessagesViewController (7.3.5):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - xmpp-messenger-ios (1.0.1):
-    - FMDB (~> 1.0)
-    - JSQMessagesViewController
-    - JSQSystemSoundPlayer (~> 2.0)
-    - XMPPFramework
-  - XMPPFramework (3.6.6):
-    - XMPPFramework/Authentication (= 3.6.6)
-    - XMPPFramework/BandwidthMonitor (= 3.6.6)
-    - XMPPFramework/Categories (= 3.6.6)
-    - XMPPFramework/Core (= 3.6.6)
-    - XMPPFramework/CoreDataStorage (= 3.6.6)
-    - XMPPFramework/GoogleSharedStatus (= 3.6.6)
-    - XMPPFramework/KissXML (= 3.6.6)
-    - XMPPFramework/ProcessOne (= 3.6.6)
-    - XMPPFramework/Reconnect (= 3.6.6)
-    - XMPPFramework/Roster (= 3.6.6)
-    - XMPPFramework/SystemInputActivityMonitor (= 3.6.6)
-    - XMPPFramework/Utilities (= 3.6.6)
-    - XMPPFramework/XEP-0009 (= 3.6.6)
-    - XMPPFramework/XEP-0012 (= 3.6.6)
-    - XMPPFramework/XEP-0016 (= 3.6.6)
-    - XMPPFramework/XEP-0045 (= 3.6.6)
-    - XMPPFramework/XEP-0054 (= 3.6.6)
-    - XMPPFramework/XEP-0059 (= 3.6.6)
-    - XMPPFramework/XEP-0060 (= 3.6.6)
-    - XMPPFramework/XEP-0065 (= 3.6.6)
-    - XMPPFramework/XEP-0066 (= 3.6.6)
-    - XMPPFramework/XEP-0082 (= 3.6.6)
-    - XMPPFramework/XEP-0085 (= 3.6.6)
-    - XMPPFramework/XEP-0092 (= 3.6.6)
-    - XMPPFramework/XEP-0100 (= 3.6.6)
-    - XMPPFramework/XEP-0106 (= 3.6.6)
-    - XMPPFramework/XEP-0115 (= 3.6.6)
-    - XMPPFramework/XEP-0136 (= 3.6.6)
-    - XMPPFramework/XEP-0153 (= 3.6.6)
-    - XMPPFramework/XEP-0172 (= 3.6.6)
-    - XMPPFramework/XEP-0184 (= 3.6.6)
-    - XMPPFramework/XEP-0191 (= 3.6.6)
-    - XMPPFramework/XEP-0198 (= 3.6.6)
-    - XMPPFramework/XEP-0199 (= 3.6.6)
-    - XMPPFramework/XEP-0202 (= 3.6.6)
-    - XMPPFramework/XEP-0203 (= 3.6.6)
-    - XMPPFramework/XEP-0223 (= 3.6.6)
-    - XMPPFramework/XEP-0224 (= 3.6.6)
-    - XMPPFramework/XEP-0280 (= 3.6.6)
-    - XMPPFramework/XEP-0297 (= 3.6.6)
-    - XMPPFramework/XEP-0308 (= 3.6.6)
-    - XMPPFramework/XEP-0333 (= 3.6.6)
-    - XMPPFramework/XEP-0335 (= 3.6.6)
-  - XMPPFramework/Authentication (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/BandwidthMonitor (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/Categories (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/Core (3.6.6):
-    - CocoaAsyncSocket (~> 7.4.1)
-    - CocoaLumberjack (~> 1.9)
-    - XMPPFramework/KissXML
-  - XMPPFramework/CoreDataStorage (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/GoogleSharedStatus (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/KissXML (3.6.6)
-  - XMPPFramework/ProcessOne (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/Reconnect (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/Roster (3.6.6):
-    - XMPPFramework/Core
-    - XMPPFramework/CoreDataStorage
-  - XMPPFramework/SystemInputActivityMonitor (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/Utilities (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0009 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0012 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0016 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0045 (3.6.6):
-    - XMPPFramework/Core
-    - XMPPFramework/CoreDataStorage
-    - XMPPFramework/XEP-0203
-  - XMPPFramework/XEP-0054 (3.6.6):
-    - XMPPFramework/Core
-    - XMPPFramework/Roster
-  - XMPPFramework/XEP-0059 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0060 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0065 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0066 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0082 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0085 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0092 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0100 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0106 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0115 (3.6.6):
-    - XMPPFramework/Core
-    - XMPPFramework/CoreDataStorage
-  - XMPPFramework/XEP-0136 (3.6.6):
-    - XMPPFramework/CoreDataStorage
-    - XMPPFramework/XEP-0085
-    - XMPPFramework/XEP-0203
-  - XMPPFramework/XEP-0153 (3.6.6):
-    - XMPPFramework/Core
-    - XMPPFramework/XEP-0054
-  - XMPPFramework/XEP-0172 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0184 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0191 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0198 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0199 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0202 (3.6.6):
-    - XMPPFramework/Core
-    - XMPPFramework/XEP-0082
-  - XMPPFramework/XEP-0203 (3.6.6):
-    - XMPPFramework/Core
-    - XMPPFramework/XEP-0082
-  - XMPPFramework/XEP-0223 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0224 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0280 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0297 (3.6.6):
-    - XMPPFramework/Core
-    - XMPPFramework/XEP-0203
-  - XMPPFramework/XEP-0308 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0333 (3.6.6):
-    - XMPPFramework/Core
-  - XMPPFramework/XEP-0335 (3.6.6):
-    - XMPPFramework/Core
+  - KissXML (5.2.2)
+  - libidn (1.33)
+  - XMPPFramework (4.0):
+    - XMPPFramework/default (= 4.0)
+  - XMPPFramework/default (4.0):
+    - CocoaAsyncSocket (~> 7.6.0)
+    - CocoaLumberjack
+    - KissXML (~> 5.2.0)
+    - libidn (~> 1.33.0)
 
 DEPENDENCIES:
-  - xmpp-messenger-ios
+  - FMDB
+  - JSQMessagesViewController
+  - JSQSystemSoundPlayer (~> 2.0)
+  - XMPPFramework (from `https://github.com/robbiehanson/XMPPFramework.git`, branch `master`)
+
+EXTERNAL SOURCES:
+  XMPPFramework:
+    :branch: master
+    :git: https://github.com/robbiehanson/XMPPFramework.git
+
+CHECKOUT OPTIONS:
+  XMPPFramework:
+    :commit: 5e6227bfa5f194d257e89f1f3cc0c55c7ec5275d
+    :git: https://github.com/robbiehanson/XMPPFramework.git
 
 SPEC CHECKSUMS:
-  CocoaAsyncSocket: f5783bdedd232d91b89769bc4b5a1580aed518ad
-  CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
-  FMDB: 0c3eed7342fdf9dc03b8fe3d8de8e7a9f08bfacc
-  JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
+  CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
+  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  JSQMessagesViewController: 6587f56aedbcb150a8ba1d968e1ef58b1bc758b7
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  xmpp-messenger-ios: e1a81270a0d62f1307c86b493209f01853e82e6b
-  XMPPFramework: b06c210b0b71c08aa41a646bffd2021fa43bb43b
+  KissXML: 4418f32138aec43797891845d682b00fc8cd4677
+  libidn: 90fc1a62b60288dcf543f13f4ebca913f17d829f
+  XMPPFramework: 967df10e4dc4ba4ca5e04505fd2b2d2fd562d917
 
-COCOAPODS: 0.39.0.beta.4
+PODFILE CHECKSUM: 974668655fc2bd7a2689a25efb43f7090d142717
+
+COCOAPODS: 1.4.0

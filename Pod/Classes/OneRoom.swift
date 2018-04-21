@@ -9,7 +9,7 @@
 import Foundation
 import XMPPFramework
 
-typealias OneRoomCreationCompletionHandler = (sender: XMPPRoom) -> Void
+typealias OneRoomCreationCompletionHandler = (_ sender: XMPPRoom) -> Void
 
 protocol OneRoomDelegate {
   //func onePresenceDidReceivePresence()
@@ -29,18 +29,18 @@ class OneRoom: NSObject {
   }
   
   //Handle nickname changes
-  class func createRoom(roomName: String, delegate: AnyObject? = nil, completionHandler completion:OneRoomCreationCompletionHandler) {
+  class func createRoom(_ roomName: String, delegate: AnyObject? = nil, completionHandler completion:@escaping OneRoomCreationCompletionHandler) {
     sharedInstance.didCreateRoomCompletionBlock = completion
     
     let roomMemoryStorage = XMPPRoomMemoryStorage()
     let domain = OneChat.sharedInstance.xmppStream!.myJID.domain
-    let roomJID = XMPPJID.jidWithString("\(roomName)@conference.\(domain)")
-    let xmppRoom = XMPPRoom(roomStorage: roomMemoryStorage, jid: roomJID, dispatchQueue: dispatch_get_main_queue())
+    let roomJID = XMPPJID(string: "\(roomName)@conference.\(domain)")
+    let xmppRoom = XMPPRoom(roomStorage: roomMemoryStorage, jid: roomJID, dispatchQueue: DispatchQueue.main)!
 
     xmppRoom.activate(OneChat.sharedInstance.xmppStream)
-    xmppRoom.addDelegate(delegate, delegateQueue: dispatch_get_main_queue())
-    print(OneChat.sharedInstance.xmppStream!.myJID.bare())
-    xmppRoom.joinRoomUsingNickname(OneChat.sharedInstance.xmppStream!.myJID.bare(), history: nil, password: nil)
+    xmppRoom.addDelegate(delegate, delegateQueue: DispatchQueue.main)
+    print(OneChat.sharedInstance.xmppStream!.myJID.bare() as String)
+    xmppRoom.join(usingNickname: OneChat.sharedInstance.xmppStream!.myJID.bare(), history: nil, password: nil)
     xmppRoom.fetchConfigurationForm()
   }
 }
@@ -73,49 +73,49 @@ extension OneRoom: XMPPRoomDelegate {
   * @see configureRoomUsingOptions:
   **/
   
-  func xmppRoomDidCreate(sender: XMPPRoom!) {
+  func xmppRoomDidCreate(_ sender: XMPPRoom!) {
     //[xmppRoom fetchConfigurationForm];
     print("room did create")
-    didCreateRoomCompletionBlock!(sender: sender)
+    didCreateRoomCompletionBlock!(sender)
   }
   
-  func xmppRoomDidLeave(sender: XMPPRoom!) {
+  func xmppRoomDidLeave(_ sender: XMPPRoom!) {
     //
   }
   
-  func xmppRoomDidJoin(sender: XMPPRoom!) {
+  func xmppRoomDidJoin(_ sender: XMPPRoom!) {
       print("room did join")
   }
   
-  func xmppRoomDidDestroy(sender: XMPPRoom!) {
+  func xmppRoomDidDestroy(_ sender: XMPPRoom!) {
     //
   }
   
-  func xmppRoom(sender: XMPPRoom!, didFetchConfigurationForm configForm: DDXMLElement!) {
+  func xmppRoom(_ sender: XMPPRoom!, didFetchConfigurationForm configForm: DDXMLElement!) {
     print("did fetch config \(configForm)")
   }
   
-  func xmppRoom(sender: XMPPRoom!, willSendConfiguration roomConfigForm: XMPPIQ!) {
+  func xmppRoom(_ sender: XMPPRoom!, willSendConfiguration roomConfigForm: XMPPIQ!) {
     //
   }
   
-  func xmppRoom(sender: XMPPRoom!, didConfigure iqResult: XMPPIQ!) {
+  func xmppRoom(_ sender: XMPPRoom!, didConfigure iqResult: XMPPIQ!) {
     //
   }
   
-  func xmppRoom(sender: XMPPRoom!, didNotConfigure iqResult: XMPPIQ!) {
+  func xmppRoom(_ sender: XMPPRoom!, didNotConfigure iqResult: XMPPIQ!) {
     //
   }
   
-  func xmppRoom(sender: XMPPRoom!, occupantDidJoin occupantJID: XMPPJID!, withPresence presence: XMPPPresence!) {
+  func xmppRoom(_ sender: XMPPRoom!, occupantDidJoin occupantJID: XMPPJID!, with presence: XMPPPresence!) {
     //
   }
   
-  func xmppRoom(sender: XMPPRoom!, occupantDidLeave occupantJID: XMPPJID!, withPresence presence: XMPPPresence!) {
+  func xmppRoom(_ sender: XMPPRoom!, occupantDidLeave occupantJID: XMPPJID!, with presence: XMPPPresence!) {
     //
   }
   
-  func xmppRoom(sender: XMPPRoom!, occupantDidUpdate occupantJID: XMPPJID!, withPresence presence: XMPPPresence!) {
+  func xmppRoom(_ sender: XMPPRoom!, occupantDidUpdate occupantJID: XMPPJID!, with presence: XMPPPresence!) {
     //
   }
   
@@ -124,39 +124,39 @@ extension OneRoom: XMPPRoomDelegate {
   * The occupant parameter may be nil if the message came directly from the room, or from a non-occupant.
   **/
   
-  func xmppRoom(sender: XMPPRoom!, didReceiveMessage message: XMPPMessage!, fromOccupant occupantJID: XMPPJID!) {
+  func xmppRoom(_ sender: XMPPRoom!, didReceive message: XMPPMessage!, fromOccupant occupantJID: XMPPJID!) {
+    //
+  }
+    
+    func xmppRoom(_ sender: XMPPRoom!, didFetchBanList items: [Any]!) {
+        
+    }
+  
+  func xmppRoom(_ sender: XMPPRoom!, didNotFetchBanList iqError: XMPPIQ!) {
     //
   }
   
-  func xmppRoom(sender: XMPPRoom!, didFetchBanList items: [AnyObject]!) {
+    func xmppRoom(_ sender: XMPPRoom!, didFetchMembersList items: [Any]!) {
+        
+    }
+  
+  func xmppRoom(_ sender: XMPPRoom!, didNotFetchMembersList iqError: XMPPIQ!) {
     //
   }
   
-  func xmppRoom(sender: XMPPRoom!, didNotFetchBanList iqError: XMPPIQ!) {
+    func xmppRoom(_ sender: XMPPRoom!, didFetchModeratorsList items: [Any]!) {
+        
+    }
+    
+  func xmppRoom(_ sender: XMPPRoom!, didNotFetchModeratorsList iqError: XMPPIQ!) {
     //
   }
   
-  func xmppRoom(sender: XMPPRoom!, didFetchMembersList items: [AnyObject]!) {
+  func xmppRoom(_ sender: XMPPRoom!, didEditPrivileges iqResult: XMPPIQ!) {
     //
   }
   
-  func xmppRoom(sender: XMPPRoom!, didNotFetchMembersList iqError: XMPPIQ!) {
-    //
-  }
-  
-  func xmppRoom(sender: XMPPRoom!, didFetchModeratorsList items: [AnyObject]!) {
-    //
-  }
-  
-  func xmppRoom(sender: XMPPRoom!, didNotFetchModeratorsList iqError: XMPPIQ!) {
-    //
-  }
-  
-  func xmppRoom(sender: XMPPRoom!, didEditPrivileges iqResult: XMPPIQ!) {
-    //
-  }
-  
-  func xmppRoom(sender: XMPPRoom!, didNotEditPrivileges iqError: XMPPIQ!) {
+  func xmppRoom(_ sender: XMPPRoom!, didNotEditPrivileges iqError: XMPPIQ!) {
     //
   }
 }

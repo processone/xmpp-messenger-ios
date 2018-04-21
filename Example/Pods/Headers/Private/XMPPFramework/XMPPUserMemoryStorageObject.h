@@ -1,1 +1,0 @@
-../../../XMPPFramework/Extensions/Roster/MemoryStorage/XMPPUserMemoryStorageObject.h

@@ -1,8 +1,12 @@
 # Uncomment this line to define a global platform for your project
- platform :ios, '8.0'
-use_frameworks!
+platform :ios, '8.0'
 
 target 'XMPP-Messenger-iOS' do
-pod 'xmpp-messenger-ios'
-end
 
+	use_frameworks!
+	
+	pod 'FMDB'
+	pod 'JSQMessagesViewController'
+	pod 'JSQSystemSoundPlayer', '~> 2.0'
+	pod 'XMPPFramework', :git => "https://github.com/robbiehanson/XMPPFramework.git", :branch => 'master'
+end

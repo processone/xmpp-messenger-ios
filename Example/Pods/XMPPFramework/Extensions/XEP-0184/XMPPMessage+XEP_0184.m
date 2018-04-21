@@ -1,5 +1,6 @@
 #import "XMPPMessage+XEP_0184.h"
 #import "NSXMLElement+XMPP.h"
+#import "XMPPMessage+XEP0045.h"
 
 
 @implementation XMPPMessage (XEP_0184)
@@ -37,7 +38,19 @@
 	
 	NSXMLElement *message = [NSXMLElement elementWithName:@"message"];
 	
-	NSString *to = [self fromStr];
+    NSString *type = [self type];
+    
+    if (type) {
+        [message addAttributeWithName:@"type" stringValue:type];
+    }
+    
+    NSString *to = [self fromStr];
+    
+    if([self isGroupChatMessage]) {
+        to = [[self from] bare];
+        [message addAttributeWithName:@"type" stringValue:@"groupchat"];
+    }
+    
 	if (to)
 	{
 		[message addAttributeWithName:@"to" stringValue:to];

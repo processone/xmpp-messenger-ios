@@ -14,6 +14,7 @@
 
 #include <dns_util.h>
 #include <stdlib.h>
+#import <dns_sd.h>
 
 #if ! __has_feature(objc_arc)
 #warning This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
@@ -45,10 +46,39 @@ NSString *const XMPPSRVResolverErrorDomain = @"XMPPSRVResolverErrorDomain";
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+@interface XMPPSRVResolver ()
+{
+#if __has_feature(objc_arc_weak)
+    __weak id<XMPPSRVResolverDelegate> delegate;
+#else
+    __unsafe_unretained id<XMPPSRVResolverDelegate> delegate;
+#endif
+    
+    dispatch_queue_t delegateQueue;
+    
+    dispatch_queue_t resolverQueue;
+    void *resolverQueueTag;
+    
+    __strong NSString *srvName;
+    NSTimeInterval timeout;
+    
+    BOOL resolveInProgress;
+    
+    NSMutableArray *results;
+    DNSServiceRef sdRef;
+    
+    int sdFd;
+    dispatch_source_t sdReadSource;
+    dispatch_source_t timeoutTimer;
+}
+
+@end
+
 @implementation XMPPSRVResolver
 
-- (id)initWithdDelegate:(id)aDelegate delegateQueue:(dispatch_queue_t)dq resolverQueue:(dispatch_queue_t)rq
-{
+- (instancetype)initWithDelegate:(id<XMPPSRVResolverDelegate>)aDelegate
+                   delegateQueue:(dispatch_queue_t)dq
+                   resolverQueue:(nullable dispatch_queue_t)rq {
 	NSParameterAssert(aDelegate != nil);
 	NSParameterAssert(dq != NULL);
 	
@@ -266,9 +296,16 @@ NSString *const XMPPSRVResolverErrorDomain = @"XMPPSRVResolverErrorDomain";
 
 - (void)succeed
 {
+    NSParameterAssert(delegate != nil);
+    NSParameterAssert(delegateQueue != nil);
 	NSAssert(dispatch_get_specific(resolverQueueTag), @"Invoked on incorrect queue");
 	
 	XMPPLogTrace();
+    
+    if (!delegate || !delegateQueue) {
+        XMPPLogError(@"%@: No delegate or queue set for SRV resolver.", THIS_FILE);
+        return;
+    }
 	
 	[self sortResults];
 	
@@ -620,6 +657,7 @@ static void QueryRecordCallback(DNSServiceRef       sdRef,
 
 + (NSString *)srvNameFromXMPPDomain:(NSString *)xmppDomain
 {
+    NSParameterAssert(xmppDomain != nil);
 	if (xmppDomain == nil)
 		return nil;
 	else

@@ -1,4 +1,14 @@
+#ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#else
+#ifndef FOUNDATION_EXPORT
+#if defined(__cplusplus)
+#define FOUNDATION_EXPORT extern "C"
+#else
+#define FOUNDATION_EXPORT extern
+#endif
+#endif
+#endif
 
 #import "JSQSystemSoundPlayer+JSQMessages.h"
 #import "NSBundle+JSQMessages.h"
@@ -15,11 +25,13 @@
 #import "JSQMessagesTimestampFormatter.h"
 #import "JSQMessagesToolbarButtonFactory.h"
 #import "JSQMessages.h"
+#import "JSQAudioMediaViewAttributes.h"
 #import "JSQMessagesBubbleSizeCalculating.h"
 #import "JSQMessagesBubblesSizeCalculator.h"
 #import "JSQMessagesCollectionViewFlowLayout.h"
 #import "JSQMessagesCollectionViewFlowLayoutInvalidationContext.h"
 #import "JSQMessagesCollectionViewLayoutAttributes.h"
+#import "JSQAudioMediaItem.h"
 #import "JSQLocationMediaItem.h"
 #import "JSQMediaItem.h"
 #import "JSQMessage.h"

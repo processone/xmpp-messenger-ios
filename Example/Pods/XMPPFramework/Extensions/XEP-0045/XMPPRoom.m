@@ -34,22 +34,6 @@ enum XMPPRoomState
 
 @implementation XMPPRoom
 
-- (id)init
-{
-	// This will cause a crash - it's designed to.
-	// Only the init methods listed in XMPPRoom.h are supported.
-	
-	return [self initWithRoomStorage:nil jid:nil dispatchQueue:NULL];
-}
-
-- (id)initWithDispatchQueue:(dispatch_queue_t)queue
-{
-	// This will cause a crash - it's designed to.
-	// Only the init methods listed in XMPPRoom.h are supported.
-	
-	return [self initWithRoomStorage:nil jid:nil dispatchQueue:queue];
-}
-
 - (id)initWithRoomStorage:(id <XMPPRoomStorage>)storage jid:(XMPPJID *)aRoomJID
 {
 	return [self initWithRoomStorage:storage jid:aRoomJID dispatchQueue:NULL];
@@ -491,7 +475,7 @@ enum XMPPRoomState
     NSXMLElement *subject = [NSXMLElement elementWithName:@"subject" stringValue:newRoomSubject];
     
     XMPPMessage *message = [XMPPMessage message];
-    [message addAttributeWithName:@"from" stringValue:[myRoomJID full]];
+    [message addAttributeWithName:@"from" stringValue:[xmppStream.myJID full]];
     [message addChild:subject];
     
     [self sendMessage:message];
@@ -621,6 +605,132 @@ enum XMPPRoomState
 		dispatch_async(moduleQueue, block);
 	
 	
+}
+
+- (void)handleFetchAdminsListResponse:(XMPPIQ *)iq withInfo:(id <XMPPTrackingInfo>)info
+{
+    if ([[iq type] isEqualToString:@"result"])
+    {
+        // <iq type='result'
+        //     from='coven@chat.shakespeare.lit'
+        //       id='member3'>
+        //   <query xmlns='http://jabber.org/protocol/muc#admin'>
+        //     <item affiliation='admin' jid='hag66@shakespeare.lit' nick='thirdwitch' role='participant'/>
+        //   </query>
+        // </iq>
+        
+        NSXMLElement *query = [iq elementForName:@"query" xmlns:XMPPMUCAdminNamespace];
+        NSArray *items = [query elementsForName:@"item"];
+        
+        [multicastDelegate xmppRoom:self didFetchAdminsList:items];
+    }
+    else
+    {
+        [multicastDelegate xmppRoom:self didNotFetchAdminsList:iq];
+    }
+}
+
+- (void)fetchAdminsList
+{
+    dispatch_block_t block = ^{ @autoreleasepool {
+        
+        XMPPLogTrace();
+        
+        // <iq type='get'
+        //       id='member3'
+        //       to='coven@chat.shakespeare.lit'>
+        //   <query xmlns='http://jabber.org/protocol/muc#admin'>
+        //     <item affiliation='admin'/>
+        //   </query>
+        // </iq>
+        
+        NSString *fetchID = [xmppStream generateUUID];
+        
+        NSXMLElement *item = [NSXMLElement elementWithName:@"item"];
+        [item addAttributeWithName:@"affiliation" stringValue:@"admin"];
+        
+        NSXMLElement *query = [NSXMLElement elementWithName:@"query" xmlns:XMPPMUCAdminNamespace];
+        [query addChild:item];
+        
+        XMPPIQ *iq = [XMPPIQ iqWithType:@"get" to:roomJID elementID:fetchID child:query];
+        
+        [xmppStream sendElement:iq];
+        
+        [responseTracker addID:fetchID
+                        target:self
+                      selector:@selector(handleFetchAdminsListResponse:withInfo:)
+                       timeout:60.0];
+    }};
+    
+    if (dispatch_get_specific(moduleQueueTag))
+        block();
+    else
+        dispatch_async(moduleQueue, block);
+    
+    
+}
+
+- (void)handleFetchOwnersListResponse:(XMPPIQ *)iq withInfo:(id <XMPPTrackingInfo>)info
+{
+    if ([[iq type] isEqualToString:@"result"])
+    {
+        // <iq type='result'
+        //     from='coven@chat.shakespeare.lit'
+        //       id='member3'>
+        //   <query xmlns='http://jabber.org/protocol/muc#admin'>
+        //     <item affiliation='owner' jid='hag66@shakespeare.lit' nick='thirdwitch' role='participant'/>
+        //   </query>
+        // </iq>
+        
+        NSXMLElement *query = [iq elementForName:@"query" xmlns:XMPPMUCAdminNamespace];
+        NSArray *items = [query elementsForName:@"item"];
+        
+        [multicastDelegate xmppRoom:self didFetchOwnersList:items];
+    }
+    else
+    {
+        [multicastDelegate xmppRoom:self didNotFetchOwnersList:iq];
+    }
+}
+
+- (void)fetchOwnersList
+{
+    dispatch_block_t block = ^{ @autoreleasepool {
+        
+        XMPPLogTrace();
+        
+        // <iq type='get'
+        //       id='member3'
+        //       to='coven@chat.shakespeare.lit'>
+        //   <query xmlns='http://jabber.org/protocol/muc#admin'>
+        //     <item affiliation='owner'/>
+        //   </query>
+        // </iq>
+        
+        NSString *fetchID = [xmppStream generateUUID];
+        
+        NSXMLElement *item = [NSXMLElement elementWithName:@"item"];
+        [item addAttributeWithName:@"affiliation" stringValue:@"owner"];
+        
+        NSXMLElement *query = [NSXMLElement elementWithName:@"query" xmlns:XMPPMUCAdminNamespace];
+        [query addChild:item];
+        
+        XMPPIQ *iq = [XMPPIQ iqWithType:@"get" to:roomJID elementID:fetchID child:query];
+        
+        [xmppStream sendElement:iq];
+        
+        [responseTracker addID:fetchID
+                        target:self
+                      selector:@selector(handleFetchOwnersListResponse:withInfo:)
+                       timeout:60.0];
+    }};
+    
+    if (dispatch_get_specific(moduleQueueTag))
+        block();
+    else
+        dispatch_async(moduleQueue, block);
+    
+    
 }
 
 - (void)handleFetchModeratorsListResponse:(XMPPIQ *)iq withInfo:(id <XMPPTrackingInfo>)info
@@ -821,45 +931,61 @@ enum XMPPRoomState
 #pragma mark Messages
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-- (void)inviteUser:(XMPPJID *)jid withMessage:(NSString *)inviteMessageStr
+- (void)inviteUser:(XMPPJID *)jid withMessage:(NSString *)invitationMessage
 {
-	dispatch_block_t block = ^{ @autoreleasepool {
-		
-		XMPPLogTrace();
-		
-		// <message to='darkcave@chat.shakespeare.lit'>
-		//   <x xmlns='http://jabber.org/protocol/muc#user'>
-		//     <invite to='hecate@shakespeare.lit'>
-		//       <reason>
-		//         Hey Hecate, this is the place for all good witches!
-		//       </reason>
-		//     </invite>
-		//   </x>
-		// </message>
-		
-		NSXMLElement *invite = [NSXMLElement elementWithName:@"invite"];
-		[invite addAttributeWithName:@"to" stringValue:[jid full]];
-		
-		if ([inviteMessageStr length] > 0)
-		{
-			[invite addChild:[NSXMLElement elementWithName:@"reason" stringValue:inviteMessageStr]];
-		}
-		
-		NSXMLElement *x = [NSXMLElement elementWithName:@"x" xmlns:XMPPMUCUserNamespace];
-		[x addChild:invite];
-		
-		XMPPMessage *message = [XMPPMessage message];
-		[message addAttributeWithName:@"to" stringValue:[roomJID full]];
-		[message addChild:x];
-		
-		[xmppStream sendElement:message];
-		
-	}};
-	
-	if (dispatch_get_specific(moduleQueueTag))
-		block();
-	else
-		dispatch_async(moduleQueue, block);
+    [self inviteUsers:@[jid] withMessage:invitationMessage];
+}
+
+- (void)inviteUsers:(NSArray<XMPPJID *> *)jids withMessage:(NSString *)invitationMessage
+{
+    dispatch_block_t block = ^{ @autoreleasepool {
+        
+        XMPPLogTrace();
+
+        // <message to='darkcave@chat.shakespeare.lit'>
+        //   <x xmlns='http://jabber.org/protocol/muc#user'>
+        //     <invite to='hecate@shakespeare.lit'>
+        //       <reason>
+        //         Invitation message
+        //       </reason>
+        //     </invite>
+        //     <invite to='<invite to='bard@shakespeare.lit'/>'>
+        //       <reason>
+        //         Invitation message
+        //       </reason>
+        //     </invite>
+        //   </x>
+        // </message>
+
+        NSXMLElement *x = [NSXMLElement elementWithName:@"x" xmlns:XMPPMUCUserNamespace];
+        
+        for (XMPPJID *jid in jids) {
+			NSXMLElement *invite = [self inviteElementWithJid:jid invitationMessage:invitationMessage];
+			[x addChild:invite];
+        }
+        
+        XMPPMessage *message = [XMPPMessage message];
+        [message addAttributeWithName:@"to" stringValue:[roomJID full]];
+        [message addChild:x];
+        
+        [xmppStream sendElement:message];
+        
+    }};
+    
+    if (dispatch_get_specific(moduleQueueTag))
+        block();
+    else
+        dispatch_async(moduleQueue, block);
+}
+
+- (NSXMLElement *)inviteElementWithJid:(XMPPJID *)jid invitationMessage:(NSString *)invitationMessage {
+	NSXMLElement *invite = [NSXMLElement elementWithName:@"invite"];
+	[invite addAttributeWithName:@"to" stringValue:[jid full]];
+
+	if ([invitationMessage length] > 0) {
+		[invite addChild:[NSXMLElement elementWithName:@"reason" stringValue:invitationMessage]];
+	}
+	return invite;
 }
 
 - (void)sendMessage:(XMPPMessage *)message
@@ -1090,6 +1216,7 @@ enum XMPPRoomState
     else if ([message isGroupChatMessageWithSubject])
     {
         roomSubject = [message subject];
+        [multicastDelegate xmppRoomDidChangeSubject:self];
     }
 	else
 	{

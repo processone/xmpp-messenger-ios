@@ -83,22 +83,6 @@
 @dynamic autoFetchNonHashedCapabilities;
 @dynamic autoFetchMyServerCapabilities;
 
-- (id)init
-{
-	// This will cause a crash - it's designed to.
-	// Only the init methods listed in XMPPCapabilities.h are supported.
-	
-	return [self initWithCapabilitiesStorage:nil dispatchQueue:NULL];
-}
-
-- (id)initWithDispatchQueue:(dispatch_queue_t)queue
-{
-	// This will cause a crash - it's designed to.
-	// Only the init methods listed in XMPPCapabilities.h are supported.
-	
-	return [self initWithCapabilitiesStorage:nil dispatchQueue:queue];
-}
-
 - (id)initWithCapabilitiesStorage:(id <XMPPCapabilitiesStorage>)storage
 {
 	return [self initWithCapabilitiesStorage:storage dispatchQueue:NULL];
@@ -152,12 +136,10 @@
 }
 
 - (void)dealloc
-{	
-	for (GCDTimerWrapper *timerWrapper in discoTimerJidDict)
-	{
-		[timerWrapper cancel];
-	}
-	
+{
+    [discoTimerJidDict enumerateKeysAndObjectsUsingBlock:^(XMPPJID * _Nonnull key, GCDTimerWrapper * _Nonnull obj, BOOL * _Nonnull stop) {
+        [obj cancel];
+    }];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

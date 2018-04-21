@@ -24,7 +24,10 @@
   static const int xmppLogLevel = XMPP_LOG_LEVEL_WARN;
 #endif
 
-@interface XMPPvCardTempModule()
+@interface XMPPvCardTempModule() {
+    id <XMPPvCardTempModuleStorage> __strong _xmppvCardTempModuleStorage;
+    XMPPIDTracker *_myvCardTracker;
+}
 
 - (void)_updatevCardTemp:(XMPPvCardTemp *)vCardTemp forJID:(XMPPJID *)jid;
 - (void)_fetchvCardTempForJID:(XMPPJID *)jid;
@@ -38,22 +41,6 @@
 @implementation XMPPvCardTempModule
 
 @synthesize xmppvCardTempModuleStorage = _xmppvCardTempModuleStorage;
-
-- (id)init
-{
-	// This will cause a crash - it's designed to.
-	// Only the init methods listed in XMPPvCardTempModule.h are supported.
-	
-	return [self initWithvCardStorage:nil dispatchQueue:NULL];
-}
-
-- (id)initWithDispatchQueue:(dispatch_queue_t)queue
-{
-	// This will cause a crash - it's designed to.
-	// Only the init methods listed in XMPPvCardTempModule.h are supported.
-	
-	return [self initWithvCardStorage:nil dispatchQueue:NULL];
-}
 
 - (id)initWithvCardStorage:(id <XMPPvCardTempModuleStorage>)storage
 {
@@ -233,8 +220,16 @@
 
 - (void)_fetchvCardTempForJID:(XMPPJID *)jid{
     if(!jid) return;
+    
 
-    [xmppStream sendElement:[XMPPvCardTemp iqvCardRequestForJID:jid]];
+    XMPPIQ *iq = [XMPPvCardTemp iqvCardRequestForJID:jid];
+    
+    [_myvCardTracker addElement:iq
+                         target:self
+                       selector:@selector(handleFetchvCard:withInfo:)
+                        timeout:600];
+    
+    [xmppStream sendElement:iq];
 }
 
 - (void)handleMyvcard:(XMPPIQ *)iq withInfo:(XMPPBasicTrackingInfo *)trackerInfo{
@@ -247,8 +242,30 @@
     {
         NSXMLElement *errorElement = [iq elementForName:@"error"];
         [(id <XMPPvCardTempModuleDelegate>)multicastDelegate xmppvCardTempModule:self failedToUpdateMyvCard:errorElement];
-    }        
+    }
+}
 
+- (void)handleFetchvCard:(XMPPIQ*)iq withInfo:(XMPPBasicTrackingInfo*)trackerInfo {
+    XMPPJID *jid = trackerInfo.element.to;
+    // If JID was omitted from request, you were fetching your own vCard
+    if (!jid) {
+        jid = xmppStream.myJID;
+    }
+    if([iq isErrorIQ])
+    {
+        NSXMLElement *errorElement = [iq elementForName:@"error"];
+        [(id <XMPPvCardTempModuleDelegate>)multicastDelegate xmppvCardTempModule:self failedToFetchvCardForJID:jid error:errorElement];
+    } else if([iq isResultIQ]) {
+        NSXMLElement *vCard = [[iq elementForName:@"vCard"] copy];
+        if (vCard.childCount == 0) {
+            [(id <XMPPvCardTempModuleDelegate>)multicastDelegate xmppvCardTempModule:self failedToFetchvCardForJID:jid error:nil];
+        } else if (![iq from]) {
+            // If there's no fromJID, it means the vCard was already within didReceiveIQ, and this is
+            // the vCard for yourself
+            XMPPvCardTemp *vCardTemp = [XMPPvCardTemp vCardTempFromElement:vCard];
+            [self _updatevCardTemp:vCardTemp forJID:jid];
+        }
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -259,7 +276,12 @@
 {
 	// This method is invoked on the moduleQueue.
 	
-    [_myvCardTracker invokeForElement:iq withObject:iq];
+    if (!iq.from) {
+        // Some error responses for self or contacts don't have a "from"
+        [_myvCardTracker invokeForID:iq.elementID withObject:iq];
+    } else {
+        [_myvCardTracker invokeForElement:iq withObject:iq];
+    }
     
 	// Remember XML heirarchy memory management rules.
 	// The passed parameter is a subnode of the IQ, and we need to pass it to an asynchronous operation.

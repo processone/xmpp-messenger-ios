@@ -74,7 +74,7 @@ enum XMPPStreamConfig
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@interface XMPPStream ()
+@interface XMPPStream () <XMPPSRVResolverDelegate>
 {
 	dispatch_queue_t xmppQueue;
 	void *xmppQueueTag;
@@ -111,6 +111,7 @@ enum XMPPStreamConfig
     XMPPStreamStartTLSPolicy startTLSPolicy;
     BOOL skipStartSession;
     BOOL validatesResponses;
+    BOOL preferIPv6;
 	
 	id <XMPPSASLAuthentication> auth;
 	id <XMPPCustomBinding> customBinding;
@@ -159,6 +160,7 @@ enum XMPPStreamConfig
 @implementation XMPPStream
 
 @synthesize tag = userTag;
+@synthesize asyncSocket = asyncSocket;
 
 /**
  * Shared initialization between the various init methods.
@@ -195,6 +197,7 @@ enum XMPPStreamConfig
     idTracker = [[XMPPIDTracker alloc] initWithStream:self dispatchQueue:xmppQueue];
 	
 	receipts = [[NSMutableArray alloc] init];
+    preferIPv6 = YES;
 }
 
 /**
@@ -209,7 +212,7 @@ enum XMPPStreamConfig
 		[self commonInit];
 		
 		// Initialize socket
-		asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:xmppQueue];
+        asyncSocket = [self newSocket];
 	}
 	return self;
 }
@@ -391,6 +394,30 @@ enum XMPPStreamConfig
 		block();
 	else
 		dispatch_async(xmppQueue, block);
+}
+
+- (void) setPreferIPv6:(BOOL)_preferIPv6 {
+    dispatch_block_t block = ^{
+        preferIPv6 = _preferIPv6;
+    };
+    
+    if (dispatch_get_specific(xmppQueueTag))
+        block();
+    else
+        dispatch_async(xmppQueue, block);
+}
+
+- (BOOL) preferIPv6 {
+    __block BOOL result;
+    dispatch_block_t block = ^{
+        result = preferIPv6;
+    };
+    
+    if (dispatch_get_specific(xmppQueueTag))
+        block();
+    else
+        dispatch_sync(xmppQueue, block);
+    return result;
 }
 
 - (XMPPJID *)myJID
@@ -1117,7 +1144,7 @@ enum XMPPStreamConfig
 			
 			state = STATE_XMPP_RESOLVING_SRV;
 			
-			srvResolver = [[XMPPSRVResolver alloc] initWithdDelegate:self delegateQueue:xmppQueue resolverQueue:NULL];
+			srvResolver = [[XMPPSRVResolver alloc] initWithDelegate:self delegateQueue:xmppQueue resolverQueue:NULL];
 			
 			srvResults = nil;
 			srvResultsIndex = 0;
@@ -1255,7 +1282,7 @@ enum XMPPStreamConfig
 		state = STATE_XMPP_CONNECTING;
 		
 		// Initailize socket
-		asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:xmppQueue];
+        asyncSocket = [self newSocket];
 		
 		NSError *connectErr = nil;
 		result = [asyncSocket connectToAddress:remoteAddr error:&connectErr];
@@ -1374,8 +1401,42 @@ enum XMPPStreamConfig
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark Disconnect
+#pragma mark Abort/Disconnect
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)abortConnecting
+{
+    XMPPLogTrace();
+    
+    dispatch_block_t block = ^{ @autoreleasepool {
+    
+        [self endConnectTimeout];
+        
+        if (state != STATE_XMPP_DISCONNECTED && state != STATE_XMPP_CONNECTED)
+        {
+            [multicastDelegate xmppStreamWasToldToAbortConnect:self];
+            
+            if (state == STATE_XMPP_RESOLVING_SRV)
+            {
+                [srvResolver stop];
+                srvResolver = nil;
+                
+                state = STATE_XMPP_DISCONNECTED;
+            }
+            else
+            {
+                [asyncSocket disconnect];
+                
+                // Everthing will be handled in socketDidDisconnect:withError:
+            }
+        }
+    }};
+    
+    if (dispatch_get_specific(xmppQueueTag))
+        block();
+    else
+        dispatch_sync(xmppQueue, block);
+}
 
 /**
  * Closes the connection to the remote host.
@@ -1717,7 +1778,7 @@ enum XMPPStreamConfig
  * 
  * If the XMPPStream is not connected, or the server doesn't support in-band registration, this method does nothing.
 **/
-- (BOOL)registerWithPassword:(NSString *)password error:(NSError **)errPtr
+- (BOOL)registerWithPassword:(NSString *)password error:(NSError * __autoreleasing *)errPtr
 {
 	XMPPLogTrace();
 	
@@ -3567,7 +3628,7 @@ enum XMPPStreamConfig
 	
 	XMPPHandleAuthResponse result = [auth handleAuth:authResponse];
 	
-	if (result == XMPP_AUTH_SUCCESS)
+	if (result == XMPPHandleAuthResponseSuccess)
 	{
 		// We are successfully authenticated (via sasl:digest-md5)
 		[self setIsAuthenticated:YES];
@@ -3605,7 +3666,7 @@ enum XMPPStreamConfig
 		auth = nil;
 		
 	}
-	else if (result == XMPP_AUTH_FAIL)
+	else if (result == XMPPHandleAuthResponseFailed)
 	{
 		// Revert back to connected state (from authenticating state)
 		state = STATE_XMPP_CONNECTED;
@@ -3617,7 +3678,7 @@ enum XMPPStreamConfig
 		auth = nil;
 		
 	}
-	else if (result == XMPP_AUTH_CONTINUE)
+	else if (result == XMPPHandleAuthResponseContinue)
 	{
 		// Authentication continues.
 		// State doesn't change.
@@ -3688,14 +3749,14 @@ enum XMPPStreamConfig
 	NSError *bindError = nil;
 	XMPPBindResult result = [customBinding start:&bindError];
 	
-	if (result == XMPP_BIND_CONTINUE)
+	if (result == XMPPBindResultContinue)
 	{
 		// Expected result
 		// Wait for reply from server, and forward to customBinding module.
 	}
 	else
 	{
-		if (result == XMPP_BIND_SUCCESS)
+		if (result == XMPPBindResultSuccess)
 		{
 			// It appears binding isn't needed (perhaps handled via auth)
 			
@@ -3706,14 +3767,14 @@ enum XMPPStreamConfig
 			
 			[self continuePostBinding:skipStartSessionOverride];
 		}
-		else if (result == XMPP_BIND_FAIL_FALLBACK)
+		else if (result == XMPPBindResultFailFallback)
 		{
 			// Custom binding isn't available for whatever reason,
 			// but the module has requested we fallback to standard binding.
 			
 			[self startStandardBinding];
 		}
-		else if (result == XMPP_BIND_FAIL_ABORT)
+		else if (result == XMPPBindResultFailAbort)
 		{
 			// Custom binding failed,
 			// and the module requested we abort.
@@ -3733,13 +3794,13 @@ enum XMPPStreamConfig
 	NSError *bindError = nil;
 	XMPPBindResult result = [customBinding handleBind:response withError:&bindError];
 	
-	if (result == XMPP_BIND_CONTINUE)
+	if (result == XMPPBindResultContinue)
 	{
 		// Binding still in progress
 	}
 	else
 	{
-		if (result == XMPP_BIND_SUCCESS)
+		if (result == XMPPBindResultSuccess)
 		{
 			// Binding complete. Continue.
 			
@@ -3750,14 +3811,14 @@ enum XMPPStreamConfig
 			
 			[self continuePostBinding:skipStartSessionOverride];
 		}
-		else if (result == XMPP_BIND_FAIL_FALLBACK)
+		else if (result == XMPPBindResultFailFallback)
 		{
 			// Custom binding failed for whatever reason,
 			// but the module has requested we fallback to standard binding.
 			
 			[self startStandardBinding];
 		}
-		else if (result == XMPP_BIND_FAIL_ABORT)
+		else if (result == XMPPBindResultFailAbort)
 		{
 			// Custom binding failed,
 			// and the module requested we abort.
@@ -3997,7 +4058,10 @@ enum XMPPStreamConfig
 	// Check to see if a session is required
 	// Don't forget about that NSXMLElement bug you reported to apple (xmlns is required or element won't be found)
 	NSXMLElement *f_session = [features elementForName:@"session" xmlns:@"urn:ietf:params:xml:ns:xmpp-session"];
-	
+    if (f_session && [f_session elementForName:@"optional"]) {
+        skipStartSessionOverride = YES;
+    }
+    
 	if (f_session && !skipStartSession && !skipStartSessionOverride)
 	{
 		NSXMLElement *session = [NSXMLElement elementWithName:@"session"];
@@ -4157,7 +4221,10 @@ enum XMPPStreamConfig
 	
 	#if TARGET_OS_IPHONE
 	{
-		if (self.enableBackgroundingOnSocket)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        if (self.enableBackgroundingOnSocket)
+#pragma clang diagnostic pop
 		{
 			__block BOOL result;
 			
@@ -5001,21 +5068,19 @@ enum XMPPStreamConfig
 
 + (NSString *)generateUUID
 {
-	NSString *result = nil;
-	
-	CFUUIDRef uuid = CFUUIDCreate(NULL);
-	if (uuid)
-	{
-		result = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuid);
-		CFRelease(uuid);
-	}
-	
-	return result;
+	return [NSUUID UUID].UUIDString;
 }
 
 - (NSString *)generateUUID
 {
 	return [[self class] generateUUID];
+}
+
+/** Allocates and configures a new socket */
+- (GCDAsyncSocket*) newSocket {
+    GCDAsyncSocket *socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:xmppQueue];
+    socket.IPv4PreferredOverIPv6 = !self.preferIPv6;
+    return socket;
 }
 
 @end

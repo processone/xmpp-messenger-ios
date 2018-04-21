@@ -10,25 +10,25 @@ import Foundation
 import JSQMessagesViewController
 import XMPPFramework
 
-public typealias OneChatMessageCompletionHandler = (stream: XMPPStream, message: XMPPMessage) -> Void
+public typealias OneChatMessageCompletionHandler = (_ stream: XMPPStream, _ message: XMPPMessage) -> Void
 
 // MARK: Protocols
 
 public protocol OneMessageDelegate : NSObjectProtocol {
-	func oneStream(sender: XMPPStream, didReceiveMessage message: XMPPMessage, from user: XMPPUserCoreDataStorageObject)
-	func oneStream(sender: XMPPStream, userIsComposing user: XMPPUserCoreDataStorageObject)
+	func oneStream(_ sender: XMPPStream, didReceiveMessage message: XMPPMessage, from user: XMPPUserCoreDataStorageObject)
+	func oneStream(_ sender: XMPPStream, userIsComposing user: XMPPUserCoreDataStorageObject)
 }
 
-public class OneMessage: NSObject {
-	public weak var delegate: OneMessageDelegate?
+open class OneMessage: NSObject {
+	open weak var delegate: OneMessageDelegate?
 	
-	public var xmppMessageStorage: XMPPMessageArchivingCoreDataStorage?
+	open var xmppMessageStorage: XMPPMessageArchivingCoreDataStorage?
 	var xmppMessageArchiving: XMPPMessageArchiving?
 	var didSendMessageCompletionBlock: OneChatMessageCompletionHandler?
 	
 	// MARK: Singleton
 	
-	public class var sharedInstance : OneMessage {
+	open class var sharedInstance : OneMessage {
 		struct OneMessageSingleton {
 			static let instance = OneMessage()
 		}
@@ -44,176 +44,173 @@ public class OneMessage: NSObject {
 		
 		xmppMessageArchiving?.clientSideMessageArchivingOnly = true
 		xmppMessageArchiving?.activate(OneChat.sharedInstance.xmppStream)
-		xmppMessageArchiving?.addDelegate(self, delegateQueue: dispatch_get_main_queue())
+		xmppMessageArchiving?.addDelegate(self, delegateQueue: DispatchQueue.main)
 	}
 	
 	// MARK: public methods
 	
-	public class func sendMessage(message: String, thread:String, to receiver: String, completionHandler completion:OneChatMessageCompletionHandler) {
-		let body = DDXMLElement.elementWithName("body") as! DDXMLElement
+	open class func sendMessage(_ message: String, thread:String, to receiver: String, completionHandler completion:@escaping OneChatMessageCompletionHandler) {
+		let body = DDXMLElement.element(withName: "body") as! DDXMLElement
 		let messageID = OneChat.sharedInstance.xmppStream?.generateUUID()
 		
-		body.setStringValue(message)
+        body.stringValue = message
         
-        let threadElement = DDXMLElement.elementWithName("thread") as! DDXMLElement
-        threadElement.setStringValue(thread)
-        
-        
+        let threadElement = DDXMLElement.element(withName: "thread") as! DDXMLElement
+        threadElement.stringValue = thread
 		
-		let completeMessage = DDXMLElement.elementWithName("message") as! DDXMLElement
+		let completeMessage = DDXMLElement.element(withName: "message") as! DDXMLElement
 		
-		completeMessage.addAttributeWithName("id", stringValue: messageID)
-		completeMessage.addAttributeWithName("type", stringValue: "chat")
-		completeMessage.addAttributeWithName("to", stringValue: receiver)
+		completeMessage.addAttribute(withName: "id", stringValue: messageID!)
+		completeMessage.addAttribute(withName: "type", stringValue: "chat")
+		completeMessage.addAttribute(withName: "to", stringValue: receiver)
 		completeMessage.addChild(body)
         completeMessage.addChild(threadElement)
 		
 		sharedInstance.didSendMessageCompletionBlock = completion
-		OneChat.sharedInstance.xmppStream?.sendElement(completeMessage)
+		OneChat.sharedInstance.xmppStream?.send(completeMessage)
 	}
 	
-	public class func sendIsComposingMessage(recipient: String, thread: String,completionHandler completion:OneChatMessageCompletionHandler) {
+	open class func sendIsComposingMessage(_ recipient: String, thread: String,completionHandler completion:@escaping OneChatMessageCompletionHandler) {
 		if recipient.characters.count > 0 {
-			let message = DDXMLElement.elementWithName("message") as! DDXMLElement
-			message.addAttributeWithName("type", stringValue: "chat")
-			message.addAttributeWithName("to", stringValue: recipient)
+			let message = DDXMLElement.element(withName: "message") as! DDXMLElement
+			message.addAttribute(withName: "type", stringValue: "chat")
+			message.addAttribute(withName: "to", stringValue: recipient)
 			
-			let composing = DDXMLElement.elementWithName("composing", stringValue: "http://jabber.org/protocol/chatstates") as! DDXMLElement
-            composing.setNamespaces([DDXMLElement.namespaceWithName(nil , stringValue: "http://jabber.org/protocol/chatstates")]);
-			message.addChild(composing)
+			let composing = DDXMLElement.element(withName: "composing", stringValue: "http://jabber.org/protocol/chatstates") as! DDXMLElement
+            composing.namespaces = [DDXMLElement.namespace(withName: "" , stringValue: "http://jabber.org/protocol/chatstates") as! DDXMLNode];
+            message.addChild(composing)
             
-            
-            let threadElement = DDXMLElement.elementWithName("thread") as! DDXMLElement
-            threadElement.setStringValue(thread)
+            let threadElement = DDXMLElement.element(withName: "thread") as! DDXMLElement
+            threadElement.stringValue = thread
             message.addChild(threadElement)
-            
-            
-            
             
             print(message)
 			
 			sharedInstance.didSendMessageCompletionBlock = completion
-			OneChat.sharedInstance.xmppStream?.sendElement(message)
+			OneChat.sharedInstance.xmppStream?.send(message)
 		}
 	}
 	
-    public func loadArchivedMessagesFrom(jid jid: String, thread: String) -> NSMutableArray {
+    open func loadArchivedMessagesFrom(jid: String, thread: String) -> NSMutableArray {
 		let moc = xmppMessageStorage?.mainThreadManagedObjectContext
-		let entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
-		let request = NSFetchRequest()
+		let entityDescription = NSEntityDescription.entity(forEntityName: "XMPPMessageArchiving_Message_CoreDataObject", in: moc!)
+		let request = NSFetchRequest<NSFetchRequestResult>()
 		let predicateFormat = "bareJidStr like %@ ANd thread like %@"
 		let predicate = NSPredicate(format: predicateFormat, jid, thread)
 		let retrievedMessages = NSMutableArray()
-        var sortedRetrievedMessages = NSArray()
+        var sortedRetrievedMessages = Array<Any>()
 		
 		request.predicate = predicate
 		request.entity = entityDescription
 		
 		do {
-			let results = try moc?.executeFetchRequest(request)
+			let results = try moc?.fetch(request)
 			
 			for message in results! {
 				var element: DDXMLElement!
 				do {
-					element = try DDXMLElement(XMLString: message.messageStr)
+					element = try DDXMLElement(xmlString: (message as AnyObject).messageStr)
 				} catch _ {
 					element = nil
 				}
 				
 				let body: String
 				let sender: String
-				let date: NSDate
+				let date: Date
 				
-				date = message.timestamp
+				date = (message as AnyObject).timestamp
 				
-				if message.body() != nil {
-					body = message.body()
+				if (message as AnyObject).body() != nil {
+					body = (message as AnyObject).body()
 				} else {
 					body = ""
 				}
 				
-				if element.attributeStringValueForName("to") == jid {
+				if element.attributeStringValue(forName: "to") == jid {
 					let displayName = OneChat.sharedInstance.xmppStream?.myJID
 					sender = displayName!.bare()
 				} else {
 					sender = jid
 				}
 				
-				let fullMessage = JSQMessage(senderId: sender, senderDisplayName: sender, date: date, text: body)
-				retrievedMessages.addObject(fullMessage)
+                let fullMessage = JSQMessage(senderId: sender, senderDisplayName: sender, date: date, text: body)!
+                retrievedMessages.add(fullMessage)
                 
                 
                 let descriptor:NSSortDescriptor = NSSortDescriptor(key: "date", ascending: true);
                 
-                sortedRetrievedMessages = retrievedMessages.sortedArrayUsingDescriptors([descriptor]);
+                sortedRetrievedMessages = retrievedMessages.sortedArray(using: [descriptor]);
  
 			}
 		} catch _ {
 			//catch fetch error here
 		}
-		return sortedRetrievedMessages.mutableCopy() as! NSMutableArray
+		return NSMutableArray(array: sortedRetrievedMessages)
 	}
 	
-	public func deleteMessagesFrom(jid jid: String, messages: NSArray) {
-		messages.enumerateObjectsUsingBlock { (message, idx, stop) -> Void in
-			let moc = self.xmppMessageStorage?.mainThreadManagedObjectContext
-			let entityDescription = NSEntityDescription.entityForName("XMPPMessageArchiving_Message_CoreDataObject", inManagedObjectContext: moc!)
-			let request = NSFetchRequest()
-			let predicateFormat = "messageStr like %@ "
-			let predicate = NSPredicate(format: predicateFormat, message as! String)
-			
-			request.predicate = predicate
-			request.entity = entityDescription
-			
-			do {
-				let results = try moc?.executeFetchRequest(request)
-				
-				for message in results! {
-					var element: DDXMLElement!
-					do {
-						element = try DDXMLElement(XMLString: message.messageStr)
-					} catch _ {
-						element = nil
-					}
-					
-					if element.attributeStringValueForName("messageStr") == message as! String {
-						moc?.deleteObject(message as! NSManagedObject)
-					}
-				}
-			} catch _ {
-				//catch fetch error here
-			}
-		}
-	}
+    open func deleteMessagesFrom(jid: String, messages: NSArray) {
+        messages.enumerateObjects({ (message, idx, stop) -> Void in
+            let moc = self.xmppMessageStorage?.mainThreadManagedObjectContext
+            let entityDescription = NSEntityDescription.entity(forEntityName: "XMPPMessageArchiving_Message_CoreDataObject", in: moc!)
+            let request = NSFetchRequest<NSFetchRequestResult>()
+            let predicateFormat = "messageStr like %@ "
+            let predicate = NSPredicate(format: predicateFormat, message as! String)
+            
+            request.predicate = predicate
+            request.entity = entityDescription
+            
+            do {
+                let results = try moc?.fetch(request)
+                
+                for messageAny in results! {
+                    
+                    let message = messageAny as AnyObject
+                    
+                    var element: DDXMLElement!
+                    do {
+                        element = try DDXMLElement(xmlString: message.messageStr)
+                    } catch _ {
+                        element = nil
+                    }
+                    
+                    if element.attributeStringValue(forName: "messageStr") == message as! String {
+                        moc?.delete(message as! NSManagedObject)
+                    }
+                }
+            } catch _ {
+                //catch fetch error here
+            }
+        })
+    }
 }
 
 extension OneMessage: XMPPStreamDelegate {
 	
-	public func xmppStream(sender: XMPPStream, didSendMessage message: XMPPMessage) {
+	public func xmppStream(_ sender: XMPPStream, didSend message: XMPPMessage) {
 		if let completion = OneMessage.sharedInstance.didSendMessageCompletionBlock {
-			completion(stream: sender, message: message)
+			completion(sender, message)
 		}
 		//OneMessage.sharedInstance.didSendMessageCompletionBlock!(stream: sender, message: message)
 	}
 	
-	public func xmppStream(sender: XMPPStream, didReceiveMessage message: XMPPMessage) {
+	public func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
         
         print(message.from());
         
-		let user = OneChat.sharedInstance.xmppRosterStorage.userForJID(message.from(), xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
-		
-		if !OneChats.knownUserForJid(jidStr: user.jidStr) {
-			OneChats.addUserToChatList(jidStr: user.jidStr)
-		}
+		let user = OneChat.sharedInstance.xmppRosterStorage.user(for: message.from(), xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
+        
+        if OneChats.knownUserForJid(jidStr: (user?.jidStr)!) {
+            OneChats.addUserToChatList(jidStr: (user?.jidStr)!)
+        }
 		
 		if message.isChatMessageWithBody() {
-			OneMessage.sharedInstance.delegate?.oneStream(sender, didReceiveMessage: message, from: user)
+			OneMessage.sharedInstance.delegate?.oneStream(sender, didReceiveMessage: message, from: user!)
 		} else {
             
             print(message)
 			//was composing
-			if let _ = message.elementForName("composing") {
-				OneMessage.sharedInstance.delegate?.oneStream(sender, userIsComposing: user)
+			if let _ = message.forName("composing") {
+				OneMessage.sharedInstance.delegate?.oneStream(sender, userIsComposing: user!)
 			}
 		}
 	}

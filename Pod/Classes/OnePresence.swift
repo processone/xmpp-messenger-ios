@@ -14,7 +14,7 @@ public protocol OnePresenceDelegate {
 	func onePresenceDidReceivePresence()
 }
 
-public class OnePresence: NSObject {
+open class OnePresence: NSObject {
 	var delegate: OnePresenceDelegate?
 	
 	// MARK: Singleton
@@ -34,10 +34,10 @@ public class OnePresence: NSObject {
 		
 		if domain == "gmail.com" || domain == "gtalk.com" || domain == "talk.google.com" {
 			let priority: DDXMLElement = DDXMLElement(name: "priority", stringValue: "24")
-			presence.addChild(priority)
+			presence?.addChild(priority)
 		}
 		
-		OneChat.sharedInstance.xmppStream?.sendElement(presence)
+		OneChat.sharedInstance.xmppStream?.send(presence)
 	}
 	
 	class func goOffline() {
@@ -47,7 +47,7 @@ public class OnePresence: NSObject {
 
 extension OnePresence: XMPPStreamDelegate {
 	
-	public func xmppStream(sender: XMPPStream, didReceivePresence presence: XMPPPresence) {
+	public func xmppStream(_ sender: XMPPStream, didReceive presence: XMPPPresence) {
 		print("did received presence : \(presence)")
 	}
 }
