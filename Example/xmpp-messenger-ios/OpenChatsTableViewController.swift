@@ -115,8 +115,8 @@ class OpenChatsTableViewController: UITableViewController, OneRosterDelegate {
 	override func prepare(for segue: UIStoryboardSegue?, sender: Any?) {
 		if segue?.identifier == "chats.to.chat" {
 			if let controller = segue?.destination as? ChatViewController {
-				if let cell: UITableViewCell? = sender as? UITableViewCell {
-					let user = OneChats.getChatsList().object(at: tableView.indexPath(for: cell!)!.row) as! XMPPUserCoreDataStorageObject
+				if let cell = sender as? UITableViewCell {
+					let user = OneChats.getChatsList().object(at: tableView.indexPath(for: cell)!.row) as! XMPPUserCoreDataStorageObject
 					controller.recipient = user
 				}
 			}

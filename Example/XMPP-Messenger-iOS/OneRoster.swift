@@ -107,11 +107,11 @@ extension OneRoster: XMPPRosterDelegate {
 	
 	public func xmppRoster(_ sender: XMPPRoster, didReceiveBuddyRequest presence:XMPPPresence) {
 		//was let user
-		_ = OneChat.sharedInstance.xmppRosterStorage.user(for: presence.from(), xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: managedObjectContext_roster())
+        _ = OneChat.sharedInstance.xmppRosterStorage.user(for: presence.from, xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: managedObjectContext_roster())
 	}
 	
-	public func xmppRosterDidEndPopulating(_ sender: XMPPRoster?) {
-		let jidList = OneChat.sharedInstance.xmppRosterStorage.jids(for: OneChat.sharedInstance.xmppStream)
+	public func xmppRosterDidEndPopulating(_ sender: XMPPRoster) {
+        let jidList = OneChat.sharedInstance.xmppRosterStorage.jids(for: OneChat.sharedInstance.xmppStream!)
 		print("List=\(jidList)")
 		
 	}
@@ -120,7 +120,7 @@ extension OneRoster: XMPPRosterDelegate {
 		let presence: DDXMLElement = DDXMLElement.element(withName: "presence") as! DDXMLElement
 		presence.addAttribute(withName: "type", stringValue: "subscribe")
         	presence.addAttribute(withName: "to", stringValue: username)
-        	presence.addAttribute(withName: "from", stringValue: (OneChat.sharedInstance.xmppStream?.myJID.bare())!)
+        presence.addAttribute(withName: "from", stringValue: (OneChat.sharedInstance.xmppStream?.myJID?.bare)!)
         
 		OneChat.sharedInstance.xmppStream?.send(presence)
     	}
@@ -128,7 +128,7 @@ extension OneRoster: XMPPRosterDelegate {
     	public func acceptBuddyRequestFrom(_ username: String) {
         	let presence: DDXMLElement = DDXMLElement.element(withName: "presence") as! DDXMLElement
         	presence.addAttribute(withName: "to", stringValue: username)
-        	presence.addAttribute(withName: "from", stringValue: (OneChat.sharedInstance.xmppStream?.myJID.bare())!)
+            presence.addAttribute(withName: "from", stringValue: (OneChat.sharedInstance.xmppStream?.myJID?.bare)!)
         	presence.addAttribute(withName: "type", stringValue: "subscribed")
         	
         	OneChat.sharedInstance.xmppStream?.send(presence)
@@ -137,7 +137,7 @@ extension OneRoster: XMPPRosterDelegate {
     	public func declineBuddyRequestFrom(_ username: String) {
         	let presence: DDXMLElement = DDXMLElement.element(withName: "presence") as! DDXMLElement
         	presence.addAttribute(withName: "to", stringValue: username)
-        	presence.addAttribute(withName: "from", stringValue: (OneChat.sharedInstance.xmppStream?.myJID.bare())!)
+            presence.addAttribute(withName: "from", stringValue: (OneChat.sharedInstance.xmppStream?.myJID?.bare)!)
         	presence.addAttribute(withName: "type", stringValue: "unsubscribed")
 
         	OneChat.sharedInstance.xmppStream?.send(presence)

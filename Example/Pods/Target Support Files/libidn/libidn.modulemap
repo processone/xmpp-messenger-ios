@@ -1,0 +1,6 @@
+framework module libidn {
+  umbrella header "libidn-umbrella.h"
+
+  export *
+  module * { export * }
+}

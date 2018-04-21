@@ -1,9 +1,10 @@
 {
   "name": "XMPPFramework",
-  "version": "3.7.0",
+  "version": "4.0",
   "platforms": {
-    "osx": "10.8",
-    "ios": "8.0"
+    "osx": "10.9",
+    "ios": "8.0",
+    "tvos": "9.0"
   },
   "license": {
     "type": "BSD",
@@ -16,47 +17,70 @@
   },
   "source": {
     "git": "https://github.com/robbiehanson/XMPPFramework.git",
-    "branch": "master"
+    "tag": "4.0"
   },
-  "resources": [
-    "**/*.{xcdatamodel,xcdatamodeld}"
-  ],
   "description": "XMPPFramework provides a core implementation of RFC-3920 (the xmpp standard), along with\n  the tools needed to read & write XML. It comes with multiple popular extensions (XEPs),\n  all built atop a modular architecture, allowing you to plug-in any code needed for the job.\n  Additionally the framework is massively parallel and thread-safe. Structured using GCD,\n  this framework performs    well regardless of whether it's being run on an old iPhone, or\n  on a 12-core Mac Pro. (And it won't block the main thread... at all).",
   "requires_arc": true,
-  "source_files": [
-    "Core/**/*.{h,m}",
-    "Vendor/libidn/*.h",
-    "Authentication/**/*.{h,m}",
-    "Categories/**/*.{h,m}",
-    "Utilities/**/*.{h,m}",
-    "Extensions/**/*.{h,m}"
-  ],
-  "ios": {
-    "exclude_files": "Extensions/SystemInputActivityMonitor/**/*.{h,m}"
-  },
-  "vendored_libraries": "Vendor/libidn/libidn.a",
-  "libraries": [
-    "xml2",
-    "resolv"
-  ],
-  "frameworks": [
-    "CoreData",
-    "SystemConfiguration",
-    "CoreLocation"
-  ],
-  "xcconfig": {
-    "HEADER_SEARCH_PATHS": "$(inherited) $(SDKROOT)/usr/include/libxml2 $(SDKROOT)/usr/include/libresolv",
-    "ENABLE_BITCODE": "NO"
-  },
-  "dependencies": {
-    "CocoaLumberjack": [
-      "~> 2.0"
-    ],
-    "CocoaAsyncSocket": [
-      "~> 7.5.1"
-    ],
-    "KissXML": [
-      "~> 5.1.2"
-    ]
-  }
+  "default_subspecs": "default",
+  "subspecs": [
+    {
+      "name": "default",
+      "source_files": [
+        "Core/**/*.{h,m}",
+        "Authentication/**/*.{h,m}",
+        "Categories/**/*.{h,m}",
+        "Utilities/**/*.{h,m}",
+        "Extensions/**/*.{h,m}"
+      ],
+      "ios": {
+        "exclude_files": "Extensions/SystemInputActivityMonitor/**/*.{h,m}"
+      },
+      "libraries": [
+        "xml2",
+        "resolv"
+      ],
+      "frameworks": [
+        "CoreData",
+        "SystemConfiguration",
+        "CoreLocation"
+      ],
+      "xcconfig": {
+        "HEADER_SEARCH_PATHS": "$(SDKROOT)/usr/include/libxml2 $(SDKROOT)/usr/include/libresolv"
+      },
+      "resources": [
+        "Extensions/**/*.{xcdatamodel,xcdatamodeld}"
+      ],
+      "dependencies": {
+        "CocoaLumberjack": [
+
+        ],
+        "CocoaAsyncSocket": [
+          "~> 7.6.0"
+        ],
+        "KissXML": [
+          "~> 5.2.0"
+        ],
+        "libidn": [
+          "~> 1.33.0"
+        ]
+      }
+    },
+    {
+      "name": "Swift",
+      "platforms": {
+        "ios": "8.0",
+        "tvos": "9.0",
+        "osx": "10.10"
+      },
+      "source_files": "Swift/**/*.swift",
+      "dependencies": {
+        "XMPPFramework/default": [
+
+        ],
+        "CocoaLumberjack/Swift": [
+
+        ]
+      }
+    }
+  ]
 }

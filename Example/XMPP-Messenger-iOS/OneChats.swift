@@ -77,8 +77,8 @@ open class OneChats: NSObject, NSFetchedResultsControllerDelegate {
                     
 //                    if element.attributeStringValueForName("to") == NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")! || (element.attributeStringValueForName("to") as NSString).containsString(NSUserDefaults.standardUserDefaults().stringForKey("kXMPPmyJID")!) {
                         sender = (message as AnyObject).bareJidStr;
-                        thread = (message as AnyObject).thread()
-                        
+                        thread = (message as AnyObject).thread
+                    
                         print(sender, "----", thread);
                         
                         if let chats = archivedMessage.object(forKey: thread) {
@@ -135,7 +135,7 @@ open class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 					}
 					let sender: String
 					
-                    if element.attributeStringValue(forName: "to") == UserDefaults.standard.string(forKey: "kXMPPmyJID")! || (element.attributeStringValue(forName: "to") as NSString).contains(UserDefaults.standard.string(forKey: "kXMPPmyJID")!) {
+                    if element.attributeStringValue(forName: "to") == UserDefaults.standard.string(forKey: "kXMPPmyJID")! || (element.attributeStringValue(forName: "to") as! NSString).contains(UserDefaults.standard.string(forKey: "kXMPPmyJID")!) {
                         sender = (message as AnyObject).bareJidStr;
                         
                         
@@ -268,7 +268,7 @@ open class OneChats: NSObject, NSFetchedResultsControllerDelegate {
 						element = nil
 					}
 					
-					if element.attributeStringValue(forName: "to") != UserDefaults.standard.string(forKey: "kXMPPmyJID")! && !(element.attributeStringValue(forName: "to") as NSString).contains(UserDefaults.standard.string(forKey: "kXMPPmyJID")!) {
+                    if element.attributeStringValue(forName: "to") != UserDefaults.standard.string(forKey: "kXMPPmyJID")! && !(element.attributeStringValue(forName: "to") as! NSString).contains(UserDefaults.standard.string(forKey: "kXMPPmyJID")!) {
 						if element.attributeStringValue(forName: "to") == user.jidStr {
 							moc?.delete(message as! NSManagedObject)
 						}

@@ -1,0 +1,66 @@
+#import "NSString+IDN.h"
+#import "stringprep.h"
+
+@implementation NSString (IDN)
+
++ (nullable NSString *)idn_prepNode:(NSString *)node
+{
+	if(node == nil) return nil;
+	
+	// Each allowable portion of a JID MUST NOT be more than 1023 bytes in length.
+	// We make the buffer just big enough to hold a null-terminated string of this length. 
+	char buf[1024];
+	
+	strncpy(buf, [node UTF8String], sizeof(buf));
+	
+	if(stringprep_xmpp_nodeprep(buf, sizeof(buf)) != 0) return nil;
+	
+	return [NSString stringWithUTF8String:buf];
+}
+
++ (nullable NSString *)idn_prepDomain:(NSString *)domain
+{
+	if(domain == nil) return nil;
+	
+	// Each allowable portion of a JID MUST NOT be more than 1023 bytes in length.
+	// We make the buffer just big enough to hold a null-terminated string of this length. 
+	char buf[1024];
+	
+	strncpy(buf, [domain UTF8String], sizeof(buf));
+	
+	if(stringprep_nameprep(buf, sizeof(buf)) != 0) return nil;
+	
+	return [NSString stringWithUTF8String:buf];
+}
+
++ (nullable NSString *)idn_prepResource:(NSString *)resource
+{
+	if(resource == nil) return nil;
+	
+	// Each allowable portion of a JID MUST NOT be more than 1023 bytes in length.
+	// We make the buffer just big enough to hold a null-terminated string of this length. 
+	char buf[1024];
+	
+	strncpy(buf, [resource UTF8String], sizeof(buf));
+	
+	if(stringprep_xmpp_resourceprep(buf, sizeof(buf)) != 0) return nil;
+	
+	return [NSString stringWithUTF8String:buf];
+}
+
++ (nullable NSString *)idn_prepPassword:(NSString *)password
+{
+	if(password == nil) return nil;
+	
+	// Each allowable portion of a JID MUST NOT be more than 1023 bytes in length.
+	// We make the buffer just big enough to hold a null-terminated string of this length.
+	char buf[1024];
+	
+	strncpy(buf, [password UTF8String], sizeof(buf));
+	
+	if(stringprep(buf, sizeof(buf), 0, stringprep_saslprep) != 0) return nil;
+	
+	return [NSString stringWithUTF8String:buf];
+}
+
+@end

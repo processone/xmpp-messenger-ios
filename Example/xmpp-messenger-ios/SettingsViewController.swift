@@ -37,7 +37,7 @@ class SettingsViewController: UIViewController {
   
   // Mark: Private Methods
   
-  func DismissKeyboard() {
+    @objc func DismissKeyboard() {
     if usernameTextField.isFirstResponder {
       usernameTextField.resignFirstResponder()
     } else if passwordTextField.isFirstResponder {
@@ -55,7 +55,7 @@ class SettingsViewController: UIViewController {
 		validateButton.setTitle("Validate", for: UIControlState())
 	} else {
 		OneChat.sharedInstance.connect(username: self.usernameTextField.text!, password: self.passwordTextField.text!) { (stream, error) -> Void in
-			if let _ = error {
+			if let error = error {
 				let alertController = UIAlertController(title: "Sorry", message: "An error occured: \(error)", preferredStyle: UIAlertControllerStyle.alert)
 				alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (UIAlertAction) -> Void in
 					//do something

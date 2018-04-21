@@ -26,8 +26,8 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		OneMessage.sharedInstance.delegate = self
   
 		if OneChat.sharedInstance.isConnected() {
-			self.senderId = OneChat.sharedInstance.xmppStream?.myJID.bare()
-			self.senderDisplayName = OneChat.sharedInstance.xmppStream?.myJID.bare()
+            self.senderId = OneChat.sharedInstance.xmppStream?.myJID?.bare
+            self.senderDisplayName = OneChat.sharedInstance.xmppStream?.myJID?.bare
 		}
 		
 		self.collectionView!.collectionViewLayout.springinessEnabled = false
@@ -82,7 +82,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	
 	// Mark: Private methods
 	
-	func addRecipient() {
+    @objc func addRecipient() {
 		let navController = self.storyboard?.instantiateViewController(withIdentifier: "contactListNav") as? UINavigationController
 		let contactController: ContactListTableViewController? = navController?.viewControllers[0] as? ContactListTableViewController
 		contactController?.delegate = self
@@ -112,7 +112,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	override func textViewDidChange(_ textView: UITextView) {
         	super.textViewDidChange(textView)
         
-        	if textView.text.characters.count == 0 {
+        	if textView.text.count == 0 {
             		if isComposing {
                 		hideTypingIndicator()
             		}
@@ -129,7 +129,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
         	}
     	}
     
-    	func hideTypingIndicator() {
+    @objc func hideTypingIndicator() {
         	if let recipient = recipient {
                 self.isComposing = false
                 OneMessage.sendIsComposingMessage(recipient.jidStr, thread: "test", completionHandler: { (stream, message) -> Void in
@@ -139,7 +139,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
     	}
 	
 	override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
-		let fullMessage = JSQMessage(senderId: OneChat.sharedInstance.xmppStream?.myJID.bare(), senderDisplayName: OneChat.sharedInstance.xmppStream?.myJID.bare(), date: Date(), text: text)!
+        let fullMessage = JSQMessage(senderId: OneChat.sharedInstance.xmppStream?.myJID?.bare, senderDisplayName: OneChat.sharedInstance.xmppStream?.myJID?.bare, date: Date(), text: text)!
 		messages.add(fullMessage)
 		
 		if let recipient = recipient {
@@ -177,7 +177,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		let message: JSQMessage = self.messages[indexPath.item] as! JSQMessage
 		
 		if message.senderId == self.senderId {
-			if let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoData(for: OneChat.sharedInstance.xmppStream?.myJID) {
+            if let photoData = OneChat.sharedInstance.xmppvCardAvatarModule?.photoData(for: (OneChat.sharedInstance.xmppStream?.myJID)!) {
 				let senderAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(data: photoData), diameter: 30)
 				return senderAvatar
 			} else {
@@ -238,10 +238,21 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 		if !msg.isMediaMessage {
 			if msg.senderId == self.senderId {
 				cell.textView!.textColor = UIColor.black
-				cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.black, NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
+                
+                let linkAttributes: [String : Any] = [
+                    NSAttributedStringKey.foregroundColor.rawValue: UIColor.black,
+                    NSAttributedStringKey.underlineStyle.rawValue: NSUnderlineStyle.styleSingle.rawValue]
+                
+				cell.textView!.linkTextAttributes = linkAttributes
 			} else {
+                
 				cell.textView!.textColor = UIColor.white
-				cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.white, NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
+                
+                let linkAttributes: [String : Any] = [
+                    NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
+                    NSAttributedStringKey.underlineStyle.rawValue: NSUnderlineStyle.styleSingle.rawValue]
+                
+                cell.textView!.linkTextAttributes = linkAttributes
 			}
 		}
 		
@@ -282,7 +293,7 @@ class ChatViewController: JSQMessagesViewController, OneMessageDelegate, Contact
 	// Mark: Chat message Delegates
 	
 	func oneStream(_ sender: XMPPStream, didReceiveMessage message: XMPPMessage, from user: XMPPUserCoreDataStorageObject) {
-		if message.isChatMessageWithBody() {
+        if message.isChatMessageWithBody {
 			//let displayName = user.displayName
 			
 			JSQSystemSoundPlayer.jsq_playMessageReceivedSound()

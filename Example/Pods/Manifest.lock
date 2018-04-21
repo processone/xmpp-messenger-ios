@@ -1,28 +1,26 @@
 PODS:
-  - CocoaAsyncSocket (7.5.1):
-    - CocoaAsyncSocket/GCD (= 7.5.1)
-  - CocoaAsyncSocket/GCD (7.5.1)
-  - CocoaLumberjack (2.4.0):
-    - CocoaLumberjack/Default (= 2.4.0)
-    - CocoaLumberjack/Extensions (= 2.4.0)
-  - CocoaLumberjack/Core (2.4.0)
-  - CocoaLumberjack/Default (2.4.0):
-    - CocoaLumberjack/Core
-  - CocoaLumberjack/Extensions (2.4.0):
+  - CocoaAsyncSocket (7.6.3)
+  - CocoaLumberjack (3.4.2):
+    - CocoaLumberjack/Default (= 3.4.2)
+    - CocoaLumberjack/Extensions (= 3.4.2)
+  - CocoaLumberjack/Default (3.4.2)
+  - CocoaLumberjack/Extensions (3.4.2):
     - CocoaLumberjack/Default
-  - FMDB (2.6.2):
-    - FMDB/standard (= 2.6.2)
-  - FMDB/standard (2.6.2)
-  - JSQMessagesViewController (7.3.4):
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
+  - JSQMessagesViewController (7.3.5):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - KissXML (5.1.2):
-    - KissXML/Core (= 5.1.2)
-  - KissXML/Core (5.1.2)
-  - XMPPFramework (3.7.0):
-    - CocoaAsyncSocket (~> 7.5.1)
-    - CocoaLumberjack (~> 2.0)
-    - KissXML (~> 5.1.2)
+  - KissXML (5.2.2)
+  - libidn (1.33)
+  - XMPPFramework (4.0):
+    - XMPPFramework/default (= 4.0)
+  - XMPPFramework/default (4.0):
+    - CocoaAsyncSocket (~> 7.6.0)
+    - CocoaLumberjack
+    - KissXML (~> 5.2.0)
+    - libidn (~> 1.33.0)
 
 DEPENDENCIES:
   - FMDB
@@ -37,18 +35,19 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   XMPPFramework:
-    :commit: bf904f259a0791919cf6d09b828916b1d517d4d1
+    :commit: 5e6227bfa5f194d257e89f1f3cc0c55c7ec5275d
     :git: https://github.com/robbiehanson/XMPPFramework.git
 
 SPEC CHECKSUMS:
-  CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
-  CocoaLumberjack: aa9dcab71bdf9eaf2a63bbd9ddc87863efe45457
-  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
+  CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
+  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  JSQMessagesViewController: 6587f56aedbcb150a8ba1d968e1ef58b1bc758b7
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  KissXML: 246c842586bb77110e04fb88e19376d96245c856
-  XMPPFramework: 9817d71a3015e08095cda1e8d6435fad8970059f
+  KissXML: 4418f32138aec43797891845d682b00fc8cd4677
+  libidn: 90fc1a62b60288dcf543f13f4ebca913f17d829f
+  XMPPFramework: 967df10e4dc4ba4ca5e04505fd2b2d2fd562d917
 
 PODFILE CHECKSUM: 974668655fc2bd7a2689a25efb43f7090d142717
 
-COCOAPODS: 1.2.0.beta.1
+COCOAPODS: 1.4.0

@@ -131,8 +131,8 @@ open class OneChat: NSObject {
 		// The XMPPRoster will automatically integrate with XMPPvCardAvatarModule to cache roster photos in the roster.
 		
 		xmppvCardStorage = XMPPvCardCoreDataStorage.sharedInstance()
-    xmppvCardTempModule = XMPPvCardTempModule(vCardStorage: xmppvCardStorage)
-    xmppvCardAvatarModule = XMPPvCardAvatarModule(vCardTempModule: xmppvCardTempModule)
+        xmppvCardTempModule = XMPPvCardTempModule(vCardStorage: xmppvCardStorage!)
+        xmppvCardAvatarModule = XMPPvCardAvatarModule(vCardTempModule: xmppvCardTempModule!)
     
 		// Setup capabilities
 		//
@@ -154,7 +154,7 @@ open class OneChat: NSObject {
 		// It can also be shared amongst multiple streams to further reduce hash lookups.
 		
 		xmppCapabilitiesStorage = XMPPCapabilitiesCoreDataStorage.sharedInstance()
-		xmppCapabilities = XMPPCapabilities(capabilitiesStorage: xmppCapabilitiesStorage)
+        xmppCapabilities = XMPPCapabilities(capabilitiesStorage: xmppCapabilitiesStorage!)
 		
 		xmppCapabilities!.autoFetchHashedCapabilities = true;
 		xmppCapabilities!.autoFetchNonHashedCapabilities = false;
@@ -166,13 +166,13 @@ open class OneChat: NSObject {
 		xmppLastActivity = XMPPLastActivity()
 		
 		// Activate xmpp modules
-		xmppReconnect!.activate(xmppStream)
-		xmppRoster!.activate(xmppStream)
-		xmppvCardTempModule!.activate(xmppStream)
-		xmppvCardAvatarModule!.activate(xmppStream)
-		xmppCapabilities!.activate(xmppStream)
-		xmppMessageDeliveryRecipts!.activate(xmppStream)
-		xmppLastActivity!.activate(xmppStream)
+        xmppReconnect!.activate(xmppStream!)
+        xmppRoster!.activate(xmppStream!)
+        xmppvCardTempModule!.activate(xmppStream!)
+        xmppvCardAvatarModule!.activate(xmppStream!)
+        xmppCapabilities!.activate(xmppStream!)
+        xmppMessageDeliveryRecipts!.activate(xmppStream!)
+        xmppLastActivity!.activate(xmppStream!)
 		
 		// Add ourself as a delegate to anything we may be interested in
 		xmppStream!.addDelegate(self, delegateQueue: DispatchQueue.main)
@@ -274,7 +274,7 @@ open class OneChat: NSObject {
 	}
 	
 	open func isConnected() -> Bool {
-		return xmppStream!.isConnected()
+		return xmppStream!.isConnected
 	}
 	
 	open func disconnect() {
@@ -285,7 +285,7 @@ open class OneChat: NSObject {
 	// Mark: Private function
 	
 	fileprivate func setValue(_ value: String, forKey key: String) {
-		if value.characters.count > 0 {
+		if value.count > 0 {
 			UserDefaults.standard.set(value, forKey: key)
 		} else {
 			UserDefaults.standard.removeObject(forKey: key)
@@ -314,21 +314,21 @@ open class OneChat: NSObject {
 // MARK: XMPPStream Delegate
 
 extension OneChat: XMPPStreamDelegate {
-	
-	public func xmppStream(_ sender: XMPPStream?, socketDidConnect socket: GCDAsyncSocket?) {
-		delegate?.oneStream(sender, socketDidConnect: socket)
-	}
-	
-	public func xmppStream(_ sender: XMPPStream?, willSecureWithSettings settings: NSMutableDictionary?) {
-		let expectedCertName: String? = xmppStream?.myJID.domain
-		
-		if expectedCertName != nil {
-			settings![kCFStreamSSLPeerName as String] = expectedCertName
-		}
-		if customCertEvaluation! {
-			settings![GCDAsyncSocketManuallyEvaluateTrust] = true
-		}
-	}
+    
+    public func xmppStream(_ sender: XMPPStream, socketDidConnect socket: GCDAsyncSocket) {
+        delegate?.oneStream(sender, socketDidConnect: socket)
+    }
+    
+    public func xmppStream(_ sender: XMPPStream, willSecureWithSettings settings: NSMutableDictionary) {
+        let expectedCertName: String? = xmppStream?.myJID?.domain
+        
+        if expectedCertName != nil {
+            settings[kCFStreamSSLPeerName as String] = expectedCertName
+        }
+        if customCertEvaluation! {
+            settings[GCDAsyncSocketManuallyEvaluateTrust] = true
+        }
+    }
 	
 	/**
 	* Allows a delegate to hook into the TLS handshake and manually validate the peer it's connecting to.
@@ -391,7 +391,7 @@ extension OneChat: XMPPStreamDelegate {
 		isXmppConnected = true
 		
 		do {
-			try xmppStream!.authenticate(withPassword: password)
+            try xmppStream!.authenticate(withPassword: password!)
 		} catch _ {
 			//Handle error
 		}
@@ -408,8 +408,8 @@ extension OneChat: XMPPStreamDelegate {
 		streamDidConnectCompletionBlock!(sender, error)
 	}
     
-    public func xmppStreamDidDisconnect(_ sender: XMPPStream!, withError error: Error!) {
-        delegate?.oneStreamDidDisconnect(sender, withError: error as NSError)
+    public func xmppStreamDidDisconnect(_ sender: XMPPStream, withError error: Error?) {
+        delegate?.oneStreamDidDisconnect(sender, withError: error! as NSError)
     }
 	
 }

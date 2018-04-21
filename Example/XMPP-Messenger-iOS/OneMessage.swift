@@ -43,7 +43,7 @@ open class OneMessage: NSObject {
 		xmppMessageArchiving = XMPPMessageArchiving(messageArchivingStorage: xmppMessageStorage)
 		
 		xmppMessageArchiving?.clientSideMessageArchivingOnly = true
-		xmppMessageArchiving?.activate(OneChat.sharedInstance.xmppStream)
+        xmppMessageArchiving?.activate(OneChat.sharedInstance.xmppStream!)
 		xmppMessageArchiving?.addDelegate(self, delegateQueue: DispatchQueue.main)
 	}
 	
@@ -51,7 +51,7 @@ open class OneMessage: NSObject {
 	
 	open class func sendMessage(_ message: String, thread:String, to receiver: String, completionHandler completion:@escaping OneChatMessageCompletionHandler) {
 		let body = DDXMLElement.element(withName: "body") as! DDXMLElement
-		let messageID = OneChat.sharedInstance.xmppStream?.generateUUID()
+		let messageID = OneChat.sharedInstance.xmppStream?.generateUUID
 		
         body.stringValue = message
         
@@ -71,7 +71,7 @@ open class OneMessage: NSObject {
 	}
 	
 	open class func sendIsComposingMessage(_ recipient: String, thread: String,completionHandler completion:@escaping OneChatMessageCompletionHandler) {
-		if recipient.characters.count > 0 {
+		if recipient.count > 0 {
 			let message = DDXMLElement.element(withName: "message") as! DDXMLElement
 			message.addAttribute(withName: "type", stringValue: "chat")
 			message.addAttribute(withName: "to", stringValue: recipient)
@@ -120,15 +120,15 @@ open class OneMessage: NSObject {
 				
 				date = (message as AnyObject).timestamp
 				
-				if (message as AnyObject).body() != nil {
-					body = (message as AnyObject).body()
+				if (message as AnyObject).body != nil {
+					body = (message as AnyObject).body
 				} else {
 					body = ""
 				}
 				
 				if element.attributeStringValue(forName: "to") == jid {
 					let displayName = OneChat.sharedInstance.xmppStream?.myJID
-					sender = displayName!.bare()
+                    sender = displayName!.bare
 				} else {
 					sender = jid
 				}
@@ -173,7 +173,7 @@ open class OneMessage: NSObject {
                         element = nil
                     }
                     
-                    if element.attributeStringValue(forName: "messageStr") == message as! String {
+                    if element.attributeStringValue(forName: "messageStr") == message as? String {
                         moc?.delete(message as! NSManagedObject)
                     }
                 }
@@ -194,16 +194,14 @@ extension OneMessage: XMPPStreamDelegate {
 	}
 	
 	public func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
-        
-        print(message.from());
-        
-		let user = OneChat.sharedInstance.xmppRosterStorage.user(for: message.from(), xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
+                
+        let user = OneChat.sharedInstance.xmppRosterStorage.user(for: message.from, xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
         
         if OneChats.knownUserForJid(jidStr: (user?.jidStr)!) {
             OneChats.addUserToChatList(jidStr: (user?.jidStr)!)
         }
 		
-		if message.isChatMessageWithBody() {
+        if message.isChatMessageWithBody {
 			OneMessage.sharedInstance.delegate?.oneStream(sender, didReceiveMessage: message, from: user!)
 		} else {
             

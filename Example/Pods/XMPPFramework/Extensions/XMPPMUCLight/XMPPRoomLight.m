@@ -6,7 +6,7 @@
 //  Copyright © 2016 Inaka. All rights reserved.
 //
 
-#import "XMPPFramework/XMPPMessage+XEP0045.h"
+#import "XMPPMessage+XEP0045.h"
 #import "XMPPRoomLight.h"
 
 static NSString *const XMPPRoomLightAffiliations = @"urn:xmpp:muclight:0#affiliations";
@@ -14,8 +14,11 @@ static NSString *const XMPPRoomLightConfiguration = @"urn:xmpp:muclight:0#config
 static NSString *const XMPPRoomLightDestroy = @"urn:xmpp:muclight:0#destroy";
 
 @interface XMPPRoomLight() {
+    BOOL shouldStoreAffiliationChangeMessages;
+    BOOL shouldHandleMemberMessagesWithoutBody;
 	NSString *roomname;
 	NSString *subject;
+    NSArray<NSXMLElement*> *knownMembersList;
 	NSString *configVersion;
 	NSString *memberListVersion;
 }
@@ -41,6 +44,7 @@ static NSString *const XMPPRoomLightDestroy = @"urn:xmpp:muclight:0#destroy";
 		_domain = aRoomJID.domain;
 		_roomJID = aRoomJID;
 		roomname = aRoomname;
+        knownMembersList = @[];
 		configVersion = @"";
 		memberListVersion = @"";
 	}
@@ -75,6 +79,60 @@ static NSString *const XMPPRoomLightDestroy = @"urn:xmpp:muclight:0#destroy";
 	[super deactivate];
 }
 
+- (BOOL)shouldStoreAffiliationChangeMessages
+{
+    __block BOOL result;
+    dispatch_block_t block = ^{ @autoreleasepool {
+        result = shouldStoreAffiliationChangeMessages;
+    }};
+    
+    if (dispatch_get_specific(moduleQueueTag))
+        block();
+    else
+        dispatch_sync(moduleQueue, block);
+    
+    return result;
+}
+
+- (void)setShouldStoreAffiliationChangeMessages:(BOOL)newValue
+{
+    dispatch_block_t block = ^{ @autoreleasepool {
+        shouldStoreAffiliationChangeMessages = newValue;
+    }};
+    
+    if (dispatch_get_specific(moduleQueueTag))
+        block();
+    else
+        dispatch_async(moduleQueue, block);
+}
+
+- (BOOL)shouldHandleMemberMessagesWithoutBody
+{
+    __block BOOL result;
+    dispatch_block_t block = ^{ @autoreleasepool {
+        result = shouldHandleMemberMessagesWithoutBody;
+    }};
+    
+    if (dispatch_get_specific(moduleQueueTag))
+        block();
+    else
+        dispatch_sync(moduleQueue, block);
+    
+    return result;
+}
+
+- (void)setShouldHandleMemberMessagesWithoutBody:(BOOL)newValue
+{
+    dispatch_block_t block = ^{ @autoreleasepool {
+        shouldHandleMemberMessagesWithoutBody = newValue;
+    }};
+    
+    if (dispatch_get_specific(moduleQueueTag))
+        block();
+    else
+        dispatch_async(moduleQueue, block);
+}
+
 - (nonnull NSString *)roomname {
 	@synchronized(roomname) {
 		return [roomname copy];
@@ -85,6 +143,20 @@ static NSString *const XMPPRoomLightDestroy = @"urn:xmpp:muclight:0#destroy";
 	@synchronized(subject) {
 		return [subject copy];
 	}
+}
+
+- (NSArray<NSXMLElement *> *)knownMembersList {
+    __block NSArray<NSXMLElement *> *result;
+    dispatch_block_t block = ^{ @autoreleasepool {
+        result = knownMembersList;
+    }};
+    
+    if (dispatch_get_specific(moduleQueueTag))
+        block();
+    else
+        dispatch_sync(moduleQueue, block);
+    
+    return result;
 }
 
 - (nonnull NSString *)configVersion {
@@ -129,6 +201,17 @@ static NSString *const XMPPRoomLightDestroy = @"urn:xmpp:muclight:0#destroy";
 		block();
 	else
 		dispatch_async(moduleQueue, block);
+}
+
+- (void)setKnownMembersList:(NSArray<NSXMLElement *> *)aMembersList {
+    dispatch_block_t block = ^{ @autoreleasepool {
+        knownMembersList = [aMembersList copy];
+    }};
+    
+    if (dispatch_get_specific(moduleQueueTag))
+        block();
+    else
+        dispatch_async(moduleQueue, block);
 }
 
 - (void)setMemberListVersion:(NSString *)aVersion{
@@ -190,15 +273,15 @@ static NSString *const XMPPRoomLightDestroy = @"urn:xmpp:muclight:0#destroy";
 		NSXMLElement *configuration = [NSXMLElement elementWithName:@"configuration"];
 		[configuration addChild:[NSXMLElement elementWithName:@"roomname" stringValue:roomname]];
 		
-		NSXMLElement *ocupants = [NSXMLElement elementWithName:@"ocupants"];
+		NSXMLElement *occupants = [NSXMLElement elementWithName:@"occupants"];
 		for (XMPPJID *jid in members){
 			NSXMLElement *userElement = [NSXMLElement elementWithName:@"user" stringValue:jid.bare];
 			[userElement addAttributeWithName:@"affiliation" stringValue:@"member"];
-			[ocupants addChild:userElement];
+			[occupants addChild:userElement];
 		}
 		
 		[query addChild:configuration];
-		[query addChild:ocupants];
+		[query addChild:occupants];
 		
 		[iq addChild:query];
 		
@@ -368,9 +451,11 @@ static NSString *const XMPPRoomLightDestroy = @"urn:xmpp:muclight:0#destroy";
 		}
 		
 		NSArray *items = [query elementsForName:@"user"];
-		if (!items) { items = @[]; }
+        if (items) {
+            [self setKnownMembersList:items];
+        }
 
-		[multicastDelegate xmppRoomLight:self didFetchMembersList:items];
+		[multicastDelegate xmppRoomLight:self didFetchMembersList:iq];
 	}else{
 		[multicastDelegate xmppRoomLight:self didFailToFetchMembersList:iq];
 	}
@@ -603,22 +688,17 @@ static NSString *const XMPPRoomLightDestroy = @"urn:xmpp:muclight:0#destroy";
 		return; // Stanza isn't for our room
 	}
 
-	BOOL destroyRoom = false;
-	BOOL changeConfiguration = false;
-	NSArray <NSXMLElement*> *xElements = [message elementsForName:@"x"];
-	for (NSXMLElement *x in xElements) {
-		if ([x.xmlns isEqualToString:XMPPRoomLightDestroy]) {
-			destroyRoom = true;
-		} else if ([x.xmlns isEqualToString:XMPPRoomLightConfiguration]){
-			changeConfiguration = true;
-		}
-	}
+    // note: do not use [message elementsForName:@"x"] as this will fail to find namespace-qualified elements in Apple's NSXML implementation (DDXML works fine)
+	BOOL destroyRoom = [message elementsForLocalName:@"x" URI:XMPPRoomLightDestroy].count > 0;
+	BOOL changeConfiguration = [message elementsForLocalName:@"x" URI:XMPPRoomLightConfiguration].count > 0;;
+    BOOL changeAffiliantions = [message elementsForLocalName:@"x" URI:XMPPRoomLightAffiliations].count > 0;;
+    
 	// Is this a message we need to store (a chat message)?
 	//
 	// We store messages that from is full room-id@domain/user-who-sends-message
-	// and that have something in the body
+    // and that have something in the body (unless empty messages are allowed)
 
-	if ([from isFull] && [message isGroupChatMessageWithBody]) {
+	if ([from isFull] && [message isGroupChatMessage] && (self.shouldHandleMemberMessagesWithoutBody || [message isMessageWithBody])) {
 		[xmppRoomLightStorage handleIncomingMessage:message room:self];
 		[multicastDelegate xmppRoomLight:self didReceiveMessage:message];
 	}else if(destroyRoom){
@@ -628,6 +708,8 @@ static NSString *const XMPPRoomLightDestroy = @"urn:xmpp:muclight:0#destroy";
 		[self handleConfigElements:configElements];
 
 		[multicastDelegate xmppRoomLight:self configurationChanged:message];
+    } else if (changeAffiliantions && self.shouldStoreAffiliationChangeMessages) {
+        [xmppRoomLightStorage handleIncomingMessage:message room:self];
 	}else{
 		// Todo... Handle other types of messages.
 	}
@@ -646,7 +728,7 @@ static NSString *const XMPPRoomLightDestroy = @"urn:xmpp:muclight:0#destroy";
 	// A message to all recipients MUST be of type groupchat.
 	// A message to an individual recipient would have a <body/>.
 
-	if ([message isGroupChatMessageWithBody]){
+	if ([message isGroupChatMessage] && (self.shouldHandleMemberMessagesWithoutBody || [message isMessageWithBody])) {
 		[xmppRoomLightStorage handleOutgoingMessage:message room:self];
 	}
 }
